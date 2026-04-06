@@ -1,0 +1,72 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ImplicitUsings>true</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsWindows>false</IsWindows>
+    <IsOSX>false</IsOSX>
+    <IsWindows Condition="$([MSBuild]::IsOSPlatform('Windows'))">true</IsWindows>
+    <IsOSX Condition="$([MSBuild]::IsOSPlatform('OSX'))">true</IsOSX>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
+    <GodotPath>D:\softwares\megadot\MegaDot_v4.5.1-stable_mono_win64.exe</GodotPath>
+    <GodotPreset>Windows</GodotPreset>
+    <Sts2Dir>D:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
+    <Sts2DataDir>$(Sts2Dir)/data_sts2_windows_x86_64</Sts2DataDir>
+    <Sts2ModDir>$(Sts2Dir)/mods</Sts2ModDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsOSX)' == 'true'">
+    <GodotPath>/Users/vitech/Applications/Megadot.app/Contents/MacOS/Godot</GodotPath>
+    <GodotPreset>mac</GodotPreset>
+    <Sts2Dir>/Users/vitech/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents</Sts2Dir>
+    <Sts2DataDir>$(Sts2Dir)/Resources/data_sts2_macos_arm64</Sts2DataDir>
+    <Sts2ModDir>$(Sts2Dir)/MacOS/mods</Sts2ModDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);MSB3270;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625</NoWarn>
+  </PropertyGroup>
+
+
+  <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
+    <Message Text="Copying mod to Slay the Spire 2 mods folder..." Importance="high" />
+    <MakeDir Directories="$(Sts2Dir)\mods\" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2ModDir)/RegentFX/" />
+    <Copy SourceFiles="RegentFX.json" DestinationFolder="$(Sts2ModDir)/RegentFX/" />
+    <!-- <Message Text="Copying BaseLib to mods folder." Importance="high" />
+    <ItemGroup>
+      <BaseLibFiles Include="$(NuGetPackageRoot)/alchyr.sts2.baselib/**/lib/**/BaseLib.dll;$(NuGetPackageRoot)/alchyr.sts2.baselib/**/Content/BaseLib.pck;$(NuGetPackageRoot)/alchyr.sts2.baselib/**/Content/BaseLib.json;"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(BaseLibFiles)" DestinationFolder="$(Sts2ModDir)/BaseLib/" /> -->
+  </Target>
+
+  <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
+    <Message Text="Exporting Godot .pck to mods folder" Importance="high"/>
+    <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;$(GodotPreset)&quot; &quot;$(Sts2ModDir)/RegentFX/RegentFX.pck&quot;"
+          EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1"
+          ContinueOnError="WarnAndContinue"/>
+  </Target>
+
+  <Target Name="GodotPublishSkipped" AfterTargets="Publish" Condition="'$(GodotPath)' == '' or !Exists('$(GodotPath)')">
+    <Message Text="Skipping Godot .pck export because GodotPath is not configured." Importance="high"/>
+  </Target>
+</Project>

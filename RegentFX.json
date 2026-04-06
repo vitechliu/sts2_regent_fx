@@ -1,0 +1,11 @@
+{
+  "id": "RegentFX",
+  "name": "RegentFX",
+  "author": "Vitech",
+  "description": "Regent VFX",
+  "version": "0.1",
+  "has_pck": true,
+  "has_dll": true,   
+  "dependencies": [""], 
+  "affects_gameplay": false
+}
