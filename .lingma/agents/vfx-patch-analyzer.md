@@ -13,7 +13,7 @@ tools: Read, Grep, Glob, mcp__quest__search_codebase, mcp__quest__search_symbol
    - 确定目标类或功能
 
 2. **搜索游戏源码**
-   - 在 `D:\Github\sts2\decompiled` 目录搜索相关代码
+   - 在 `../decompiled` 目录搜索相关代码
    - 使用Grep搜索类名、方法名、VFX相关调用
 
 3. **分析注入点**
