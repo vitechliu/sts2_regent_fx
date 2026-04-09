@@ -17,18 +17,16 @@ public static class StarEnergyPatch
     {
         public static void Prefix(PlayerCombatState __instance, int value)
         {
-            int currentStars = __instance.Stars;
-            if (currentStars != value)
-            {
-                Entry.Logger.Info($"[StarEnergy] Stars即将改变: {currentStars} -> {value} (变化: {value - currentStars:+#;-#;0})");
-            }
-
-            Player p = __instance._player;
+            // int currentStars = __instance.Stars;
+            // if (currentStars != value)
+            // {
+            //     Entry.Logger.Info($"[StarEnergy] Stars即将改变: {currentStars} -> {value} (变化: {value - currentStars:+#;-#;0})");
+            // }
         }
 
         public static void Postfix(PlayerCombatState __instance, int value)
         {
-            Entry.Logger.Info($"[StarEnergy] Stars已改变，当前值: {value}");
+            // Entry.Logger.Info($"[StarEnergy] Stars已改变，当前值: {value}");
         }
     }
 

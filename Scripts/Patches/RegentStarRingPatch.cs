@@ -27,7 +27,7 @@ public static class RegentStarRingPatch
     {
         public static void Postfix()
         {
-            Entry.Logger.Info("[RegentStarRing] CreateAllyNodes called, setting up star rings for Regent players");
+            // Entry.Logger.Info("[RegentStarRing] CreateAllyNodes called, setting up star rings for Regent players");
 
             if (NCombatRoom.Instance == null) return;
 
@@ -88,7 +88,7 @@ public static class RegentStarRingPatch
     {
         public static void Prefix()
         {
-            Entry.Logger.Info("[RegentStarRing] Combat ending, clearing star rings");
+            // Entry.Logger.Info("[RegentStarRing] Combat ending, clearing star rings");
             ClearAllStarRings();
         }
     }
@@ -128,7 +128,7 @@ public static class RegentStarRingPatch
 
         _playerStarRings[player] = controller;
 
-        Entry.Logger.Info($"[RegentStarRing] Star ring created for Regent player with {starCount} stars");
+        // Entry.Logger.Info($"[RegentStarRing] Star ring created for Regent player with {starCount} stars");
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public static class RegentStarRingPatch
         if (_playerStarRings.TryGetValue(player, out var controller) && controller != null)
         {
             controller.SetStarCount(starCount);
-            Entry.Logger.Info($"[RegentStarRing] Star count updated to {starCount}");
+            // Entry.Logger.Info($"[RegentStarRing] Star count updated to {starCount}");
         }
         else if (player.Character is Regent)
         {

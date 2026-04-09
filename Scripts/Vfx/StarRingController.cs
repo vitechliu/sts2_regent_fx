@@ -20,7 +20,7 @@ public partial class StarRingController : Node2D
     [Export] public float StarScaleMax { get; set; } = 1.0f;
     [Export] public int MaxStarCount { get; set; } = 20;
     [Export] public float SpawnAnimationDuration { get; set; } = 0.3f;
-    [Export] public float VerticalOffset { get; set; } = -80f;  // 从-30提升到-80，让星星在角色胸部/头部高度
+    [Export] public float VerticalOffset { get; set; } = -180f;  // 从-30提升到-80，让星星在角色胸部/头部高度
 
     private readonly List<Star> _orbitStars = new();
     private NCreature? _playerNode;
@@ -101,11 +101,11 @@ public partial class StarRingController : Node2D
         // 初始位置设置为玩家位置
         GlobalPosition = playerNode.GlobalPosition;
 
-        // 调试：输出详细的节点层级和ZIndex信息
-        LogNodeHierarchy(playerNode);
-
-        // 设置ZAsRelative为true，使ZIndex相对于AllyContainer（与角色一致）
+        // 设置ZAsRelative为true，使ZIndex相对于父节点
         ZAsRelative = true;
+
+        // 调试日志（需要时取消注释）
+        // LogNodeHierarchy(playerNode);
     }
 
     /// <summary>
@@ -228,28 +228,21 @@ public partial class StarRingController : Node2D
             float depthFactor = (Mathf.Sin(angle) + 1f) / 2f;
 
             // 根据深度调整缩放（伪3D效果）
-            float scale = Mathf.Lerp(StarScaleMax, StarScaleMin, depthFactor);
+            float scale = Mathf.Lerp(StarScaleMin, StarScaleMax, depthFactor);
             star.Scale = new Vector2(scale, scale);
 
             // 计算位置
             star.Position = CalculateOrbitPosition(angle, 1.0f);
 
-            // 根据深度调整ZIndex
-            // CombatVfxContainer ZIndex = -9
-            // 角色在AllyContainer下，实际ZIndex ≈ -10
-            // 星星在前面时：ZIndex = 1（实际-8），显示在角色前面
-            // 星星在后面时：ZIndex = -2（实际-11），显示在角色后面
+            // 使用ZIndex控制渲染顺序
+            // 角色ZIndex = 10（相对于AllyContainer，实际绝对ZIndex取决于父节点）
+            // 背景ZIndex = -20
+            // CombatVfxContainer ZIndex = 0（星星在这里）
+            // 星星在后面时：ZIndex = -5（在角色后面，但在背景前面）
+            // 星星在前面时：ZIndex = 5（在角色前面）
             float sinAngle = Mathf.Sin(angle);
-            int newZIndex = sinAngle > 0 ? 1 : -2;
-            if (star.ZIndex != newZIndex)
-            {
-                star.ZIndex = newZIndex;
-                // 调试输出
-                if (i == 0)  // 只输出第一颗星星避免日志过多
-                {
-                    Entry.Logger.Info($"[StarRing] Star {i} ZIndex changed to {newZIndex} (sin={sinAngle:F2})");
-                }
-            }
+            star.ZIndex = sinAngle > 0 ? 5 : -5;
+            star.ZAsRelative = true;
         }
     }
 
