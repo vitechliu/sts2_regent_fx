@@ -29,9 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="sts2">
       <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
       <Private>false</Private>
@@ -41,9 +38,22 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Publicize Include="sts2" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
+<!--    <PublicizeAll>true</PublicizeAll>-->
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gdignore" />
+  </ItemGroup>
   <PropertyGroup>
-    <NoWarn>$(NoWarn);MSB3270;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625</NoWarn>
+    <NoWarn>$(NoWarn);MSB3270;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>
   </PropertyGroup>
 
 

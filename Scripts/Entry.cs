@@ -3,11 +3,15 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 
-namespace Test.Scripts;
+namespace RegentFX.Scripts;
 
 // 必须要加的属性，用于注册Mod。字符串和初始化函数命名一致。
 [ModInitializer("Init")]
 public class Entry {
+    public const string ModId = "RegentFX";
+    
+    public static Logger Logger { get; } = new(ModId, LogType.Generic);
+
     // 初始化函数
     public static void Init() {
         var harmony = new Harmony("sts2.vitech.regentFx");
