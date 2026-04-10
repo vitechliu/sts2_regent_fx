@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using RegentFX.Scripts;
+using RegentFX.Scripts.Vfx;
 using RegentFX.Vfx;
 
 namespace RegentFX.Scripts.Patches;
@@ -110,7 +111,10 @@ public static class RegentStarRingPatch
         // 如果已存在，先移除旧的
         if (_playerStarRings.TryGetValue(player, out var existingController))
         {
-            existingController?.QueueFree();
+            if (GodotObject.IsInstanceValid(existingController))
+            {
+                existingController.QueueFree();
+            }
             _playerStarRings.Remove(player);
         }
 

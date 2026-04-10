@@ -1,93 +1,56 @@
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFX.Scripts;
+using RegentFX.Vfx;
 
-namespace RegentFX.Vfx;
+namespace RegentFX.Scripts.Vfx;
 
 /// <summary>
 /// 储君周围环绕星星控制器
 /// 管理星星的生成、销毁、旋转动画
+/// 支持星星数量变化时的平滑过渡
 /// </summary>
 public partial class StarRingController : Node2D
 {
-    [Export] public float OrbitRadius { get; set; } = 104f;  // 80f * 1.3 = 104f，水平半径提升30%
+    [Export] public float OrbitRadius { get; set; } = 104f;
     [Export] public float OrbitSpeed { get; set; } = 30f;
     [Export] public float StarScaleMin { get; set; } = 0.6f;
     [Export] public float StarScaleMax { get; set; } = 1.0f;
     [Export] public int MaxStarCount { get; set; } = 20;
     [Export] public float SpawnAnimationDuration { get; set; } = 0.3f;
-    [Export] public float VerticalOffset { get; set; } = -180f;  // 从-30提升到-80，让星星在角色胸部/头部高度
+    [Export] public float VerticalOffset { get; set; } = -180f;
+    [Export] public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
 
-    private readonly List<Star> _orbitStars = new();
+    private readonly List<StarData> _orbitStars = new();
     private NCreature? _playerNode;
     private float _orbitAngle;
     private bool _isActive;
+
+    /// <summary>
+    /// 星星数据类，存储每个星星的状态
+    /// </summary>
+    private class StarData
+    {
+        public Star Star { get; set; } = null!;
+        public float CurrentAngle { get; set; } // 当前实际角度
+        public float TargetAngle { get; set; } // 目标角度（均匀分布）
+        public bool IsSpawning { get; set; } // 是否正在生成动画中
+        public float SpawnProgress { get; set; } // 生成动画进度
+        public bool IsRemoving { get; set; } // 是否正在移除
+        public float RemoveProgress { get; set; } // 移除动画进度
+    }
 
     public override void _Process(double delta)
     {
         if (!_isActive || _playerNode == null) return;
 
-        // 更新控制器位置到玩家位置（因为控制器现在在VFX容器中）
+        // 更新控制器位置到玩家位置
         GlobalPosition = _playerNode.GlobalPosition;
 
         // 更新轨道角度
         _orbitAngle += OrbitSpeed * (float)delta;
 
-        // 更新所有星星位置
-        UpdateStarPositions();
-    }
-
-    /// <summary>
-    /// 输出节点层级和ZIndex信息
-    /// </summary>
-    private void LogNodeHierarchy(Node node)
-    {
-        Entry.Logger.Info("[StarRing] ========== Node Hierarchy Debug ==========");
-
-        // 输出角色信息
-        Entry.Logger.Info($"[StarRing] PlayerNode: {node.Name}, Type: {node.GetType().Name}");
-        if (node is CanvasItem nodeCanvas)
-        {
-            Entry.Logger.Info($"[StarRing] PlayerNode ZIndex: {nodeCanvas.ZIndex}, ZAsRelative: {nodeCanvas.ZAsRelative}");
-        }
-
-        // 输出角色父节点信息
-        var playerParent = node.GetParent();
-        Entry.Logger.Info($"[StarRing] PlayerNode Parent: {playerParent?.Name}, Type: {playerParent?.GetType().Name}");
-        if (playerParent is CanvasItem playerParentCanvas)
-        {
-            Entry.Logger.Info($"[StarRing] PlayerNode Parent ZIndex: {playerParentCanvas.ZIndex}, ZAsRelative: {playerParentCanvas.ZAsRelative}");
-        }
-
-        // 输出当前控制器信息
-        Entry.Logger.Info($"[StarRing] StarRingController Parent: {GetParent()?.Name}, Type: {GetParent()?.GetType().Name}");
-        if (GetParent() is CanvasItem controllerParentCanvas)
-        {
-            Entry.Logger.Info($"[StarRing] StarRingController Parent ZIndex: {controllerParentCanvas.ZIndex}, ZAsRelative: {controllerParentCanvas.ZAsRelative}");
-        }
-
-        // 向上遍历层级
-        Node? current = playerParent;
-        int level = 0;
-        while (current != null && level < 5)
-        {
-            if (current is CanvasItem canvasItem)
-            {
-                Entry.Logger.Info($"[StarRing] Level {level}: {current.Name} (ZIndex={canvasItem.ZIndex}, ZAsRelative={canvasItem.ZAsRelative})");
-            }
-            else
-            {
-                Entry.Logger.Info($"[StarRing] Level {level}: {current.Name} (not CanvasItem)");
-            }
-            current = current.GetParent();
-            level++;
-        }
-
-        Entry.Logger.Info("[StarRing] ========== End Debug ==========");
+        // 更新所有星星
+        UpdateStars((float)delta);
     }
 
     /// <summary>
@@ -97,15 +60,8 @@ public partial class StarRingController : Node2D
     {
         _playerNode = playerNode;
         _isActive = true;
-
-        // 初始位置设置为玩家位置
         GlobalPosition = playerNode.GlobalPosition;
-
-        // 设置ZAsRelative为true，使ZIndex相对于父节点
         ZAsRelative = true;
-
-        // 调试日志（需要时取消注释）
-        // LogNodeHierarchy(playerNode);
     }
 
     /// <summary>
@@ -114,136 +70,298 @@ public partial class StarRingController : Node2D
     public void SetStarCount(int count)
     {
         int targetCount = Mathf.Min(count, MaxStarCount);
-        int currentCount = _orbitStars.Count;
+        // 只计算活跃的星星（不包括正在移除的）
+        int activeCount = _orbitStars.Count(s => !s.IsRemoving);
 
-        if (targetCount > currentCount)
+        if (targetCount > activeCount)
         {
             // 需要增加星星
-            for (int i = 0; i < targetCount - currentCount; i++)
-            {
-                SpawnStarFromBehind();
-            }
+            SpawnStarsFromBehind(targetCount - activeCount);
         }
-        else if (targetCount < currentCount)
+        else if (targetCount < activeCount)
         {
-            // 需要减少星星（直接消失，后续会改为攻击动画）
-            for (int i = 0; i < currentCount - targetCount; i++)
+            // 需要减少星星
+            RemoveStars(activeCount - targetCount);
+        }
+
+        // 重新计算所有星星的目标角度
+        RecalculateTargetAngles();
+    }
+
+    /// <summary>
+    /// 从背后生成多个星星（挤在一起）
+    /// </summary>
+    private void SpawnStarsFromBehind(int count)
+    {
+        if (_playerNode == null || count <= 0) return;
+
+        // 所有新星星的生成角度都在背后（PI附近），稍微错开一点点避免完全重叠
+        float baseSpawnAngle = Mathf.Pi;
+        float angleSpread = 0.1f; // 新星星之间的微小角度差
+
+        for (int i = 0; i < count; i++)
+        {
+            var starScene = GD.Load<PackedScene>("res://RegentFX/scenes/Star.tscn");
+            if (starScene == null) continue;
+
+            var star = starScene.Instantiate<Star>();
+            if (star == null) continue;
+
+            AddChild(star);
+
+            // 计算这个星星的初始角度（在背后挤在一起）
+            float spawnAngle = baseSpawnAngle + (i - count / 2f) * angleSpread / count;
+
+            // 配置星星参数
+            star.EnablePulse = true;
+            star.PulseSpeed = 2f + GD.Randf() * 1f;
+            star.RotationSpeed = 45f + GD.Randf() * 45f;
+            star.ZAsRelative = true;
+            star.Scale = Vector2.Zero;
+            star.ZIndex = -5;
+
+            // 初始位置
+            star.Position = CalculateOrbitPosition(spawnAngle, 1.0f);
+
+            // 创建星星数据
+            var starData = new StarData
             {
-                if (_orbitStars.Count > 0)
-                {
-                    RemoveLastStar();
-                }
-            }
+                Star = star,
+                CurrentAngle = spawnAngle,
+                TargetAngle = spawnAngle, // 临时设置，稍后会被重新计算
+                IsSpawning = true,
+                SpawnProgress = 0f
+            };
+
+            _orbitStars.Add(starData);
         }
     }
 
     /// <summary>
-    /// 从背后生成星星（避免突兀）
+    /// 标记要移除的星星
     /// </summary>
-    private void SpawnStarFromBehind()
+    private void RemoveStars(int count)
     {
-        if (_playerNode == null) return;
+        // 优先移除正在生成中的星星（避免浪费）
+        // 然后移除角度最接近的星星（从背后开始）
 
-        var starScene = GD.Load<PackedScene>("res://RegentFX/scenes/Star.tscn");
-        if (starScene == null)
+        var starsToRemove = new List<StarData>();
+
+        // 首先找正在生成中的星星
+        foreach (var starData in _orbitStars)
         {
-            GD.PushError("[StarRingController] Failed to load Star.tscn");
+            if (starsToRemove.Count >= count) break;
+            if (starData.IsSpawning && !starData.IsRemoving)
+            {
+                starsToRemove.Add(starData);
+            }
+        }
+
+        // 如果还不够，找背后的星星（角度接近PI的）
+        if (starsToRemove.Count < count)
+        {
+            var remainingStars = _orbitStars
+                .Where(s => !s.IsRemoving && !starsToRemove.Contains(s))
+                .OrderBy(s => Mathf.Abs(NormalizeAngle(s.CurrentAngle - Mathf.Pi)))
+                .Take(count - starsToRemove.Count)
+                .ToList();
+
+            starsToRemove.AddRange(remainingStars);
+        }
+
+        // 标记为移除状态
+        foreach (var starData in starsToRemove)
+        {
+            starData.IsRemoving = true;
+            starData.RemoveProgress = 0f;
+        }
+    }
+
+    /// <summary>
+    /// 重新计算所有星星的目标角度（均匀分布）
+    /// 策略：按当前角度排序所有星星，然后均匀分配目标角度
+    /// 新星星由于初始角度接近，会被分配到相邻的位置，实现"挤在一起然后慢慢分开"的效果
+    /// </summary>
+    private void RecalculateTargetAngles()
+    {
+        // 只考虑未被标记为移除的星星
+        var activeStars = _orbitStars.Where(s => !s.IsRemoving).ToList();
+        int count = activeStars.Count;
+
+        if (count == 0) return;
+
+        // 如果只有1颗星星，不需要均匀分布
+        if (count == 1)
+        {
+            activeStars[0].TargetAngle = activeStars[0].CurrentAngle;
             return;
         }
 
-        var star = starScene.Instantiate<Star>();
+        // 计算均匀分布的角度步长
+        float angleStep = Mathf.Tau / count;
+
+        // 按当前角度排序所有星星
+        var sortedStars = activeStars
+            .OrderBy(s => NormalizeAngle(s.CurrentAngle))
+            .ToList();
+
+        // 找到角度最小的星星作为基准
+        float baseAngle = sortedStars[0].CurrentAngle;
+
+        // 为每个星星分配目标角度
+        for (int i = 0; i < count; i++)
+        {
+            var starData = sortedStars[i];
+            // 目标角度 = 基准角度 + 均匀分布的偏移
+            float targetAngle = baseAngle + angleStep * i;
+
+            // 确保目标角度与当前角度最接近（避免绕远路）
+            starData.TargetAngle = FindNearestAngle(starData.CurrentAngle, targetAngle);
+        }
+    }
+
+    /// <summary>
+    /// 更新所有星星的状态和位置
+    /// </summary>
+    private void UpdateStars(float delta)
+    {
+        // 先清理已完成的移除动画
+        for (int i = _orbitStars.Count - 1; i >= 0; i--)
+        {
+            var starData = _orbitStars[i];
+            if (starData.IsRemoving && starData.RemoveProgress >= 1f)
+            {
+                starData.Star.QueueFree();
+                _orbitStars.RemoveAt(i);
+            }
+        }
+
+        if (_orbitStars.Count == 0) return;
+
+        // 更新每个星星
+        foreach (var starData in _orbitStars)
+        {
+            UpdateStar(starData, delta);
+        }
+    }
+
+    /// <summary>
+    /// 更新单个星星
+    /// </summary>
+    private void UpdateStar(StarData starData, float delta)
+    {
+        var star = starData.Star;
         if (star == null) return;
 
-        AddChild(star);
-
-        // 计算新星星的角度位置（从背后开始，即角度 PI）
-        float angleOffset = _orbitStars.Count > 0 ? Mathf.Tau / (_orbitStars.Count + 1) : 0f;
-        float spawnAngle = Mathf.Pi + angleOffset * _orbitStars.Count;
-
-        // 初始位置在玩家背后（缩小状态）
-        Vector2 spawnPos = CalculateOrbitPosition(spawnAngle, 0.3f);
-        star.Position = spawnPos;
-        star.Scale = Vector2.Zero;
-
-        // 配置星星参数
-        star.EnablePulse = true;
-        star.PulseSpeed = 2f + GD.Randf() * 1f;
-        star.RotationSpeed = 45f + GD.Randf() * 45f;
-        star.ZAsRelative = true;  // 使ZIndex为绝对值
-
-        _orbitStars.Add(star);
-
-        // 播放出现动画
-        AnimateStarSpawn(star, spawnAngle);
-    }
-
-    /// <summary>
-    /// 播放星星出现动画
-    /// </summary>
-    private void AnimateStarSpawn(Star star, float targetAngle)
-    {
-        var tween = CreateTween();
-        tween.SetTrans(Tween.TransitionType.Back);
-        tween.SetEase(Tween.EaseType.Out);
-
-        // 计算目标位置
-        Vector2 targetPos = CalculateOrbitPosition(targetAngle, 1.0f);
-
-        tween.TweenProperty(star, "position", targetPos, SpawnAnimationDuration);
-        tween.Parallel().TweenProperty(star, "scale", Vector2.One, SpawnAnimationDuration);
-    }
-
-    /// <summary>
-    /// 移除最后一个星星
-    /// </summary>
-    private void RemoveLastStar()
-    {
-        if (_orbitStars.Count == 0) return;
-
-        var star = _orbitStars[^1];
-        _orbitStars.RemoveAt(_orbitStars.Count - 1);
-
-        // 直接销毁（后续改为攻击动画）
-        star.QueueFree();
-    }
-
-    /// <summary>
-    /// 更新所有星星的位置
-    /// </summary>
-    private void UpdateStarPositions()
-    {
-        if (_orbitStars.Count == 0) return;
-
-        float angleStep = Mathf.Tau / _orbitStars.Count;
-
-        for (int i = 0; i < _orbitStars.Count; i++)
+        // 处理生成动画
+        if (starData.IsSpawning)
         {
-            var star = _orbitStars[i];
-            if (star == null) continue;
+            starData.SpawnProgress += delta / SpawnAnimationDuration;
+            if (starData.SpawnProgress >= 1f)
+            {
+                starData.SpawnProgress = 1f;
+                starData.IsSpawning = false;
+            }
 
-            // 计算当前角度（基础角度 + 轨道旋转）
-            float angle = angleStep * i + Mathf.DegToRad(_orbitAngle);
-
-            // 计算深度因子（0 = 最前面，1 = 最后面）
-            float depthFactor = (Mathf.Sin(angle) + 1f) / 2f;
-
-            // 根据深度调整缩放（伪3D效果）
-            float scale = Mathf.Lerp(StarScaleMin, StarScaleMax, depthFactor);
+            // 生成时的缩放动画（Back缓出效果）
+            float t = starData.SpawnProgress;
+            float scale = BackEaseOut(t);
             star.Scale = new Vector2(scale, scale);
-
-            // 计算位置
-            star.Position = CalculateOrbitPosition(angle, 1.0f);
-
-            // 使用ZIndex控制渲染顺序
-            // 角色ZIndex = 10（相对于AllyContainer，实际绝对ZIndex取决于父节点）
-            // 背景ZIndex = -20
-            // CombatVfxContainer ZIndex = 0（星星在这里）
-            // 星星在后面时：ZIndex = -5（在角色后面，但在背景前面）
-            // 星星在前面时：ZIndex = 5（在角色前面）
-            float sinAngle = Mathf.Sin(angle);
-            star.ZIndex = sinAngle > 0 ? 5 : -5;
-            star.ZAsRelative = true;
         }
+
+        // 处理移除动画
+        if (starData.IsRemoving)
+        {
+            starData.RemoveProgress += delta / SpawnAnimationDuration;
+            if (starData.RemoveProgress > 1f) starData.RemoveProgress = 1f;
+
+            // 移除时的缩放动画（缩放到0）
+            float t = 1f - starData.RemoveProgress;
+            star.Scale = new Vector2(t, t);
+
+            // 移除时不需要更新位置，直接返回
+            return;
+        }
+
+        // 平滑插值当前角度到目标角度
+        if (!starData.IsSpawning)
+        {
+            float angleDiff = starData.TargetAngle - starData.CurrentAngle;
+
+            // 处理角度环绕（选择最短路径）
+            if (angleDiff > Mathf.Pi) angleDiff -= Mathf.Tau;
+            if (angleDiff < -Mathf.Pi) angleDiff += Mathf.Tau;
+
+            // 使用平滑插值
+            float lerpFactor = Mathf.Min(AngleLerpSpeed * delta, 1f);
+            starData.CurrentAngle += angleDiff * lerpFactor;
+        }
+
+        // 计算实际渲染角度（当前角度 + 轨道旋转）
+        float renderAngle = starData.CurrentAngle + Mathf.DegToRad(_orbitAngle);
+
+        // 计算深度因子（0 = 最前面，1 = 最后面）
+        float sinAngle = Mathf.Sin(renderAngle);
+        float depthFactor = (sinAngle + 1f) / 2f;
+
+        // 根据深度调整缩放（伪3D效果）
+        float depthScale = Mathf.Lerp(StarScaleMin, StarScaleMax, depthFactor);
+        Vector2 currentScale = star.Scale;
+        // 保持生成/移除动画的缩放，同时应用深度缩放
+        if (!starData.IsSpawning && !starData.IsRemoving)
+        {
+            star.Scale = new Vector2(depthScale, depthScale);
+        }
+        else
+        {
+            // 生成/移除动画期间，深度缩放作为乘数
+            star.Scale = new Vector2(
+                currentScale.X * depthScale,
+                currentScale.Y * depthScale
+            );
+        }
+
+        // 计算位置
+        star.Position = CalculateOrbitPosition(renderAngle, 1.0f);
+
+        // 更新ZIndex
+        star.ZIndex = sinAngle > 0 ? 5 : -5;
+        star.ZAsRelative = true;
+    }
+
+    /// <summary>
+    /// Back缓出函数
+    /// </summary>
+    private float BackEaseOut(float t)
+    {
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1;
+        return 1 + c3 * Mathf.Pow(t - 1, 3) + c1 * Mathf.Pow(t - 1, 2);
+    }
+
+    /// <summary>
+    /// 将角度归一化到 [0, 2π) 范围
+    /// </summary>
+    private float NormalizeAngle(float angle)
+    {
+        while (angle < 0) angle += Mathf.Tau;
+        while (angle >= Mathf.Tau) angle -= Mathf.Tau;
+        return angle;
+    }
+
+    /// <summary>
+    /// 找到与当前角度最接近的等效角度
+    /// </summary>
+    private float FindNearestAngle(float currentAngle, float targetAngle)
+    {
+        // 计算差值
+        float diff = targetAngle - currentAngle;
+
+        // 调整到 [-π, π] 范围
+        while (diff > Mathf.Pi) diff -= Mathf.Tau;
+        while (diff < -Mathf.Pi) diff += Mathf.Tau;
+
+        return currentAngle + diff;
     }
 
     /// <summary>
@@ -251,10 +369,8 @@ public partial class StarRingController : Node2D
     /// </summary>
     private Vector2 CalculateOrbitPosition(float angle, float radiusMultiplier)
     {
-        // 椭圆轨道（水平长轴，垂直短轴，产生伪3D效果）
         float x = Mathf.Cos(angle) * OrbitRadius * radiusMultiplier;
         float y = Mathf.Sin(angle) * OrbitRadius * 0.4f * radiusMultiplier + VerticalOffset;
-
         return new Vector2(x, y);
     }
 
@@ -265,16 +381,16 @@ public partial class StarRingController : Node2D
     {
         if (animate)
         {
-            foreach (var star in _orbitStars)
+            foreach (var starData in _orbitStars)
             {
-                star?.FadeOutAndDestroy(0.3f);
+                starData.Star?.FadeOutAndDestroy(0.3f);
             }
         }
         else
         {
-            foreach (var star in _orbitStars)
+            foreach (var starData in _orbitStars)
             {
-                star?.QueueFree();
+                starData.Star?.QueueFree();
             }
         }
 
