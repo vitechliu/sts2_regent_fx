@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://startest0001"]
+
+[ext_resource type="PackedScene" uid="uid://starvfx00001" path="res://RegentFX/scenes/Star.tscn" id="1_star"]
+[ext_resource type="Script" path="res://Scripts/Vfx/StarRingTest.cs" id="2_script"]
+
+[node name="StarTest" type="Node2D"]
+script = ExtResource("2_script")
+RotationSpeed = 190.0
+
+[node name="Star1" parent="." instance=ExtResource("1_star")]
+position = Vector2(100, 0)
+EnableTrail = true
+
+[node name="Star2" parent="." instance=ExtResource("1_star")]
+position = Vector2(0, 100)
+
+[node name="Star3" parent="." instance=ExtResource("1_star")]
+position = Vector2(-100, 0)
+
+[node name="Star4" parent="." instance=ExtResource("1_star")]
+position = Vector2(0, -100)
+
+[node name="Camera2D" type="Camera2D" parent="."]

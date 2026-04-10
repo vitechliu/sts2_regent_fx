@@ -1,6 +1,5 @@
 using Godot;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using RegentFX.Vfx;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -19,6 +18,10 @@ public partial class StarRingController : Node2D
     [Export] public float SpawnAnimationDuration { get; set; } = 0.3f;
     [Export] public float VerticalOffset { get; set; } = -180f;
     [Export] public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
+    
+
+    private const int STAR_FRONT_ZINDEX = 2;
+    private const int STAR_BACK_ZINDEX = -5;
 
     private readonly List<StarData> _orbitStars = new();
     private NCreature? _playerNode;
@@ -89,15 +92,14 @@ public partial class StarRingController : Node2D
     }
 
     /// <summary>
-    /// 从背后生成多个星星（挤在一起）
+    /// 从背后生成多个星星
     /// </summary>
     private void SpawnStarsFromBehind(int count)
     {
         if (_playerNode == null || count <= 0) return;
 
-        // 所有新星星的生成角度都在背后（PI附近），稍微错开一点点避免完全重叠
+        // 所有新星星的生成角度都在背后（PI）
         float baseSpawnAngle = Mathf.Pi;
-        float angleSpread = 0.1f; // 新星星之间的微小角度差
 
         for (int i = 0; i < count; i++)
         {
@@ -109,26 +111,23 @@ public partial class StarRingController : Node2D
 
             AddChild(star);
 
-            // 计算这个星星的初始角度（在背后挤在一起）
-            float spawnAngle = baseSpawnAngle + (i - count / 2f) * angleSpread / count;
-
             // 配置星星参数
             star.EnablePulse = true;
             star.PulseSpeed = 2f + GD.Randf() * 1f;
             star.RotationSpeed = 45f + GD.Randf() * 45f;
             star.ZAsRelative = true;
             star.Scale = Vector2.Zero;
-            star.ZIndex = -5;
+            star.ZIndex = STAR_BACK_ZINDEX;
 
             // 初始位置
-            star.Position = CalculateOrbitPosition(spawnAngle, 1.0f);
+            star.Position = CalculateOrbitPosition(baseSpawnAngle, 1.0f);
 
             // 创建星星数据
             var starData = new StarData
             {
                 Star = star,
-                CurrentAngle = spawnAngle,
-                TargetAngle = spawnAngle, // 临时设置，稍后会被重新计算
+                CurrentAngle = baseSpawnAngle,
+                TargetAngle = baseSpawnAngle, // 临时设置，稍后会被重新计算
                 IsSpawning = true,
                 SpawnProgress = 0f
             };
@@ -179,8 +178,7 @@ public partial class StarRingController : Node2D
 
     /// <summary>
     /// 重新计算所有星星的目标角度（均匀分布）
-    /// 策略：按当前角度排序所有星星，然后均匀分配目标角度
-    /// 新星星由于初始角度接近，会被分配到相邻的位置，实现"挤在一起然后慢慢分开"的效果
+    /// 策略：基于实际渲染位置（包含轨道旋转）计算，确保平滑过渡
     /// </summary>
     private void RecalculateTargetAngles()
     {
@@ -200,24 +198,145 @@ public partial class StarRingController : Node2D
         // 计算均匀分布的角度步长
         float angleStep = Mathf.Tau / count;
 
-        // 按当前角度排序所有星星
-        var sortedStars = activeStars
-            .OrderBy(s => NormalizeAngle(s.CurrentAngle))
-            .ToList();
+        // 获取所有星星的实际渲染角度（CurrentAngle + _orbitAngle）
+        float orbitAngleRad = Mathf.DegToRad(_orbitAngle);
+        var renderAngles = activeStars.Select(s => NormalizeAngle(s.CurrentAngle + orbitAngleRad)).ToList();
 
-        // 找到角度最小的星星作为基准
-        float baseAngle = sortedStars[0].CurrentAngle;
+        // 尝试不同的基准角度，找到总移动距离最小的方案
+        float bestBaseAngle = 0f;
+        float minTotalDistance = float.MaxValue;
 
-        // 为每个星星分配目标角度
+        // 以每个星星的当前渲染角度作为候选基准角度
         for (int i = 0; i < count; i++)
         {
-            var starData = sortedStars[i];
-            // 目标角度 = 基准角度 + 均匀分布的偏移
-            float targetAngle = baseAngle + angleStep * i;
+            float candidateBase = renderAngles[i];
+            float totalDistance = CalculateTotalDistance(renderAngles, candidateBase, angleStep);
 
-            // 确保目标角度与当前角度最接近（避免绕远路）
-            starData.TargetAngle = FindNearestAngle(starData.CurrentAngle, targetAngle);
+            if (totalDistance < minTotalDistance)
+            {
+                minTotalDistance = totalDistance;
+                bestBaseAngle = candidateBase;
+            }
         }
+
+        // 使用最佳基准角度为每个星星分配目标角度
+        AssignTargetAngles(activeStars, bestBaseAngle, angleStep, orbitAngleRad);
+
+        // 输出日志：每颗星星的当前角度和目标角度
+        Entry.Logger.Info($"[StarRing] RecalculateTargetAngles - Count: {count}, BestBase: {bestBaseAngle:F2}, MinDistance: {minTotalDistance:F2}, OrbitAngle: {orbitAngleRad:F2}");
+        for (int i = 0; i < activeStars.Count; i++)
+        {
+            var star = activeStars[i];
+            float renderAngle = NormalizeAngle(star.CurrentAngle + orbitAngleRad);
+            float targetRenderAngle = NormalizeAngle(star.TargetAngle + orbitAngleRad);
+            float diff = AngleDistance(renderAngle, targetRenderAngle);
+            Entry.Logger.Info($"[StarRing] Star {i}: Render={renderAngle:F2}, CurrentRel={star.CurrentAngle:F2}, TargetRel={star.TargetAngle:F2}, Diff={diff:F2}, Spawning={star.IsSpawning}");
+        }
+    }
+
+    /// <summary>
+    /// 计算给定基准角度下，所有星星移动到均匀分布位置的总距离
+    /// </summary>
+    private float CalculateTotalDistance(List<float> currentAngles, float baseAngle, float angleStep)
+    {
+        float totalDistance = 0f;
+        int count = currentAngles.Count;
+
+        // 生成均匀分布的目标位置
+        var targetPositions = new List<float>();
+        for (int i = 0; i < count; i++)
+        {
+            targetPositions.Add(NormalizeAngle(baseAngle + angleStep * i));
+        }
+
+        // 为每个当前角度找到最近的目标位置（贪心算法）
+        var usedTargets = new bool[count];
+        foreach (var currentAngle in currentAngles)
+        {
+            float minDist = float.MaxValue;
+            int bestTarget = -1;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (usedTargets[i]) continue;
+
+                float dist = AngleDistance(currentAngle, targetPositions[i]);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    bestTarget = i;
+                }
+            }
+
+            if (bestTarget >= 0)
+            {
+                usedTargets[bestTarget] = true;
+                totalDistance += minDist;
+            }
+        }
+
+        return totalDistance;
+    }
+
+    /// <summary>
+    /// 为每个星星分配最佳目标角度
+    /// </summary>
+    private void AssignTargetAngles(List<StarData> activeStars, float baseAngle, float angleStep, float orbitAngleRad)
+    {
+        int count = activeStars.Count;
+
+        // 生成均匀分布的目标位置（渲染坐标系）
+        var targetPositions = new List<(float angle, bool assigned)>();
+        for (int i = 0; i < count; i++)
+        {
+            targetPositions.Add((NormalizeAngle(baseAngle + angleStep * i), false));
+        }
+
+        // 按与目标位置的距离排序星星，优先分配距离近的
+        var assignmentQueue = new List<(StarData star, int targetIndex, float distance)>();
+
+        for (int starIdx = 0; starIdx < count; starIdx++)
+        {
+            var star = activeStars[starIdx];
+            float renderAngle = NormalizeAngle(star.CurrentAngle + orbitAngleRad);
+
+            for (int targetIdx = 0; targetIdx < count; targetIdx++)
+            {
+                float dist = AngleDistance(renderAngle, targetPositions[targetIdx].angle);
+                assignmentQueue.Add((star, targetIdx, dist));
+            }
+        }
+
+        // 按距离排序
+        assignmentQueue = assignmentQueue.OrderBy(x => x.distance).ToList();
+
+        // 贪心分配
+        var assignedStars = new HashSet<StarData>();
+        var assignedTargets = new HashSet<int>();
+
+        foreach (var (star, targetIndex, _) in assignmentQueue)
+        {
+            if (assignedStars.Contains(star)) continue;
+            if (assignedTargets.Contains(targetIndex)) continue;
+
+            // 将目标渲染角度转换回相对角度存储
+            float targetRenderAngle = targetPositions[targetIndex].angle;
+            float targetRelativeAngle = targetRenderAngle - orbitAngleRad;
+            star.TargetAngle = FindNearestAngle(star.CurrentAngle, targetRelativeAngle);
+
+            assignedStars.Add(star);
+            assignedTargets.Add(targetIndex);
+        }
+    }
+
+    /// <summary>
+    /// 计算两个角度之间的最短距离（绝对值）
+    /// </summary>
+    private float AngleDistance(float angle1, float angle2)
+    {
+        float diff = Mathf.Abs(angle2 - angle1);
+        while (diff > Mathf.Pi) diff -= Mathf.Tau;
+        return Mathf.Abs(diff);
     }
 
     /// <summary>
@@ -325,7 +444,7 @@ public partial class StarRingController : Node2D
         star.Position = CalculateOrbitPosition(renderAngle, 1.0f);
 
         // 更新ZIndex
-        star.ZIndex = sinAngle > 0 ? 5 : -5;
+        star.ZIndex = sinAngle > 0 ? STAR_FRONT_ZINDEX : STAR_BACK_ZINDEX;
         star.ZAsRelative = true;
     }
 

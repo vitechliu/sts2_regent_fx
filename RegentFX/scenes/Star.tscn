@@ -1,10 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://starvfx00001"]
+[gd_scene load_steps=9 format=3 uid="uid://starvfx00001"]
 
 [ext_resource type="Texture2D" uid="uid://47es8g10u7f1" path="res://RegentFX/images/star.png" id="1_star"]
+[ext_resource type="Texture2D" uid="uid://bkl5mlugu1bhw" path="res://RegentFX/images/trail_2.png" id="2_5lk64"]
 [ext_resource type="Script" path="res://Scripts/Vfx/Star.cs" id="2_script"]
+
+[sub_resource type="Curve" id="Curve_trail_alpha"]
+_data = [Vector2(0, 0.27145988), 0.0, -0.2535509, 0, 0, Vector2(0.98915404, 0.00965929), -0.1384491, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_alpha"]
+curve = SubResource("Curve_trail_alpha")
+
+[sub_resource type="Curve" id="Curve_trail_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.3520139), -1.614584, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_scale"]
+curve = SubResource("Curve_trail_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_trail"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_min = 1.1999999
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_trail_scale")
+color = Color(0.53, 1, 0.95299995, 0.17254902)
+alpha_curve = SubResource("CurveTexture_trail_alpha")
 
 [node name="Star" type="Node2D"]
 script = ExtResource("2_script")
+
+[node name="TrailParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 50
+texture = ExtResource("2_5lk64")
+lifetime = 0.2
+randomness = 0.02
+fixed_fps = 0
+draw_order = 0
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_trail")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_star")

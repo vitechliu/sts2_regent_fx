@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Helpers;
 
-namespace RegentFX.Vfx;
+namespace RegentFX.Scripts.Vfx;
 
 /// <summary>
 /// 星星管理器

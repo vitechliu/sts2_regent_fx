@@ -1,6 +1,6 @@
 using Godot;
 
-namespace RegentFX.Vfx;
+namespace RegentFX.Scripts.Vfx;
 
 /// <summary>
 /// 星星特效节点
@@ -25,10 +25,12 @@ public partial class Star : Node2D
 	[Export] public float RandomPulsePhaseOffset { get; set; } = 6.28f;
 
 	[Export] public float BaseScale { get; set; } = 1f;
+	[Export] public bool EnableTrail { get; set; } = false;
 
 	#endregion
 
 	private Sprite2D? _sprite;
+	private GpuParticles2D? _trailParticles;
 	private float _actualRotationSpeed;
 	private float _actualPulseSpeed;
 	private float _pulsePhase;
@@ -38,9 +40,22 @@ public partial class Star : Node2D
 	public override void _Ready()
 	{
 		_sprite = GetNode<Sprite2D>("Sprite");
+		_trailParticles = GetNodeOrNull<GpuParticles2D>("TrailParticles");
 
 		InitializeRandomValues();
 		ApplyInitialTransform();
+		UpdateTrailState();
+	}
+
+	/// <summary>
+	/// 更新尾迹状态
+	/// </summary>
+	private void UpdateTrailState()
+	{
+		if (_trailParticles == null) return;
+
+		_trailParticles.Visible = EnableTrail;
+		_trailParticles.Emitting = EnableTrail;
 	}
 
 	/// <summary>

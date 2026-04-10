@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using RegentFX.Scripts;
 using RegentFX.Scripts.Vfx;
-using RegentFX.Vfx;
 
 namespace RegentFX.Scripts.Patches;
 
