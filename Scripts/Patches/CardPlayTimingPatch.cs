@@ -23,10 +23,10 @@ public static class CardPlayTimingPatch {
         var cardModel = holder?.CardModel;
         if (cardModel != null) {
             Entry.Logger.Info(
-                $"[CardPlayTiming] 卡牌拖拽开始 | 卡牌: {cardModel.Title} | ID: {cardModel.Id.Entry} | 费用: {cardModel.EnergyCost} | 目标类型: {cardModel.TargetType} | 通过快捷键: {startedViaShortcut}");
+                $"[CardPlayTiming] 卡牌拖拽开始 | 卡牌: {cardModel.Title} | ID: {cardModel.Id.Entry} | 目标类型: {cardModel.TargetType} | 通过快捷键: {startedViaShortcut}");
         }
         else {
-            Entry.Logger.Info($"[CardPlayTiming] 卡牌拖拽开始 | holder: {holder?.Name} | 通过快捷键: {startedViaShortcut}");
+            Entry.Logger.Warn("[CardPlayTiming]缺少CardModel");
         }
     }
 

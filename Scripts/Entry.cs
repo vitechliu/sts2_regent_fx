@@ -2,6 +2,7 @@ using Godot.Bridge;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using RegentFX.Scripts.Vfx;
 
 namespace RegentFX.Scripts;
 
@@ -9,8 +10,18 @@ namespace RegentFX.Scripts;
 [ModInitializer("Init")]
 public class Entry {
     public const string ModId = "RegentFX";
-    
+
     public static Logger Logger { get; } = new(ModId, LogType.Generic);
+
+    /// <summary>
+    /// 星星环绕控制器单例（仅本地玩家）
+    /// </summary>
+    public static StarRingController? StarRingController { get; set; }
+
+    /// <summary>
+    /// 星星特效控制器单例（仅本地玩家）
+    /// </summary>
+    public static StarEffectController? StarEffectController { get; set; }
 
     // 初始化函数
     public static void Init() {

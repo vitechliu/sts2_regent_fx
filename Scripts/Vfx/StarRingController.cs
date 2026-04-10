@@ -20,13 +20,15 @@ public partial class StarRingController : Node2D
     [Export] public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
     
 
-    private const int STAR_FRONT_ZINDEX = 2;
+    private const int STAR_FRONT_ZINDEX = 0;
     private const int STAR_BACK_ZINDEX = -5;
 
     private readonly List<StarData> _orbitStars = new();
     private NCreature? _playerNode;
     private float _orbitAngle;
     private bool _isActive;
+
+    StarEffectController? StarEffectController => Entry.StarEffectController;
 
     /// <summary>
     /// 星星数据类，存储每个星星的状态
@@ -523,6 +525,72 @@ public partial class StarRingController : Node2D
     {
         _isActive = active;
         Visible = active;
+    }
+
+    /// <summary>
+    /// 获取一颗可用的星星用于攻击发射
+    /// 返回星星并将其从环绕列表中移除
+    /// </summary>
+    public Star? TakeStarForProjectile()
+    {
+        // 优先获取背后的星星（角度接近PI）
+        var starData = _orbitStars
+            .Where(s => !s.IsRemoving && !s.IsSpawning)
+            .OrderBy(s => Mathf.Abs(NormalizeAngle(s.CurrentAngle - Mathf.Pi)))
+            .FirstOrDefault();
+
+        if (starData == null) return null;
+
+        var star = starData.Star;
+        _orbitStars.Remove(starData);
+
+        // 重新计算剩余星星的角度分布
+        RecalculateTargetAngles();
+
+        return star;
+    }
+
+    /// <summary>
+    /// 将星星返回到环绕轨道（攻击完成后）
+    /// </summary>
+    public void ReturnStarToOrbit(Star star)
+    {
+        if (_playerNode == null) return;
+
+        AddChild(star);
+
+        // 重置星星状态
+        star.EnableTrail = false;
+        star.EnablePulse = true;
+        star.PulseSpeed = 2f + GD.Randf() * 1f;
+        star.RotationSpeed = 45f + GD.Randf() * 45f;
+        star.ZAsRelative = true;
+        star.ZIndex = STAR_BACK_ZINDEX;
+        star.Scale = Vector2.Zero;
+
+        // 从背后生成
+        float spawnAngle = Mathf.Pi;
+        star.Position = CalculateOrbitPosition(spawnAngle, 1.0f);
+
+        var starData = new StarData
+        {
+            Star = star,
+            CurrentAngle = spawnAngle,
+            TargetAngle = spawnAngle,
+            IsSpawning = true,
+            SpawnProgress = 0f
+        };
+
+        _orbitStars.Add(starData);
+        RecalculateTargetAngles();
+    }
+
+    /// <summary>
+    /// 获取当前环绕的星星数量
+    /// </summary>
+    public int GetCurrentStarCount()
+    {
+        return _orbitStars.Count(s => !s.IsRemoving);
     }
 
     public override void _ExitTree()

@@ -41,13 +41,12 @@ public static class ZIndexPatch
                 __instance.BgContainer.ZIndex = -20;
                 Entry.Logger.Info($"[ZIndexPatch] Set BgContainer ZIndex to -20");
             }
-            //
-            // // 将CombatVfxContainer的ZIndex设置为0（在中间）
-            // if (__instance.CombatVfxContainer != null)
-            // {
-            //     __instance.CombatVfxContainer.ZIndex = 0;
-            //     Entry.Logger.Info($"[ZIndexPatch] Set CombatVfxContainer ZIndex to 0");
-            // }
+            
+            // 将CombatVfxContainer的ZIndex设置为0（在中间）
+            if (__instance.CombatVfxContainer != null) {
+                __instance.CombatVfxContainer.ZIndex = 0;
+                Entry.Logger.Info($"[ZIndexPatch] Set CombatVfxContainer ZIndex to 0");
+            }
         }
     }
 }
