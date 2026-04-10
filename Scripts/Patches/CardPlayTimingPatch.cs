@@ -24,6 +24,7 @@ public static class CardPlayTimingPatch {
         if (cardModel != null) {
             Entry.Logger.Info(
                 $"[CardPlayTiming] 卡牌拖拽开始 | 卡牌: {cardModel.Title} | ID: {cardModel.Id.Entry} | 目标类型: {cardModel.TargetType} | 通过快捷键: {startedViaShortcut}");
+            Entry.StarEffectController?.OnCardHolding(cardModel);
         }
         else {
             Entry.Logger.Warn("[CardPlayTiming]缺少CardModel");

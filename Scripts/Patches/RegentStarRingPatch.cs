@@ -32,9 +32,6 @@ public static class RegentStarRingPatch {
     /// </summary>
     [HarmonyPatch(typeof(NCombatRoom), nameof(NCombatRoom.CreateAllyNodes))]
     public static class CreateAllyNodesPatch {
-
-        
-        
         public static void Postfix() {
             Entry.Logger.Info("CreateAllyNodesPatch_PostFix");
             if (NCombatRoom.Instance == null) return;
@@ -104,7 +101,7 @@ public static class RegentStarRingPatch {
         // 创建新的星星控制器
         var controller = new StarRingController();
         NCombatRoom.Instance.CombatVfxContainer.AddChild(controller);
-        controller.Initialize(playerNode);
+        controller.Initialize(playerNode, player);
 
         // 设置初始星星数量
         int starCount = player.PlayerCombatState?.Stars ?? 0;
