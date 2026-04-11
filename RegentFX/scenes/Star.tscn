@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://starvfx00001"]
 
 [ext_resource type="Texture2D" uid="uid://47es8g10u7f1" path="res://RegentFX/images/star.png" id="1_star"]
-[ext_resource type="Texture2D" uid="uid://bkl5mlugu1bhw" path="res://RegentFX/images/trail_2.png" id="2_5lk64"]
+[ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="2_5lk64"]
 [ext_resource type="Script" path="res://Scripts/Vfx/Star.cs" id="2_script"]
 
 [sub_resource type="Curve" id="Curve_trail_alpha"]
-_data = [Vector2(0, 0.27145988), 0.0, -0.2535509, 0, 0, Vector2(0.98915404, 0.00965929), -0.1384491, 0.0, 0, 0]
+_data = [Vector2(0, 0.33316058), 0.0, 0.0, 0, 0, Vector2(0.9885223, 0.009844542), -0.46948096, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_trail_alpha"]

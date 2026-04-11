@@ -58,6 +58,11 @@ public partial class Star : Node2D
 		_trailParticles.Emitting = EnableTrail;
 	}
 
+	public void ToggleTrail(bool trail) {
+		EnableTrail = trail;
+		UpdateTrailState();
+	}
+
 	/// <summary>
 	/// 初始化随机值，让每个星星都有独特的行为
 	/// </summary>

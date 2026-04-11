@@ -15,3 +15,5 @@ alwaysApply: false
 原版特效过于单一，因此本项目为特色卡牌设计独有的出手、受击特效、音效
 
 日志输出使用Entry.cs中的Logger,不要使用GD.Print()
+
+如果你修改了cs代码，请在最后执行`dotnet build --no-restore 2>&1 | head -15`来验证错误

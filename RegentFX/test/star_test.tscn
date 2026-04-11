@@ -13,11 +13,14 @@ EnableTrail = true
 
 [node name="Star2" parent="." instance=ExtResource("1_star")]
 position = Vector2(0, 100)
+EnableTrail = true
 
 [node name="Star3" parent="." instance=ExtResource("1_star")]
 position = Vector2(-100, 0)
+EnableTrail = true
 
 [node name="Star4" parent="." instance=ExtResource("1_star")]
 position = Vector2(0, -100)
+EnableTrail = true
 
 [node name="Camera2D" type="Camera2D" parent="."]

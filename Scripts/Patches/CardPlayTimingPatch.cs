@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using RegentFX.Scripts;
+using RegentFX.Scripts.Vfx.Cards;
 
 namespace RegentFX.Scripts.Patches;
 
@@ -22,9 +23,10 @@ public static class CardPlayTimingPatch {
     public static void CardDragStartPatch(NHandCardHolder holder, bool startedViaShortcut) {
         var cardModel = holder?.CardModel;
         if (cardModel != null) {
-            Entry.Logger.Info(
-                $"[CardPlayTiming] 卡牌拖拽开始 | 卡牌: {cardModel.Title} | ID: {cardModel.Id.Entry} | 目标类型: {cardModel.TargetType} | 通过快捷键: {startedViaShortcut}");
-            Entry.StarEffectController?.OnCardHolding(cardModel);
+            var cardFX = CardFX.FromCard(cardModel);
+            if (cardFX != null) {
+                Entry.StarEffectController?.OnCardHolding(cardModel, cardFX);
+            }
         }
         else {
             Entry.Logger.Warn("[CardPlayTiming]缺少CardModel");
@@ -39,10 +41,10 @@ public static class CardPlayTimingPatch {
     [HarmonyPatch(typeof(CardModel), nameof(CardModel.EnqueueManualPlay))]
     public static void CardStartEnqueue(CardModel __instance, Creature? target) {
         string targetInfo = target != null ? $"目标: {target.Name} (CombatID: {target.CombatId})" : "无目标";
-        Entry.Logger.Info(
-            $"[CardPlayTiming] 卡牌加入打出队列 | 卡牌: {__instance.Title} | ID: {__instance.Id.Entry} | 费用: {__instance.EnergyCost} | {targetInfo} | 类型: {__instance.Type}");
+        Entry.Logger.Info($"[CardPlayTiming] 卡牌加入打出队列 | 卡牌: {__instance.Title} | ID: {__instance.Id.Entry} | 费用: {__instance.EnergyCost} | {targetInfo} | 类型: {__instance.Type}");
+        Entry.StarEffectController?.OnCancelCard();
     }
-    
+
     /// <summary>
     /// 监听卡牌放弃打出时点
     /// 当卡牌通过验证并准备加入行动队列时触发
@@ -50,6 +52,7 @@ public static class CardPlayTimingPatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(NCardPlay), nameof(NCardPlay.CancelPlayCard))]
     public static void CardCancel(NCardPlay __instance) {
-        Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出");
+        // Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出");
+        Entry.StarEffectController?.OnCancelCard();
     }
 }

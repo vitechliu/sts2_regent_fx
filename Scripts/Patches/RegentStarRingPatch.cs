@@ -15,6 +15,7 @@ namespace RegentFX.Scripts.Patches;
 /// 储君环绕星星系统补丁
 /// 在战斗中为储君角色添加环绕星星特效（本地玩家单例）
 /// </summary>
+[HarmonyPatch]
 public static class RegentStarRingPatch {
     static void EnsureControllers(Player? player) {
         if (Entry.StarRingController != null) {
@@ -74,13 +75,19 @@ public static class RegentStarRingPatch {
     }
 
     /// <summary>
-    /// 监听战斗结束，清理星星
+    /// 监听战斗结束，战斗开始，清理星星
     /// </summary>
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(NCombatRoom), nameof(NCombatRoom.OnProceedButtonPressed))]
-    public static class CombatEndPatch {
-        public static void Prefix() {
-            ClearStarRing();
-        }
+    public static void CombatEndPatch() {
+        Entry.Logger.Info("[RegentStarRing] NCombatRoom OnProceedButtonPressed");
+        ClearStarRing();
+    }
+    [HarmonyPatch(typeof(NCombatRoom), "_ExitTree")]
+    [HarmonyPrefix]
+    public static void Prefix_ExitTree() {
+        Entry.Logger.Info("[RegentStarRing] NCombatRoom ExitTree");
+        ClearStarRing();
     }
 
     /// <summary>
