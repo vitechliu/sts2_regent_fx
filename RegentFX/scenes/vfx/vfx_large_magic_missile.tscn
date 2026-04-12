@@ -1,18 +1,18 @@
 [gd_scene load_steps=83 format=3 uid="uid://cehoovvgiuhhm"]
 
-[ext_resource type="Script" uid="uid://p0chpqhe8p8v" path="res://src/Core/Nodes/Vfx/NLargeMagicMissileVfx.cs" id="1_bjlkg"]
-[ext_resource type="PackedScene" uid="uid://b88g4tn14a1my" path="res://scenes/vfx/missile/vfx_missile_sky_flare.tscn" id="2_jgowu"]
-[ext_resource type="PackedScene" uid="uid://csg3nyyk2vyn0" path="res://scenes/vfx/missile/vfx_missile_sky_ray.tscn" id="3_6to7m"]
-[ext_resource type="PackedScene" uid="uid://0vk581j1pecs" path="res://scenes/vfx/common/vfx_common_ring_polar_a.tscn" id="4_jcag5"]
-[ext_resource type="PackedScene" uid="uid://chqoe33c4gm6a" path="res://scenes/vfx/common/vfx_common_specks.tscn" id="5_yos7k"]
-[ext_resource type="PackedScene" uid="uid://bwa0568gilvi7" path="res://scenes/vfx/missile/vfx_missile_core.tscn" id="6_ch3u3"]
-[ext_resource type="PackedScene" uid="uid://bwmedhmkd3wdu" path="res://scenes/vfx/missile/vfx_missile_impact_core.tscn" id="7_c0rlx"]
-[ext_resource type="PackedScene" uid="uid://c2t2vay63bnec" path="res://scenes/vfx/missile/vfx_missile_impact_streak_side.tscn" id="8_nweds"]
-[ext_resource type="PackedScene" uid="uid://beqy56xgllqvn" path="res://scenes/vfx/missile/vfx_missile_impact_smoke.tscn" id="9_q8pr5"]
-[ext_resource type="PackedScene" uid="uid://ceh1ogkj2yx3g" path="res://scenes/vfx/common/vfx_poof.tscn" id="10_u1tug"]
-[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://scenes/vfx/common/vfx_common_glow.tscn" id="11_seaup"]
-[ext_resource type="PackedScene" uid="uid://da3aivb3p2g5i" path="res://scenes/vfx/heavy_blunt/components/vfx_heavy_blunt_hit_floor_smoke.tscn" id="12_as1pr"]
-[ext_resource type="PackedScene" uid="uid://b4yd32ieheum6" path="res://scenes/vfx/distortions/vfx_outward_screen_distortion.tscn" id="13_jgowu"]
+[ext_resource type="Script" uid="uid://bakmasivik1w6" path="res://RegentFX/scripts/MyNVfx.cs" id="1_wsijq"]
+[ext_resource type="PackedScene" uid="uid://b88g4tn14a1my" path="res://RegentFX/scenes/vfx/missile/vfx_missile_sky_flare.tscn" id="2_jgowu"]
+[ext_resource type="PackedScene" uid="uid://csg3nyyk2vyn0" path="res://RegentFX/scenes/vfx/missile/vfx_missile_sky_ray.tscn" id="3_6to7m"]
+[ext_resource type="PackedScene" uid="uid://0vk581j1pecs" path="res://RegentFX/scenes/vfx/common/vfx_common_ring_polar_a.tscn" id="4_jcag5"]
+[ext_resource type="PackedScene" uid="uid://chqoe33c4gm6a" path="res://RegentFX/scenes/vfx/common/vfx_common_specks.tscn" id="5_yos7k"]
+[ext_resource type="PackedScene" uid="uid://bwa0568gilvi7" path="res://RegentFX/scenes/vfx/missile/vfx_missile_core.tscn" id="6_ch3u3"]
+[ext_resource type="PackedScene" uid="uid://bwmedhmkd3wdu" path="res://RegentFX/scenes/vfx/missile/vfx_missile_impact_core.tscn" id="7_c0rlx"]
+[ext_resource type="PackedScene" uid="uid://c2t2vay63bnec" path="res://RegentFX/scenes/vfx/missile/vfx_missile_impact_streak_side.tscn" id="8_nweds"]
+[ext_resource type="PackedScene" uid="uid://beqy56xgllqvn" path="res://RegentFX/scenes/vfx/missile/vfx_missile_impact_smoke.tscn" id="9_q8pr5"]
+[ext_resource type="PackedScene" uid="uid://ceh1ogkj2yx3g" path="res://RegentFX/scenes/vfx/common/vfx_poof.tscn" id="10_u1tug"]
+[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://RegentFX/scenes/vfx/common/vfx_common_glow.tscn" id="11_seaup"]
+[ext_resource type="PackedScene" uid="uid://da3aivb3p2g5i" path="res://RegentFX/scenes/vfx/heavy_blunt/components/vfx_heavy_blunt_hit_floor_smoke.tscn" id="12_as1pr"]
+[ext_resource type="PackedScene" uid="uid://b4yd32ieheum6" path="res://RegentFX/scenes/vfx/distortions/vfx_outward_screen_distortion.tscn" id="13_jgowu"]
 
 [sub_resource type="Curve" id="Curve_e2vl1"]
 _data = [Vector2(0, 1), 0.0, -2.12441, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -421,19 +421,8 @@ scale_max = 22.0
 scale_curve = SubResource("CurveTexture_yxndf")
 alpha_curve = SubResource("CurveTexture_bskm1")
 
-[node name="vfx_large_magic_missile" type="Node2D" node_paths=PackedStringArray("_anticipationParticles", "_projectileStartParticles", "_projectileParticles", "_impactParticles", "_modulateParticles", "_anticipationContainer", "_projectileContainer", "_projectileStartPoint", "_projectileEndPoint")]
-script = ExtResource("1_bjlkg")
-_anticipationParticles = [NodePath("anticipation_vfx_container/vfx_missile_sky_flare"), NodePath("anticipation_vfx_container/vfx_missile_sky_ray_modulate"), NodePath("anticipation_vfx_container/vfx_common_ring_polar_a_modulate")]
-_projectileStartParticles = [NodePath("anticipation_vfx_container/vfx_common_specks_modulate")]
-_projectileParticles = [NodePath("projectile_vfx_container/vfx_missile_core_modulate")]
-_impactParticles = [NodePath("impact_vfx_container/pivot/vfx_missile_impact_core_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_streak_side_left_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_streak_side_right_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_smoke_left"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_smoke_right"), NodePath("impact_vfx_container/pivot/vfx_poof"), NodePath("impact_vfx_container/pivot/vfx_common_glow_modulate"), NodePath("impact_vfx_container/pivot/vfx_common_specks_modulate"), NodePath("impact_vfx_container/pivot/vfx_heavy_blunt_hit_floor_smoke_left"), NodePath("impact_vfx_container/pivot/vfx_heavy_blunt_hit_floor_smoke_right"), NodePath("impact_vfx_container/pivot/BackBufferCopy/vfx_outward_screen_distortion")]
-_modulateParticles = [NodePath("anticipation_vfx_container/vfx_missile_sky_ray_modulate"), NodePath("anticipation_vfx_container/vfx_common_ring_polar_a_modulate"), NodePath("anticipation_vfx_container/vfx_common_specks_modulate"), NodePath("projectile_vfx_container/vfx_missile_core_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_streak_side_left_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_streak_side_right_modulate"), NodePath("impact_vfx_container/pivot/vfx_common_glow_modulate"), NodePath("impact_vfx_container/pivot/vfx_common_specks_modulate"), NodePath("impact_vfx_container/pivot/vfx_missile_impact_core_modulate")]
-_anticipationContainer = NodePath("anticipation_vfx_container")
-_projectileContainer = NodePath("projectile_vfx_container")
-_projectileStartPoint = NodePath("projectile_vfx_start")
-_projectileEndPoint = NodePath("projectile_vfx_end")
-_projectileWaitTime = 0.15
-_projectileOffset = -345.0
+[node name="vfx_large_magic_missile" type="Node2D"]
+script = ExtResource("1_wsijq")
 
 [node name="anticipation_vfx_container" type="Node2D" parent="."]
 position = Vector2(-382, -660)

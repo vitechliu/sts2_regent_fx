@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://csg3nyyk2vyn0"]
 
-[ext_resource type="Material" uid="uid://cjbdgbup5ohhg" path="res://materials/vfx/missile/vfx_missile_sky_ray.tres" id="1_pke14"]
-[ext_resource type="Texture2D" uid="uid://concjwf60qspa" path="res://images/vfx/missile/missile_sky_ray.png" id="2_2kx3p"]
+[ext_resource type="Material" uid="uid://cjbdgbup5ohhg" path="res://RegentFX/materials/vfx/missile/vfx_missile_sky_ray.tres" id="1_pke14"]
+[ext_resource type="Texture2D" uid="uid://concjwf60qspa" path="res://RegentFX/images/vfx/missile/missile_sky_ray.png" id="2_2kx3p"]
 
 [sub_resource type="Curve" id="Curve_e2vl1"]
 _data = [Vector2(0, 1), 0.0, -2.12441, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

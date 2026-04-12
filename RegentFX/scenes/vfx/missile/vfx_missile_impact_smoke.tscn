@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://beqy56xgllqvn"]
 
-[ext_resource type="Material" uid="uid://d22spe5441htl" path="res://materials/vfx/missile/vfx_missile_impact_smoke.tres" id="1_uuw8d"]
-[ext_resource type="Texture2D" uid="uid://dg2nn2ftrlwvl" path="res://images/vfx/missile/missile_impact_smoke.png" id="2_5hhfc"]
+[ext_resource type="Material" uid="uid://d22spe5441htl" path="res://RegentFX/materials/vfx/missile/vfx_missile_impact_smoke.tres" id="1_uuw8d"]
+[ext_resource type="Texture2D" uid="uid://dg2nn2ftrlwvl" path="res://RegentFX/images/vfx/missile/missile_impact_smoke.png" id="2_5hhfc"]
 
 [sub_resource type="Curve" id="Curve_vfjj4"]
 _data = [Vector2(0, 0.50096), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.53866, 0.0, 0, 0]

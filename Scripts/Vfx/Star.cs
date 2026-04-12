@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -7,7 +8,7 @@ namespace RegentFX.Scripts.Vfx;
 /// 星星特效节点
 /// 支持自转、律动、随机变化效果
 /// </summary>
-public partial class Star : Node2D
+public partial class Star : NLargeMagicMissileVfx
 {
 	#region 可配置参数 (可在Godot编辑器中调整)
 
