@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dooa0e0e6s2l1"
-path="res://.godot/imported/star.png-4001ea7d397903171c16c956ddd8f7bf.ctex"
+uid="uid://ut1a6ddb8jy7"
+path="res://.godot/imported/weapon2.png-d0228ea1cfcca49b702f59c14e56868b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://RegentFX/images/star.png"
-dest_files=["res://.godot/imported/star.png-4001ea7d397903171c16c956ddd8f7bf.ctex"]
+source_file="res://RegentFX/images/weapon2.png"
+dest_files=["res://.godot/imported/weapon2.png-d0228ea1cfcca49b702f59c14e56868b.ctex"]
 
 [params]
 

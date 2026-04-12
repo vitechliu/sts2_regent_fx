@@ -18,7 +18,7 @@ public partial class Star : Node2D
 	[Export] public bool EnablePulse { get; set; } = true;
 	[Export] public float PulseSpeed { get; set; } = 2f;
 	[Export] public float PulseMinScale { get; set; } = 0.7f;
-	[Export] public float PulseMaxScale { get; set; } = 1.3f;
+	[Export] public float PulseMaxScale { get; set; } = 1.1f;
 	[Export] public float PulseSpeedVariance { get; set; } = 0.5f;
 
 	[Export] public bool EnableRandomOffset { get; set; } = true;

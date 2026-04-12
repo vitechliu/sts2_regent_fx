@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dooa0e0e6s2l1"
-path="res://.godot/imported/star.png-4001ea7d397903171c16c956ddd8f7bf.ctex"
+uid="uid://c01447pn5a8se"
+path="res://.godot/imported/strike0015.png-24b1831de12719c919f67de549330c56.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://RegentFX/images/star.png"
-dest_files=["res://.godot/imported/star.png-4001ea7d397903171c16c956ddd8f7bf.ctex"]
+source_file="res://RegentFX/frames/strike/strike0015.png"
+dest_files=["res://.godot/imported/strike0015.png-24b1831de12719c919f67de549330c56.ctex"]
 
 [params]
 

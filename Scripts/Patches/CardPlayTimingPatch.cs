@@ -42,7 +42,7 @@ public static class CardPlayTimingPatch {
     public static void CardStartEnqueue(CardModel __instance, Creature? target) {
         string targetInfo = target != null ? $"目标: {target.Name} (CombatID: {target.CombatId})" : "无目标";
         Entry.Logger.Info($"[CardPlayTiming] 卡牌加入打出队列 | 卡牌: {__instance.Title} | ID: {__instance.Id.Entry} | 费用: {__instance.EnergyCost} | {targetInfo} | 类型: {__instance.Type}");
-        Entry.StarEffectController?.OnCancelCard();
+        // Entry.StarEffectController?.OnCancelCard();
     }
 
     /// <summary>
@@ -52,7 +52,8 @@ public static class CardPlayTimingPatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(NCardPlay), nameof(NCardPlay.CancelPlayCard))]
     public static void CardCancel(NCardPlay __instance) {
-        // Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出");
+        string isTrying = __instance._isTryingToPlayCard.ToString();
+        Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出 isTryingToPlayCard:" + isTrying);
         Entry.StarEffectController?.OnCancelCard();
     }
 }

@@ -79,4 +79,6 @@ public abstract class CardFX {
 
         return position;
     }
+
+    public virtual void OnStartHolding(Star star) {}
 }

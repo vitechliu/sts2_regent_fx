@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://starvfx00001"]
 
-[ext_resource type="Texture2D" uid="uid://47es8g10u7f1" path="res://RegentFX/images/star.png" id="1_star"]
+[ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="1_star"]
 [ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="2_5lk64"]
 [ext_resource type="Script" path="res://Scripts/Vfx/Star.cs" id="2_script"]
 
@@ -45,6 +45,7 @@ trail_lifetime = 0.1
 process_material = SubResource("ParticleProcessMaterial_trail")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(3, 3)
 texture = ExtResource("1_star")
 
 [node name="PulseTween" type="Node" parent="."]
