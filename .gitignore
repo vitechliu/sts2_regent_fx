@@ -57,3 +57,6 @@ releases/
 RegentFX.sln.DotSettings.user
 .lingma/reference.md
 regent-fx.code-workspace
+
+.opencode
+AGENTS.md

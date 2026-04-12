@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 namespace RegentFX.Scripts.Vfx;
@@ -27,6 +28,15 @@ public partial class Star : Node2D
 	[Export] public float BaseScale { get; set; } = 1f;
 	[Export] public bool EnableTrail { get; set; } = false;
 
+	[ExportGroup("Connection")]
+	[Export] public float ConnectionLineWidth { get; set; } = 2f;
+	[Export] public Color ConnectionLineColor { get; set; } = Colors.White;
+	[Export] public float ConnectionLineAlpha { get; set; } = 1f;
+	[Export] public bool EnableConnectionLinePulse { get; set; } = true;
+	[Export] public float ConnectionLinePulseSpeed { get; set; } = 1.5f;
+	[Export] public float ConnectionLinePulseMinAlpha { get; set; } = 0.3f;
+	[Export] public float ConnectionLinePulseMaxAlpha { get; set; } = 1f;
+
 	#endregion
 
 	private Sprite2D? _sprite;
@@ -36,6 +46,8 @@ public partial class Star : Node2D
 	private float _pulsePhase;
 	private float _rotationPhase;
 	private int _rotationDirection;
+	private float _connectionLinePulsePhase;
+	private readonly Dictionary<Star, float> _connections = new();
 
 	public override void _Ready()
 	{
@@ -108,6 +120,37 @@ public partial class Star : Node2D
 		{
 			UpdateScale(dt);
 		}
+
+		// 连线脉冲
+		if (EnableConnectionLinePulse && _connections.Count > 0)
+		{
+			_connectionLinePulsePhase += ConnectionLinePulseSpeed * dt;
+			float pulseFactor = (Mathf.Sin(_connectionLinePulsePhase) + 1f) / 2f;
+			ConnectionLineAlpha = Mathf.Lerp(ConnectionLinePulseMinAlpha, ConnectionLinePulseMaxAlpha, pulseFactor);
+		}
+
+		// 需要重绘连线
+		if (_connections.Count > 0)
+		{
+			QueueRedraw();
+		}
+	}
+
+	public override void _Draw()
+	{
+		foreach (var (target, baseAlpha) in _connections)
+		{
+			if (target == null || !IsInstanceValid(target)) continue;
+
+			Vector2 targetPos = target.GlobalPosition;
+			Vector2 from = ToLocal(GlobalPosition);
+			Vector2 to = ToLocal(targetPos);
+
+			Color lineColor = ConnectionLineColor;
+			lineColor.A = baseAlpha * ConnectionLineAlpha;
+
+			DrawLine(from, to, lineColor, ConnectionLineWidth);
+		}
 	}
 
 	/// <summary>
@@ -176,5 +219,70 @@ public partial class Star : Node2D
 
 		await ToSignal(tween, Tween.SignalName.Finished);
 		QueueFree();
+	}
+
+	/// <summary>
+	/// 与目标星星建立连线
+	/// </summary>
+	public void ConnectTo(Star target, float? alpha = null)
+	{
+		if (target == null || target == this) return;
+		if (!_connections.ContainsKey(target))
+		{
+			_connections.Add(target, alpha ?? ConnectionLineAlpha);
+		}
+	}
+
+	/// <summary>
+	/// 断开与目标星星的连线
+	/// </summary>
+	public void DisconnectFrom(Star target)
+	{
+		if (target != null)
+		{
+			_connections.Remove(target);
+			QueueRedraw();
+		}
+	}
+
+	/// <summary>
+	/// 断开所有连线
+	/// </summary>
+	public void DisconnectAll()
+	{
+		_connections.Clear();
+		QueueRedraw();
+	}
+
+	/// <summary>
+	/// 检查是否与目标星星有连线
+	/// </summary>
+	public bool IsConnectedTo(Star target)
+	{
+		return target != null && _connections.ContainsKey(target);
+	}
+
+	/// <summary>
+	/// 设置指定连线的透明度
+	/// </summary>
+	public void SetConnectionAlpha(Star target, float alpha)
+	{
+		if (_connections.ContainsKey(target))
+		{
+			_connections[target] = alpha;
+		}
+	}
+
+	/// <summary>
+	/// 获取所有已连接的星星
+	/// </summary>
+	public IReadOnlyDictionary<Star, float> GetConnections()
+	{
+		return _connections;
+	}
+
+	public override void _ExitTree()
+	{
+		DisconnectAll();
 	}
 }

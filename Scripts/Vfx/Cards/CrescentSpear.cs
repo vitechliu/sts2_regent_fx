@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -16,15 +17,13 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// </summary>
 public class CrescentSpear : CardFX {
     public override int StarCount => 1;
-
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);
-
-    public override bool DisableWeaponAnim => true;
 }
 
 [HarmonyPatch]
 public static class CrescentSpearPatch {
+    private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
     private const string ScenePath = "res://RegentFX/scenes/crescent_spear.tscn";
 
     [HarmonyPrefix]
@@ -43,6 +42,7 @@ public static class CrescentSpearPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay) {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
         var cmd = DamageCmd.Attack(card.DynamicVars.CalculatedDamage)
             .FromCard(card)
             .Targeting(cardPlay.Target)
@@ -50,8 +50,12 @@ public static class CrescentSpearPatch {
                 await PlayCrescentSpearVfx(card.Owner.Creature, cardPlay.Target);
             });
         cmd._attackerAnimName = null;
+        // Entry.Logger.Info("HasHitVFX?:" + cmd.HitVfx);
         await cmd.Execute(choiceContext);
     }
+
+    private const float SpearLength = 900f;
+    private const float ScaleFactor = 1.2f;
 
     private static async Task PlayCrescentSpearVfx(Creature owner, Creature target) {
         if (TestMode.IsOn) {
@@ -80,36 +84,40 @@ public static class CrescentSpearPatch {
                 return;
             }
 
-            // 计算起始位置（玩家）和目标位置（敌人）
-            Vector2 startPos = ownerNode.VfxSpawnPosition;
+            // 等比放大1.5倍
+            vfxNode.Scale = Vector2.One * ScaleFactor;
+
+            // 计算长矛射出方向（从玩家指向目标）
+            Vector2 ownerPos = ownerNode.GlobalPosition;
             Vector2 targetPos = targetNode.VfxSpawnPosition;
 
-            // 设置特效位置为玩家位置
-            vfxNode.GlobalPosition = startPos;
+            // startPos: 玩家位置 + TargetOffset
+            Vector2 startPos = ownerPos + new CrescentSpear().TargetOffset;
 
             // 计算旋转角度，使特效朝向目标
             Vector2 direction = targetPos - startPos;
             float rotationDegrees = Mathf.RadToDeg(Mathf.Atan2(direction.Y, direction.X));
             vfxNode.RotationDegrees = rotationDegrees;
 
+            // 特效位置: 目标位置减去长矛长度（沿旋转方向）
+            Vector2 rotationDirection = direction.Normalized();
+            vfxNode.GlobalPosition = targetPos - rotationDirection * SpearLength;
+
             // 添加到战斗特效容器
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
+            
 
-            // 获取 AnimatedSprite2D 并等待动画播放完成
-            AnimatedSprite2D? animSprite = vfxNode.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
-            if (animSprite != null) {
-                // 计算动画总时长：帧数 / 速度 = 45 / 60 = 0.75秒
-                float animDuration = (float)animSprite.SpriteFrames.GetFrameCount("default") / (float)animSprite.SpriteFrames.GetAnimationSpeed("default");
-                await Cmd.Wait(animDuration);
-            } else {
-                // 如果没有找到动画，等待固定时间（根据场景文件，动画速度为60fps，45帧约0.75秒）
-                await Cmd.Wait(0.75f);
-            }
+            SimpleSfxUtil.Play(HitSFX);
+            TaskHelper.RunSafely(ClearAfter(vfxNode));
+            await Cmd.Wait(0.15f);
 
-            // 清理
-            vfxNode.QueueFreeSafely();
         } catch (Exception ex) {
             Entry.Logger.Info($"[CrescentSpear] Error playing VFX: {ex.Message}");
         }
+    }
+
+    public static async Task ClearAfter(Node2D? node) {
+        await Cmd.Wait(1f);
+        if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

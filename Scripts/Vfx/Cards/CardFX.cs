@@ -13,6 +13,7 @@ public abstract class CardFX {
             MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(),
             MegaCrit.Sts2.Core.Models.Cards.CrescentSpear => new CrescentSpear(),
             MegaCrit.Sts2.Core.Models.Cards.Stardust => new Stardust(),
+            MegaCrit.Sts2.Core.Models.Cards.SevenStars => new SevenStars(),
             _ => null
         };
     }
@@ -55,12 +56,12 @@ public abstract class CardFX {
     /// <summary>
     /// 音效路径
     /// </summary>
-    public virtual string? SfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
+    public virtual string? HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
 
 
     // public virtual string? AttackerAnimNameChange => null;
     
-    public virtual bool DisableWeaponAnim => false;
+    // public virtual bool DisableWeaponAnim => false;
 
 
 

@@ -48,3 +48,5 @@ process_material = SubResource("ParticleProcessMaterial_trail")
 texture = ExtResource("1_star")
 
 [node name="PulseTween" type="Node" parent="."]
+
+[node name="ConnectionLines" type="Node2D" parent="."]

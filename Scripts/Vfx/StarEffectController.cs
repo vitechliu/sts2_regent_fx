@@ -21,12 +21,14 @@ public partial class StarEffectController : Node2D {
 
     // 内部状态
     private bool _isShaking = false;
-    private readonly Dictionary<Star, Vector2> _starOriginalPositions = new();
+    // private readonly Dictionary<Star, Vector2> _starOriginalPositions = new();
     private readonly Dictionary<Star, float> _starShakePhases = new();
     private readonly Dictionary<Star, Vector2> _starTargetPositions = new();
 
     // 当前卡牌特效配置
     private CardFX? _currentCardFX;
+
+    private Vector2 PlayerCenterPos => _playerNode.VfxSpawnPosition;
 
     /// <summary>
     /// 初始化控制器
@@ -52,8 +54,8 @@ public partial class StarEffectController : Node2D {
         BorrowStars();
 
         // 播放音效
-        if (!string.IsNullOrEmpty(cardFX.SfxPath)) {
-            SimpleSfxUtil.Play(cardFX.SfxPath);
+        if (!string.IsNullOrEmpty(cardFX.HoldSfxPath)) {
+            SimpleSfxUtil.Play(cardFX.HoldSfxPath);
         }
     }
 
@@ -80,8 +82,7 @@ public partial class StarEffectController : Node2D {
 
             star.ToggleTrail(true);
 
-            // 记录原始位置
-            _starOriginalPositions[star] = star.GlobalPosition;
+            // _starOriginalPositions[star] = star.GlobalPosition;
 
             // 先从原父节点移除，再添加到当前控制器
             star.GetParent()?.RemoveChild(star);
@@ -116,10 +117,9 @@ public partial class StarEffectController : Node2D {
         tween.TweenProperty(star, "global_position", targetPosition, randomDuration);
 
         if (onComplete != null) {
-            tween.Finished += () => onComplete();
+            tween.Finished += onComplete;
         }
-
-        Entry.Logger.Debug($"[StarEffectController] Animating star move to {targetPosition}, duration: {randomDuration:F3}s");
+        // Entry.Logger.Debug($"[StarEffectController] Animating star move to {targetPosition}, duration: {randomDuration:F3}s");
     }
 
     private void InitializeShakePhases() {
@@ -191,7 +191,7 @@ public partial class StarEffectController : Node2D {
 
         // 清空列表
         _borrowedStars.Clear();
-        _starOriginalPositions.Clear();
+        // _starOriginalPositions.Clear();
         _starShakePhases.Clear();
         _starTargetPositions.Clear();
         _currentCardFX = null;
@@ -208,7 +208,7 @@ public partial class StarEffectController : Node2D {
         }
 
         _borrowedStars.Clear();
-        _starOriginalPositions.Clear();
+        // _starOriginalPositions.Clear();
         _starShakePhases.Clear();
         _starTargetPositions.Clear();
         _currentCardFX = null;
