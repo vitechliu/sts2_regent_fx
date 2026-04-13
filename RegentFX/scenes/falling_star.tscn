@@ -228,6 +228,9 @@ animations = [{
 [node name="FallingStar" type="Node2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-278, -132)
+position = Vector2(-297, -129)
 sprite_frames = SubResource("SpriteFrames_g6ioe")
-frame = 9
+autoplay = "default"
+
+[node name="StartPos" type="Node2D" parent="."]
+position = Vector2(-682, -341)

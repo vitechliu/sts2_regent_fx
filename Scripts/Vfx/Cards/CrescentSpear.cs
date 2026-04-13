@@ -21,6 +21,15 @@ public class CrescentSpear : CardFX {
     public override int StarCount => 1;
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);
+    
+    private List<Vector2> starPos = new() {
+        new Vector2(0f, 0f),
+        new Vector2(0f, -40f),
+    };
+    
+    public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
+        return basePosition + TargetOffset + (starPos[index] * 1.2f);
+    }
 }
 
 [HarmonyPatch]

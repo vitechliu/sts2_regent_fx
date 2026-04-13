@@ -25,7 +25,7 @@ public class FallingStar : CardFX {
     public override int StarCount => 2;
 
     // 更靠左上的位置
-    public override Vector2 TargetOffset => new(-200f, -350f);
+    public override Vector2 TargetOffset => new(-200f, -450f);
 }
 
 [HarmonyPatch]
@@ -82,11 +82,24 @@ public static class FallingStarPatch {
             Node2D vfxNode = CardFX.GenVFXNode(ScenePath);
             if (vfxNode == null) return;
 
-            // 等比放大1.5倍
-            vfxNode.Scale = Vector2.One;
-
-            // 计算长矛射出方向（从玩家指向目标）
+            var startNode = vfxNode.FindChild("StartPos") as Node2D;
+            if (startNode == null) {
+                Entry.Logger.Error("no start pos find");
+                return;
+            }
+            Vector2 starPos = ownerNode.GlobalPosition + new FallingStar().TargetOffset;
             Vector2 targetPos = targetNode.VfxSpawnPosition;
+
+            Vector2 originalVec = startNode.GlobalPosition - Vector2.Zero;
+            Vector2 targetVec = starPos - targetPos;
+            
+            // 计算旋转角度（弧度）
+            float angle = targetVec.Angle() - originalVec.Angle();
+            // 计算均匀缩放因子
+            float scale = targetVec.Length() / originalVec.Length();
+
+            vfxNode.Rotation = angle;
+            vfxNode.Scale = Vector2.One * scale;
             // startPos: 玩家位置 + TargetOffset
             vfxNode.GlobalPosition = targetPos;
 
@@ -96,7 +109,6 @@ public static class FallingStarPatch {
             SimpleSfxUtil.Play(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
             await Cmd.Wait(0.15f);
-
         } catch (Exception ex) {
             Entry.Logger.Info($"[FallingStar] Error playing VFX: {ex.Message}");
         }

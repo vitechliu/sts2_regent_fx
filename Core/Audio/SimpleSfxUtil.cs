@@ -2,6 +2,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Saves;
+using RegentFX.Scripts;
 
 namespace RegentFx.Core.Audio;
 
@@ -21,28 +22,28 @@ public static class SimpleSfxUtil
     /// <returns>AudioStreamPlayer 实例，可用于后续控制</returns>
     public static AudioStreamPlayer? Play(string path, float volume = 1f)
     {
-        GD.Print($"[SimpleSfxUtil] Attempting to play: {path}");
+        Entry.Logger.Info($"[SimpleSfxUtil] Attempting to play: {path}");
 
         if (NGame.Instance == null)
         {
-            GD.PrintErr("[SimpleSfxUtil] NGame.Instance is null!");
+            Entry.Logger.Error("[SimpleSfxUtil] NGame.Instance is null!");
             return null;
         }
 
         if (!ResourceLoader.Exists(path))
         {
-            GD.PrintErr($"[SimpleSfxUtil] Audio file not found: {path}");
+            Entry.Logger.Error($"[SimpleSfxUtil] Audio file not found: {path}");
             return null;
         }
 
         var stream = ResourceLoader.Load<AudioStream>(path);
         if (stream == null)
         {
-            GD.PrintErr($"[SimpleSfxUtil] Failed to load audio stream: {path}");
+            Entry.Logger.Error($"[SimpleSfxUtil] Failed to load audio stream: {path}");
             return null;
         }
 
-        GD.Print($"[SimpleSfxUtil] Audio loaded successfully: {path}");
+        Entry.Logger.Info($"[SimpleSfxUtil] Audio loaded successfully: {path}");
         return PlayStream(stream, volume);
     }
 
