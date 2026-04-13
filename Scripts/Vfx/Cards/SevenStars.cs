@@ -31,7 +31,7 @@ public class SevenStars : CardFX {
         new Vector2(150f, 85f)    // 摇光
     };
 
-    public override void OnStartHolding(Star star) {
+    public override void OnStartHolding(Star star, int index) {
         if (Entry.StarEffectController == null) return;
         Star? lastStar = Entry.StarEffectController.Stars.FindLast(star1 => star != star1);
         if (lastStar != null) {
@@ -39,8 +39,9 @@ public class SevenStars : CardFX {
             star.ConnectTo(lastStar);
         }
         else {
-            // Entry.Logger.Info("MainStar");
+            Entry.Logger.Info("MainStar");
             //天枢
+            star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
             star.PulseSpeed = 2.4f;
             star.PulseMaxScale *= 1.3f;
             star.PulseMinScale *= 1.4f;

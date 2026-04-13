@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://kpfb54be7smi"]
+
+[ext_resource type="Shader" uid="uid://dgjfjoxat2tq0" path="res://RegentFX/shaders/vfx/star/star_tint_shader.gdshader" id="1_shader"]
+
+[resource]
+shader = ExtResource("1_shader")
+shader_parameter/tint_color = Color(0, 2.3216555, 14.551038, 1)
+shader_parameter/tint_intensity = 0.4
+shader_parameter/tint_mode = 0

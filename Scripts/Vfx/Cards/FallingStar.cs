@@ -26,6 +26,24 @@ public class FallingStar : CardFX {
 
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -450f);
+    
+    private List<Vector2> starPos = new() {
+        new Vector2(0f, 0f),
+        new Vector2(0f, -50f),
+    };
+    
+    public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
+        return basePosition + TargetOffset + (starPos[index] * 1.2f);
+    }
+    
+    public override void OnStartHolding(Star star, int index) {
+        if (index == 0) {
+            star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
+        }
+        if (index == 1) {
+            star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
+        }
+    }
 }
 
 [HarmonyPatch]

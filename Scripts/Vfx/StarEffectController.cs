@@ -93,7 +93,7 @@ public partial class StarEffectController : Node2D {
 
             // 计算目标位置（使用 CardFX 的配置）
             Vector2 targetPosition = _currentCardFX.CalculateTargetPosition(GlobalPosition, i, targetCount);
-            _currentCardFX.OnStartHolding(star);
+            _currentCardFX.OnStartHolding(star, i);
             _starTargetPositions[star] = targetPosition;
 
             // 启动移动动画，最后一个星星到达后启动震颤

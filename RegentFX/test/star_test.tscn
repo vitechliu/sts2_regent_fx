@@ -1,7 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://startest0001"]
+[gd_scene load_steps=13 format=3 uid="uid://startest0001"]
 
 [ext_resource type="PackedScene" uid="uid://starvfx00001" path="res://RegentFX/scenes/Star.tscn" id="1_star"]
 [ext_resource type="Script" uid="uid://dycg7vcrfxx3m" path="res://Scripts/Vfx/StarRingTest.cs" id="2_script"]
+[ext_resource type="Script" uid="uid://tk7b31b7enc4" path="res://Scripts/Vfx/Star.cs" id="3_htnec"]
+[ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="4_fd636"]
+[ext_resource type="Texture2D" uid="uid://c0kcm8ey8cmme" path="res://RegentFX/images/glow.png" id="5_j73vq"]
+[ext_resource type="Material" uid="uid://kpfb54be7smi" path="res://RegentFX/materials/vfx/star/star_tint.tres" id="6_50a12"]
+[ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="7_1tys2"]
+
+[sub_resource type="Curve" id="Curve_trail_alpha"]
+_data = [Vector2(0, 0.33316058), 0.0, 0.0, 0, 0, Vector2(0.9885223, 0.009844542), -0.46948096, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_alpha"]
+curve = SubResource("Curve_trail_alpha")
+
+[sub_resource type="Curve" id="Curve_trail_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.3520139), -1.614584, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_scale"]
+curve = SubResource("Curve_trail_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_trail"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 2.0
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.29999998
+scale_max = 0.59999996
+scale_curve = SubResource("CurveTexture_trail_scale")
+color = Color(0.9254902, 0.7882353, 1, 0.17254902)
+alpha_curve = SubResource("CurveTexture_trail_alpha")
 
 [node name="StarTest" type="Node2D"]
 script = ExtResource("2_script")
@@ -19,8 +50,32 @@ EnableTrail = true
 position = Vector2(-100, 0)
 EnableTrail = true
 
-[node name="Star4" parent="." instance=ExtResource("1_star")]
+[node name="Star4" type="Node2D" parent="."]
 position = Vector2(0, -100)
+script = ExtResource("3_htnec")
 EnableTrail = true
+
+[node name="TrailParticles" type="GPUParticles2D" parent="Star4"]
+emitting = false
+amount = 50
+texture = ExtResource("4_fd636")
+lifetime = 0.2
+randomness = 0.02
+fixed_fps = 0
+draw_order = 0
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_trail")
+
+[node name="Glow" type="Sprite2D" parent="Star4"]
+texture = ExtResource("5_j73vq")
+
+[node name="Sprite" type="Sprite2D" parent="Star4"]
+material = ExtResource("6_50a12")
+position = Vector2(2, 1)
+texture = ExtResource("7_1tys2")
+
+[node name="PulseTween" type="Node" parent="Star4"]
+
+[node name="ConnectionLines" type="Node2D" parent="Star4"]
 
 [node name="Camera2D" type="Camera2D" parent="."]

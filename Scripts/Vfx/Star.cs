@@ -10,6 +10,13 @@ namespace RegentFX.Scripts.Vfx;
 /// </summary>
 public partial class Star : NLargeMagicMissileVfx
 {
+	public enum TintMode
+	{
+		Multiply = 0,
+		Screen = 1,
+		Overlay = 2,
+		HueShift = 3,
+	}
 	#region 可配置参数 (可在Godot编辑器中调整)
 
 	[Export] public float RotationSpeed { get; set; } = 90f;
@@ -42,6 +49,7 @@ public partial class Star : NLargeMagicMissileVfx
 
 	private Sprite2D? _sprite;
 	private GpuParticles2D? _trailParticles;
+	private ShaderMaterial? _tintMaterial;
 	private float _actualRotationSpeed;
 	private float _actualPulseSpeed;
 	private float _pulsePhase;
@@ -54,6 +62,9 @@ public partial class Star : NLargeMagicMissileVfx
 	{
 		_sprite = GetNode<Sprite2D>("Sprite");
 		_trailParticles = GetNodeOrNull<GpuParticles2D>("TrailParticles");
+		_tintMaterial = (_sprite?.Material as ShaderMaterial)?.Duplicate() as ShaderMaterial;
+		if (_sprite != null && _tintMaterial != null)
+			_sprite.Material = _tintMaterial;
 
 		InitializeRandomValues();
 		ApplyInitialTransform();
@@ -202,6 +213,55 @@ public partial class Star : NLargeMagicMissileVfx
 	{
 		PulseSpeed = speed;
 		_actualPulseSpeed = speed;
+	}
+
+	/// <summary>
+	/// 渐变色调到目标颜色
+	/// </summary>
+	/// <param name="color">目标颜色</param>
+	/// <param name="duration">过渡时长(秒)，0为瞬间切换</param>
+	/// <param name="mode">混合模式，默认不变</param>
+	public void ChangeColorTo(Color color, float duration = 0.3f, TintMode? mode = null)
+	{
+		if (_tintMaterial == null) return;
+
+		if (mode.HasValue)
+			SetTintMode(mode.Value);
+
+		if (duration <= 0f)
+		{
+			_tintMaterial.SetShaderParameter("tint_color", color);
+			UpdateTrailColor(color);
+			return;
+		}
+
+		Color from = (Color)_tintMaterial.GetShaderParameter("tint_color");
+		var tween = CreateTween();
+		tween.SetTrans(Tween.TransitionType.Quad);
+		tween.SetEase(Tween.EaseType.Out);
+		tween.TweenMethod(Callable.From<float>((t) =>
+		{
+			if (_tintMaterial == null) return;
+			Color c = from.Lerp(color, t);
+			_tintMaterial.SetShaderParameter("tint_color", c);
+			UpdateTrailColor(c);
+		}), 0f, 1f, duration);
+	}
+
+	/// <summary>
+	/// 设置色调混合模式
+	/// </summary>
+	public void SetTintMode(TintMode mode)
+	{
+		if (_tintMaterial == null) return;
+		_tintMaterial.SetShaderParameter("tint_mode", (int)mode);
+	}
+
+	private void UpdateTrailColor(Color color)
+	{
+		if (_trailParticles?.ProcessMaterial is not ParticleProcessMaterial mat) return;
+		color.A = 0.17254902f;
+		mat.Color = color;
 	}
 
 	/// <summary>

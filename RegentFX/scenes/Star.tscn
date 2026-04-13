@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://starvfx00001"]
+[gd_scene load_steps=11 format=3 uid="uid://starvfx00001"]
 
 [ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="1_star"]
 [ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="2_5lk64"]
 [ext_resource type="Script" uid="uid://tk7b31b7enc4" path="res://Scripts/Vfx/Star.cs" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://c0kcm8ey8cmme" path="res://RegentFX/images/glow.png" id="3_abjxf"]
+[ext_resource type="Material" uid="uid://kpfb54be7smi" path="res://RegentFX/materials/vfx/star/star_tint.tres" id="3_tint_mat"]
 
 [sub_resource type="Curve" id="Curve_trail_alpha"]
 _data = [Vector2(0, 0.33316058), 0.0, 0.0, 0, 0, Vector2(0.9885223, 0.009844542), -0.46948096, 0.0, 0, 0]
@@ -24,10 +26,10 @@ emission_shape = 1
 emission_sphere_radius = 2.0
 spread = 0.0
 gravity = Vector3(0, 0, 0)
-scale_min = 1.1999999
-scale_max = 1.5
+scale_min = 0.29999998
+scale_max = 0.59999996
 scale_curve = SubResource("CurveTexture_trail_scale")
-color = Color(0.53, 1, 0.95299995, 0.17254902)
+color = Color(0.9254902, 0.7882353, 1, 0.17254902)
 alpha_curve = SubResource("CurveTexture_trail_alpha")
 
 [node name="Star" type="Node2D"]
@@ -44,8 +46,12 @@ draw_order = 0
 trail_lifetime = 0.1
 process_material = SubResource("ParticleProcessMaterial_trail")
 
+[node name="Glow" type="Sprite2D" parent="."]
+texture = ExtResource("3_abjxf")
+
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(3, 3)
+material = ExtResource("3_tint_mat")
+position = Vector2(2, 1)
 texture = ExtResource("1_star")
 
 [node name="PulseTween" type="Node" parent="."]

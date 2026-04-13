@@ -87,7 +87,7 @@ public abstract class CardFX {
         return position;
     }
 
-    public virtual void OnStartHolding(Star star) {}
+    public virtual void OnStartHolding(Star star, int index) {}
 
     public static Node2D? GenVFXNode(string scenePath) {
         PackedScene scene = GD.Load<PackedScene>(scenePath);
