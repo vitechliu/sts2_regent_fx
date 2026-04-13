@@ -10,7 +10,8 @@ namespace RegentFX.Scripts.Vfx;
 /// 支持星星数量变化时的平滑过渡
 /// </summary>
 public partial class StarRingController : Node2D {
-    [Export] public float OrbitRadius { get; set; } = 104f;
+    //Default: 104f, Mesugaki Regent: 120f
+    [Export] public float OrbitRadius { get; set; } = 120f;
     [Export] public float OrbitSpeed { get; set; } = 30f;
     [Export] public float StarScaleMin { get; set; } = 0.6f;
     [Export] public float StarScaleMax { get; set; } = 1.0f;
