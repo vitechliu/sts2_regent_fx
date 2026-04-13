@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="1_star"]
 [ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="2_5lk64"]
-[ext_resource type="Script" path="res://Scripts/Vfx/Star.cs" id="2_script"]
+[ext_resource type="Script" uid="uid://tk7b31b7enc4" path="res://Scripts/Vfx/Star.cs" id="2_script"]
 
 [sub_resource type="Curve" id="Curve_trail_alpha"]
 _data = [Vector2(0, 0.33316058), 0.0, 0.0, 0, 0, Vector2(0.9885223, 0.009844542), -0.46948096, 0.0, 0, 0]

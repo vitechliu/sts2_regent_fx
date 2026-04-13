@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b4yd32ieheum6"]
 
-[ext_resource type="Material" uid="uid://dksu61j1holvv" path="res://materials/vfx/distortion/vfx_screen_distortion_ring.tres" id="1_2ukhp"]
-[ext_resource type="Texture2D" uid="uid://ba2vce5m10dsd" path="res://RegentFX/images/vfx/distortion/distortion_ring.png" id="2_30kid"]
+[ext_resource type="Material" uid="uid://dksu61j1holvv" path="res://RegentFX/materials/vfx/distortion/vfx_screen_distortion_ring.tres" id="1_2ukhp"]
+[ext_resource type="Texture2D" uid="uid://bcexg03xwufoa" path="res://RegentFX/images/vfx/distortion/distortion_ring.png" id="2_30kid"]
 
 [sub_resource type="Curve" id="Curve_vcpbd"]
 _data = [Vector2(0, 1), 0.0, -1.75571, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

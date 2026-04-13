@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cq0m6037hbecy"]
 
 [ext_resource type="Material" uid="uid://buimjwpet3sr3" path="res://RegentFX/materials/vfx/common/vfx_glow.tres" id="1_kkssq"]
-[ext_resource type="Texture2D" uid="uid://dltmdulxe1avi" path="res://RegentFX/images/vfx/common/common_glow.png" id="2_gdhjp"]
+[ext_resource type="Texture2D" uid="uid://bk4qpcxe46rpu" path="res://RegentFX/images/vfx/common/common_glow.png" id="2_gdhjp"]
 
 [sub_resource type="Curve" id="Curve_l02co"]
 _data = [Vector2(0, 0.353316), 0.0, -0.753348, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

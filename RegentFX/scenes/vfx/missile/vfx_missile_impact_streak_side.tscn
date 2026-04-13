@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c2t2vay63bnec"]
 
 [ext_resource type="Material" uid="uid://cpbun6stvfgy1" path="res://RegentFX/materials/vfx/missile/vfx_missile_impact_streak.tres" id="1_1ekcx"]
-[ext_resource type="Texture2D" uid="uid://b5mw2y5dcu3gp" path="res://RegentFX/images/vfx/missile/missile_impact_streak_a.png" id="2_7mb4m"]
+[ext_resource type="Texture2D" uid="uid://bv33jm7hnq453" path="res://RegentFX/images/vfx/missile/missile_impact_streak_a.png" id="2_7mb4m"]
 
 [sub_resource type="Curve" id="Curve_84qw1"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.00994, 0.0, 0, 0]

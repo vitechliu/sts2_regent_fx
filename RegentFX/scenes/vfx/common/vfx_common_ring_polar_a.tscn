@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://0vk581j1pecs"]
 
 [ext_resource type="Material" uid="uid://b2tsqjbtfnme0" path="res://RegentFX/materials/vfx/common/vfx_ring_polar.tres" id="1_5log7"]
-[ext_resource type="Texture2D" uid="uid://c3m2x4kem46q8" path="res://RegentFX/images/vfx/common/common_ring_polar_a.png" id="2_8qrdn"]
+[ext_resource type="Texture2D" uid="uid://cmnse47yftfu7" path="res://RegentFX/images/vfx/common/common_ring_polar_a.png" id="2_8qrdn"]
 
 [sub_resource type="Curve" id="Curve_tqsfi"]
 _limits = [0.0, 3.0, 0.0, 1.0]

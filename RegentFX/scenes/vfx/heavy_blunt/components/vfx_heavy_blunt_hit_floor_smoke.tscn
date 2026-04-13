@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://da3aivb3p2g5i"]
 
 [ext_resource type="Material" uid="uid://cojcfy54ixjfw" path="res://RegentFX/materials/vfx/heavy_blunt/heavy_blunt_hit_floor_smoke.tres" id="1_p0wu0"]
-[ext_resource type="Texture2D" uid="uid://djmk7cdk6lqjf" path="res://RegentFX/images/vfx/vfx_heavy_blunt/heavy_blunt_hit_floor_smoke.png" id="2_d8a4c"]
+[ext_resource type="Texture2D" uid="uid://bu3v45lkhck31" path="res://RegentFX/images/vfx/vfx_heavy_blunt/heavy_blunt_hit_floor_smoke.png" id="2_d8a4c"]
 
 [sub_resource type="Curve" id="Curve_vo6g6"]
 _data = [Vector2(0, 0.301344), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.710968, 0.0, 0, 0]
