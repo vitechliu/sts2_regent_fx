@@ -1,4 +1,20 @@
 ﻿using Godot;
+using HarmonyLib;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands.Builders;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
+
+#pragma warning disable CS4014
+
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -10,14 +26,84 @@ public class FallingStar : CardFX {
 
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);
+}
 
-    // 更快的移动
-    public override float MoveDuration => 0.2f;
+[HarmonyPatch]
+public static class FallingStarPatch {
+    
+    private const string HitSFX = "res://RegentFX/sfx/falling_star.mp3";
+    private const string ScenePath = "res://RegentFX/scenes/falling_star.tscn";
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.FallingStar), "OnPlay")]
+    public static bool OnPlay(
+        MegaCrit.Sts2.Core.Models.Cards.FallingStar __instance,
+        PlayerChoiceContext choiceContext,
+        CardPlay cardPlay,
+        ref Task __result) {
+        __result = MyOnPlay(__instance, choiceContext, cardPlay);
+        return false;
+    }
 
-    // 更剧烈的震颤
-    public override float ShakeIntensity => 6f;
-    public override float ShakeSpeed => 25f;
+    private static async Task MyOnPlay(
+        MegaCrit.Sts2.Core.Models.Cards.FallingStar card,
+        PlayerChoiceContext choiceContext,
+        CardPlay cardPlay) {
+        
+        
+        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
+            .FromCard(card)
+            .Targeting(cardPlay.Target)
+            .BeforeDamage(async delegate {
+                await PlayVFX(card.Owner.Creature, cardPlay.Target);
+            });
+        cmd._attackerAnimName = null;
+        // Entry.Logger.Info("HasHitVFX?:" + cmd.HitVfx);
+        await cmd.Execute(choiceContext);
+        WeakPower weakPower = await PowerCmd.Apply<WeakPower>(cardPlay.Target, card.DynamicVars.Weak.BaseValue, card.Owner.Creature, card);
+        VulnerablePower vulnerablePower = await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, card.DynamicVars.Vulnerable.BaseValue, card.Owner.Creature, card);
+    }
+    
+    
+    private static async Task PlayVFX(Creature owner, Creature target) {
+        if (TestMode.IsOn) {
+            return;
+        }
+        NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
 
-    // 更大的间距
-    public override float StarSpacing => 60f;
+        if (ownerNode == null || targetNode == null) {
+            Entry.Logger.Info("[CrescentSpear] Could not get creature nodes for VFX");
+            return;
+        }
+        try {
+            Node2D vfxNode = CardFX.GenVFXNode(ScenePath);
+            if (vfxNode == null) return;
+
+            // 等比放大1.5倍
+            vfxNode.Scale = Vector2.One;
+
+            // 计算长矛射出方向（从玩家指向目标）
+            Vector2 targetPos = targetNode.VfxSpawnPosition;
+            // startPos: 玩家位置 + TargetOffset
+            vfxNode.GlobalPosition = targetPos;
+
+            // 添加到战斗特效容器
+            NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
+
+            SimpleSfxUtil.Play(HitSFX);
+            TaskHelper.RunSafely(ClearAfter(vfxNode));
+            await Cmd.Wait(0.15f);
+
+        } catch (Exception ex) {
+            Entry.Logger.Info($"[FallingStar] Error playing VFX: {ex.Message}");
+        }
+    }
+
+    public static async Task ClearAfter(Node2D? node) {
+        await Cmd.Wait(2f);
+        if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
+    }
 }

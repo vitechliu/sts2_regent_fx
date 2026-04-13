@@ -12,6 +12,8 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+#pragma warning disable CS4014
+
 /// <summary>
 /// CrescentSpear 卡牌特效
 /// </summary>
@@ -61,7 +63,6 @@ public static class CrescentSpearPatch {
         if (TestMode.IsOn) {
             return;
         }
-
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
 
@@ -69,20 +70,9 @@ public static class CrescentSpearPatch {
             Entry.Logger.Info("[CrescentSpear] Could not get creature nodes for VFX");
             return;
         }
-
         try {
-            // 加载并实例化场景
-            PackedScene scene = GD.Load<PackedScene>(ScenePath);
-            if (scene == null) {
-                Entry.Logger.Info($"[CrescentSpear] Failed to load scene: {ScenePath}");
-                return;
-            }
-
-            Node2D vfxNode = scene.Instantiate<Node2D>();
-            if (vfxNode == null) {
-                Entry.Logger.Info("[CrescentSpear] Failed to instantiate VFX node");
-                return;
-            }
+            Node2D vfxNode = CardFX.GenVFXNode(ScenePath);
+            if (vfxNode == null) return;
 
             // 等比放大1.5倍
             vfxNode.Scale = Vector2.One * ScaleFactor;

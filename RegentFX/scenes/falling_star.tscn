@@ -1,0 +1,233 @@
+[gd_scene load_steps=56 format=3 uid="uid://7kv6gfqug3cp"]
+
+[ext_resource type="Texture2D" uid="uid://odjr00rmalfg" path="res://RegentFX/frames/falling_star/falling_star0001.png" id="1_gmptg"]
+[ext_resource type="Texture2D" uid="uid://cek64h0eq2vmx" path="res://RegentFX/frames/falling_star/falling_star0002.png" id="2_56wjo"]
+[ext_resource type="Texture2D" uid="uid://cvehtlj1pqbvm" path="res://RegentFX/frames/falling_star/falling_star0003.png" id="3_g8pyk"]
+[ext_resource type="Texture2D" uid="uid://dxygmlmg8s7m3" path="res://RegentFX/frames/falling_star/falling_star0004.png" id="4_lq0jy"]
+[ext_resource type="Texture2D" uid="uid://cvkt57ms58peg" path="res://RegentFX/frames/falling_star/falling_star0005.png" id="5_w7ulr"]
+[ext_resource type="Texture2D" uid="uid://rqyhfcriwavy" path="res://RegentFX/frames/falling_star/falling_star0006.png" id="6_bj4jg"]
+[ext_resource type="Texture2D" uid="uid://blxdc7f7nejrw" path="res://RegentFX/frames/falling_star/falling_star0007.png" id="7_fkavj"]
+[ext_resource type="Texture2D" uid="uid://bumfygfu8ass3" path="res://RegentFX/frames/falling_star/falling_star0008.png" id="8_f1pew"]
+[ext_resource type="Texture2D" uid="uid://1kcv5svfsa8x" path="res://RegentFX/frames/falling_star/falling_star0009.png" id="9_qql1c"]
+[ext_resource type="Texture2D" uid="uid://dt40kld4s40it" path="res://RegentFX/frames/falling_star/falling_star0010.png" id="10_gvsba"]
+[ext_resource type="Texture2D" uid="uid://bmy816k8nppu6" path="res://RegentFX/frames/falling_star/falling_star0011.png" id="11_cnn4r"]
+[ext_resource type="Texture2D" uid="uid://rhnv7mwx2ddb" path="res://RegentFX/frames/falling_star/falling_star0012.png" id="12_hijig"]
+[ext_resource type="Texture2D" uid="uid://cdxskddq0n83y" path="res://RegentFX/frames/falling_star/falling_star0013.png" id="13_8pwf6"]
+[ext_resource type="Texture2D" uid="uid://b7rpwovvnr1em" path="res://RegentFX/frames/falling_star/falling_star0014.png" id="14_wq2te"]
+[ext_resource type="Texture2D" uid="uid://dd2bsi532cphv" path="res://RegentFX/frames/falling_star/falling_star0015.png" id="15_ts514"]
+[ext_resource type="Texture2D" uid="uid://cbij55fy4meik" path="res://RegentFX/frames/falling_star/falling_star0016.png" id="16_k1tkv"]
+[ext_resource type="Texture2D" uid="uid://d3jrpcnjwksht" path="res://RegentFX/frames/falling_star/falling_star0017.png" id="17_ddodx"]
+[ext_resource type="Texture2D" uid="uid://c30bvl6cp02m" path="res://RegentFX/frames/falling_star/falling_star0018.png" id="18_og7qy"]
+[ext_resource type="Texture2D" uid="uid://cnkmdgfc8vkl4" path="res://RegentFX/frames/falling_star/falling_star0019.png" id="19_cy317"]
+[ext_resource type="Texture2D" uid="uid://bx4f2rup7ttr1" path="res://RegentFX/frames/falling_star/falling_star0020.png" id="20_j0h0a"]
+[ext_resource type="Texture2D" uid="uid://d2uslbptbyqge" path="res://RegentFX/frames/falling_star/falling_star0021.png" id="21_ypx21"]
+[ext_resource type="Texture2D" uid="uid://ctbeab4c8qg6y" path="res://RegentFX/frames/falling_star/falling_star0022.png" id="22_h4483"]
+[ext_resource type="Texture2D" uid="uid://b1mi5shfi4gto" path="res://RegentFX/frames/falling_star/falling_star0023.png" id="23_avuj5"]
+[ext_resource type="Texture2D" uid="uid://cfskqy46i1c3x" path="res://RegentFX/frames/falling_star/falling_star0024.png" id="24_o4qv6"]
+[ext_resource type="Texture2D" uid="uid://bu1oh1y0t0v8r" path="res://RegentFX/frames/falling_star/falling_star0025.png" id="25_lil8b"]
+[ext_resource type="Texture2D" uid="uid://db14whg2sovmd" path="res://RegentFX/frames/falling_star/falling_star0026.png" id="26_kej7k"]
+[ext_resource type="Texture2D" uid="uid://cileswwl42ul3" path="res://RegentFX/frames/falling_star/falling_star0027.png" id="27_sarl2"]
+[ext_resource type="Texture2D" uid="uid://barr0tb7kydj4" path="res://RegentFX/frames/falling_star/falling_star0028.png" id="28_x2ed2"]
+[ext_resource type="Texture2D" uid="uid://cjb0uxll3cq3h" path="res://RegentFX/frames/falling_star/falling_star0029.png" id="29_dqsm0"]
+[ext_resource type="Texture2D" uid="uid://dkfdsuw1yg4t0" path="res://RegentFX/frames/falling_star/falling_star0030.png" id="30_ns0ja"]
+[ext_resource type="Texture2D" uid="uid://c67pvqm4hx00m" path="res://RegentFX/frames/falling_star/falling_star0031.png" id="31_73i6d"]
+[ext_resource type="Texture2D" uid="uid://duprl5mooiwmc" path="res://RegentFX/frames/falling_star/falling_star0032.png" id="32_2vqkc"]
+[ext_resource type="Texture2D" uid="uid://b13m2wju1vk0p" path="res://RegentFX/frames/falling_star/falling_star0033.png" id="33_uv4xo"]
+[ext_resource type="Texture2D" uid="uid://cmpt8ijutg4me" path="res://RegentFX/frames/falling_star/falling_star0034.png" id="34_4ty8w"]
+[ext_resource type="Texture2D" uid="uid://de38ncr7tq87a" path="res://RegentFX/frames/falling_star/falling_star0035.png" id="35_3vjjh"]
+[ext_resource type="Texture2D" uid="uid://jwmsyu7cckk8" path="res://RegentFX/frames/falling_star/falling_star0036.png" id="36_3wnv3"]
+[ext_resource type="Texture2D" uid="uid://brtrdos5j6juj" path="res://RegentFX/frames/falling_star/falling_star0037.png" id="37_t6gm2"]
+[ext_resource type="Texture2D" uid="uid://5bj8s0i6v7wv" path="res://RegentFX/frames/falling_star/falling_star0038.png" id="38_2sggd"]
+[ext_resource type="Texture2D" uid="uid://ctid7545pdq5o" path="res://RegentFX/frames/falling_star/falling_star0039.png" id="39_exhgd"]
+[ext_resource type="Texture2D" uid="uid://b2go2g7pbp1fh" path="res://RegentFX/frames/falling_star/falling_star0040.png" id="40_e4id5"]
+[ext_resource type="Texture2D" uid="uid://bvx4ijm2luksy" path="res://RegentFX/frames/falling_star/falling_star0041.png" id="41_1vchj"]
+[ext_resource type="Texture2D" uid="uid://xwpr7ielecaj" path="res://RegentFX/frames/falling_star/falling_star0042.png" id="42_e12eu"]
+[ext_resource type="Texture2D" uid="uid://b4e5d7lypuhdx" path="res://RegentFX/frames/falling_star/falling_star0043.png" id="43_y0fov"]
+[ext_resource type="Texture2D" uid="uid://pbixsm8apre6" path="res://RegentFX/frames/falling_star/falling_star0044.png" id="44_fxdbi"]
+[ext_resource type="Texture2D" uid="uid://cu03yqsw65daq" path="res://RegentFX/frames/falling_star/falling_star0045.png" id="45_mkix0"]
+[ext_resource type="Texture2D" uid="uid://dx433750gtg8n" path="res://RegentFX/frames/falling_star/falling_star0046.png" id="46_8bdxj"]
+[ext_resource type="Texture2D" uid="uid://canxt5mj2aevo" path="res://RegentFX/frames/falling_star/falling_star0047.png" id="47_eqnbn"]
+[ext_resource type="Texture2D" uid="uid://c06rbxxag434f" path="res://RegentFX/frames/falling_star/falling_star0048.png" id="48_bvyfi"]
+[ext_resource type="Texture2D" uid="uid://dmqq4o3txi4s" path="res://RegentFX/frames/falling_star/falling_star0049.png" id="49_lvn03"]
+[ext_resource type="Texture2D" uid="uid://da0xhm7ldjdn5" path="res://RegentFX/frames/falling_star/falling_star0050.png" id="50_78igb"]
+[ext_resource type="Texture2D" uid="uid://dc1i2rkpjfqpp" path="res://RegentFX/frames/falling_star/falling_star0051.png" id="51_2g7er"]
+[ext_resource type="Texture2D" uid="uid://bm0brut6ukeac" path="res://RegentFX/frames/falling_star/falling_star0052.png" id="52_bbxyi"]
+[ext_resource type="Texture2D" uid="uid://xje2lut0rocb" path="res://RegentFX/frames/falling_star/falling_star0053.png" id="53_pfc51"]
+[ext_resource type="Texture2D" uid="uid://elhu8o5qv7m8" path="res://RegentFX/frames/falling_star/falling_star0054.png" id="54_iy8v7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g6ioe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gmptg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_56wjo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_g8pyk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_lq0jy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w7ulr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_bj4jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fkavj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_f1pew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_qql1c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_gvsba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_cnn4r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_hijig")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8pwf6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_wq2te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ts514")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_k1tkv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ddodx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_og7qy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_cy317")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_j0h0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_ypx21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_h4483")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_avuj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_o4qv6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_lil8b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_kej7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_sarl2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_x2ed2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_dqsm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ns0ja")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_73i6d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_2vqkc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_uv4xo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_4ty8w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_3vjjh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_3wnv3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_t6gm2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_2sggd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_exhgd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_e4id5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_1vchj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_e12eu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_y0fov")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_fxdbi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_mkix0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_8bdxj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_eqnbn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_bvyfi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_lvn03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_78igb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_2g7er")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_bbxyi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_pfc51")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_iy8v7")
+}],
+"loop": false,
+"name": &"default",
+"speed": 40.0
+}]
+
+[node name="FallingStar" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-278, -132)
+sprite_frames = SubResource("SpriteFrames_g6ioe")
+frame = 9

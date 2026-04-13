@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bggke23ev6xts"]
+[gd_scene load_steps=4 format=3 uid="uid://dhf57wdvo4nbx"]
 
-[ext_resource type="Texture2D" uid="uid://dukapbukf0c24" path="res://RegentFX/images/weapon1.png" id="1_75r01"]
-[ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="1_mojsk"]
+[ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="1_w6p3m"]
+[ext_resource type="Texture2D" uid="uid://ut1a6ddb8jy7" path="res://RegentFX/images/weapon2.png" id="2_w6p3m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mojsk"]
-shader = ExtResource("1_mojsk")
+shader = ExtResource("1_w6p3m")
 shader_parameter/glow_intensity = 0.2770000131575
 shader_parameter/glow_color = Color(1, 1, 0.8, 1)
 shader_parameter/blur_intensity = 0.0
@@ -14,4 +14,4 @@ shader_parameter/blur_samples = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mojsk")
-texture = ExtResource("1_75r01")
+texture = ExtResource("2_w6p3m")

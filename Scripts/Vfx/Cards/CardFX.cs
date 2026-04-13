@@ -1,5 +1,12 @@
 ﻿using Godot;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -81,4 +88,19 @@ public abstract class CardFX {
     }
 
     public virtual void OnStartHolding(Star star) {}
+
+    public static Node2D? GenVFXNode(string scenePath) {
+        PackedScene scene = GD.Load<PackedScene>(scenePath);
+        if (scene == null) {
+            Entry.Logger.Info($"Failed to load scene: {scenePath}");
+            return null;
+        }
+
+        Node2D vfxNode = scene.Instantiate<Node2D>();
+        if (vfxNode == null) {
+            Entry.Logger.Info("Failed to instantiate VFX node");
+            return null;
+        }
+        return vfxNode;
+    }
 }
