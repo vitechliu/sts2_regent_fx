@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
@@ -17,13 +18,11 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// <summary>
 /// CrescentSpear 卡牌特效
 /// </summary>
-public class CrescentSpear : CardFX {
+public class CrescentSpear(CardModel card) : CardFX(card) {
     public override int StarCount => 1;
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);
     
-    
-
     public override void OnStartHolding(Star star, int index) {
         star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
     }
@@ -77,7 +76,7 @@ public static class CrescentSpearPatch {
             return;
         }
         try {
-            Node2D vfxNode = CardFX.GenVFXNode(ScenePath);
+            Node2D vfxNode = VFXUtil.GenVFXNode(ScenePath);
             if (vfxNode == null) return;
 
             // 等比放大1.5倍
@@ -103,6 +102,7 @@ public static class CrescentSpearPatch {
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
             
 
+            Entry.StarEffectController?.OnPlayCard();
             SimpleSfxUtil.Play(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
             await Cmd.Wait(0.15f);

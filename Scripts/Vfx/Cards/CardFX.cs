@@ -15,9 +15,13 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
 public abstract class CardFX {
+
+    public CardFX(CardModel card) {
+        
+    }
     public static CardFX? FromCard(CardModel card) {
         return card switch {
-            MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(),
+            MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(card),
             MegaCrit.Sts2.Core.Models.Cards.CrescentSpear => new CrescentSpear(),
             MegaCrit.Sts2.Core.Models.Cards.Stardust => new Stardust(),
             MegaCrit.Sts2.Core.Models.Cards.SevenStars => new SevenStars(),
@@ -88,19 +92,4 @@ public abstract class CardFX {
     }
 
     public virtual void OnStartHolding(Star star, int index) {}
-
-    public static Node2D? GenVFXNode(string scenePath) {
-        PackedScene scene = GD.Load<PackedScene>(scenePath);
-        if (scene == null) {
-            Entry.Logger.Info($"Failed to load scene: {scenePath}");
-            return null;
-        }
-
-        Node2D vfxNode = scene.Instantiate<Node2D>();
-        if (vfxNode == null) {
-            Entry.Logger.Info("Failed to instantiate VFX node");
-            return null;
-        }
-        return vfxNode;
-    }
 }

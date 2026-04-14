@@ -97,7 +97,7 @@ public static class FallingStarPatch {
             return;
         }
         try {
-            Node2D vfxNode = CardFX.GenVFXNode(ScenePath);
+            Node2D vfxNode = VFXUtil.GenVFXNode(ScenePath);
             if (vfxNode == null) return;
 
             var startNode = vfxNode.FindChild("StartPos") as Node2D;
@@ -105,22 +105,13 @@ public static class FallingStarPatch {
                 Entry.Logger.Error("no start pos find");
                 return;
             }
-            Vector2 starPos = ownerNode.GlobalPosition + new FallingStar().TargetOffset;
-            Vector2 targetPos = targetNode.VfxSpawnPosition;
-
-            Vector2 originalVec = startNode.GlobalPosition - Vector2.Zero;
-            Vector2 targetVec = starPos - targetPos;
-            
-            // 计算旋转角度（弧度）
-            float angle = targetVec.Angle() - originalVec.Angle();
-            // 计算均匀缩放因子
-            float scale = targetVec.Length() / originalVec.Length();
-
-            vfxNode.Rotation = angle;
-            vfxNode.Scale = Vector2.One * scale;
-            // startPos: 玩家位置 + TargetOffset
+            var startPos = ownerNode.GlobalPosition + new FallingStar().TargetOffset;
+            var targetPos = targetNode.VfxSpawnPosition;
+            vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, startPos, targetPos);
             vfxNode.GlobalPosition = targetPos;
 
+
+            Entry.StarEffectController?.OnCancelCard();
             // 添加到战斗特效容器
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 

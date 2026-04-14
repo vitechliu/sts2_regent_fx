@@ -164,10 +164,14 @@ public partial class StarEffectController : Node2D {
         }
     }
 
+    public void OnPlayCard() {
+        OnCancelCard();
+    }
     public void OnCancelCard() {
-        Entry.Logger.Info($"[StarEffectController] OnCancelCard called, returning {_borrowedStars.Count} stars");
-
-        ReturnAllStars();
+        if (_borrowedStars.Count > 0) {
+            ReturnAllStars();
+            Entry.Logger.Info($"[StarEffectController] OnCancelCard called, returning {_borrowedStars.Count} stars");
+        }
 
         // 通知 StarRingController 重置星星数量
         StarRingController?.ResetStarCount();
@@ -175,7 +179,6 @@ public partial class StarEffectController : Node2D {
 
     private void ReturnAllStars() {
         _isShaking = false;
-
         foreach (var star in _borrowedStars) {
             // 闪烁效果
             var tween = CreateTween();

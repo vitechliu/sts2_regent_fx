@@ -33,17 +33,6 @@ public static class CardPlayTimingPatch {
         }
     }
 
-    /// <summary>
-    /// 监听卡牌真正加入打出队列的时点
-    /// 当卡牌通过验证并准备加入行动队列时触发
-    /// </summary>
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(CardModel), nameof(CardModel.EnqueueManualPlay))]
-    public static void CardStartEnqueue(CardModel __instance, Creature? target) {
-        string targetInfo = target != null ? $"目标: {target.Name} (CombatID: {target.CombatId})" : "无目标";
-        Entry.Logger.Info($"[CardPlayTiming] 卡牌加入打出队列 | 卡牌: {__instance.Title} | ID: {__instance.Id.Entry} | 费用: {__instance.EnergyCost} | {targetInfo} | 类型: {__instance.Type}");
-        // Entry.StarEffectController?.OnCancelCard();
-    }
 
     /// <summary>
     /// 监听卡牌放弃打出时点
@@ -53,7 +42,10 @@ public static class CardPlayTimingPatch {
     [HarmonyPatch(typeof(NCardPlay), nameof(NCardPlay.CancelPlayCard))]
     public static void CardCancel(NCardPlay __instance) {
         string isTrying = __instance._isTryingToPlayCard.ToString();
+        
         Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出 isTryingToPlayCard:" + isTrying);
-        Entry.StarEffectController?.OnCancelCard();
+        if (!__instance._isTryingToPlayCard) {
+            Entry.StarEffectController?.OnCancelCard();
+        }
     }
 }

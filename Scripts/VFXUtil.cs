@@ -1,0 +1,39 @@
+using Godot;
+
+namespace RegentFX.Scripts;
+
+public static class VFXUtil {
+    public static void FitVFX(
+        this Node2D node, 
+        Vector2 nodeStartPos, 
+        Vector2 nodeEndPos,
+        Vector2 sceneStartPos, 
+        Vector2 sceneEndPos
+    ) {
+        Vector2 originalVec = nodeStartPos - nodeEndPos;
+        Vector2 targetVec = sceneStartPos - sceneEndPos;
+            
+        // 计算旋转角度（弧度）
+        float angle = targetVec.Angle() - originalVec.Angle();
+        // 计算均匀缩放因子
+        float scale = targetVec.Length() / originalVec.Length();
+        
+        node.Rotation = angle;
+        node.Scale = Vector2.One * scale;
+    }
+    
+    public static Node2D? GenVFXNode(string scenePath) {
+        PackedScene scene = GD.Load<PackedScene>(scenePath);
+        if (scene == null) {
+            Entry.Logger.Info($"Failed to load scene: {scenePath}");
+            return null;
+        }
+
+        Node2D vfxNode = scene.Instantiate<Node2D>();
+        if (vfxNode == null) {
+            Entry.Logger.Info("Failed to instantiate VFX node");
+            return null;
+        }
+        return vfxNode;
+    }
+}
