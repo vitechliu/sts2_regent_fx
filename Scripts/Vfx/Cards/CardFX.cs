@@ -22,6 +22,7 @@ public abstract class CardFX {
             MegaCrit.Sts2.Core.Models.Cards.Stardust => new Stardust(),
             MegaCrit.Sts2.Core.Models.Cards.SevenStars => new SevenStars(),
             MegaCrit.Sts2.Core.Models.Cards.DyingStar => new DyingStar(),
+            MegaCrit.Sts2.Core.Models.Cards.GuidingStar => new GuidingStar(),
             _ => null
         };
     }

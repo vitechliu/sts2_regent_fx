@@ -66,8 +66,7 @@ public static class SevenStarPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
+        return true;
     }
 
     private static async Task MyOnPlay(
