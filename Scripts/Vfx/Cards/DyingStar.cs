@@ -18,44 +18,38 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
-/// <summary>
-/// FallingStar 卡牌特效
-/// </summary>
-public class FallingStar : CardFX {
-    public override int StarCount => 2;
+public class DyingStar : CardFX {
+    public override int StarCount => 3;
 
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -450f);
     
     private List<Vector2> starPos = new() {
         new Vector2(0f, 0f),
-        new Vector2(0f, -50f),
+        new Vector2(13f, -24f),
+        new Vector2(30f, -5f),
     };
     
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
-        return basePosition + TargetOffset + (starPos[index] * 1.2f);
+        return basePosition + TargetOffset + (starPos[index] * 2.5f);
     }
-    
     public override void OnStartHolding(Star star, int index) {
-        if (index == 0) {
-            star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
-        }
-        if (index == 1) {
-            star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
-        }
+        star.PulseMinScale *= 2f;
+        star.PulseMaxScale *= 1.8f;
     }
 }
 
 [HarmonyPatch]
-public static class FallingStarPatch {
+public static class DyingStarPatch {
     
-    private const string HitSFX = "res://RegentFX/sfx/falling_star.mp3";
-    private const string ScenePath = "res://RegentFX/scenes/falling_star.tscn";
+    private const string HitSFX = "res://RegentFX/sfx/dying_star.mp3";
+    private const string HitSFX1 = "res://RegentFX/sfx/common_hold_4.mp3";
+    private const string ScenePath = "res://RegentFX/scenes/dying_star.tscn";
     
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.FallingStar), "OnPlay")]
+    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.DyingStar), "OnPlay")]
     public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.FallingStar __instance,
+        MegaCrit.Sts2.Core.Models.Cards.DyingStar __instance,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
@@ -64,36 +58,37 @@ public static class FallingStarPatch {
     }
 
     private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.FallingStar card,
+        MegaCrit.Sts2.Core.Models.Cards.DyingStar card,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay) {
-        
-        
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        IReadOnlyList<Creature> enemies = card.CombatState.HittableEnemies;
         var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
             .FromCard(card)
-            .Targeting(cardPlay.Target)
+            .TargetingAllOpponents(card.CombatState)
+            .WithHitFx("vfx/vfx_starry_impact")
+            .SpawningHitVfxOnEachCreature()
             .BeforeDamage(async delegate {
-                await PlayVFX(card.Owner.Creature, cardPlay.Target);
+                await PlayVFX(card.Owner.Creature, VFXUtil.GetEnemiesCenter(card.CombatState));
             });
         cmd._attackerAnimName = null;
-        // Entry.Logger.Info("HasHitVFX?:" + cmd.HitVfx);
         await cmd.Execute(choiceContext);
-        WeakPower weakPower = await PowerCmd.Apply<WeakPower>(cardPlay.Target, card.DynamicVars.Weak.BaseValue, card.Owner.Creature, card);
-        VulnerablePower vulnerablePower = await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, card.DynamicVars.Vulnerable.BaseValue, card.Owner.Creature, card);
+        foreach (Creature enemy in (IEnumerable<Creature>) enemies)
+        {
+            await PowerCmd.Apply<DyingStarPower>(enemy, 
+                card.DynamicVars["StrengthLoss"].BaseValue, card.Owner.Creature, card);
+        }
+        enemies = null;
     }
     
     
-    private static async Task PlayVFX(Creature owner, Creature target) {
+    private static async Task PlayVFX(Creature owner, Vector2 targetPos) {
         if (TestMode.IsOn) {
             return;
         }
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
-        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
-
-        if (ownerNode == null || targetNode == null) {
-            Entry.Logger.Info("[CrescentSpear] Could not get creature nodes for VFX");
+        if (ownerNode == null) {
+            Entry.Logger.Info("Could not get creature nodes for VFX");
             return;
         }
         try {
@@ -105,31 +100,30 @@ public static class FallingStarPatch {
                 Entry.Logger.Error("no start pos find");
                 return;
             }
-            var startPos = ownerNode.GlobalPosition + new FallingStar().TargetOffset;
-            var targetPos = targetNode.VfxSpawnPosition;
+            var startPos = ownerNode.GlobalPosition + new DyingStar().TargetOffset;
             vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, startPos, targetPos);
             vfxNode.GlobalPosition = targetPos;
-
 
             Entry.StarEffectController?.OnCancelCard();
             // 添加到战斗特效容器
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
-
-            SimpleSfxUtil.Play(HitSFX);
+            SimpleSfxUtil.Play(HitSFX1);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
             // WorldEnvironmentUtil.TweenGlowIntensity(3f, .05f);
-            WorldEnvironmentUtil.TweenExposure(3f, .1f);
-            await Cmd.Wait(0.15f);
+            await Cmd.Wait(0.4f);
+            SimpleSfxUtil.Play(HitSFX);
+            WorldEnvironmentUtil.TweenExposure(3f, .2f);
+            await Cmd.Wait(0.2f);
             // WorldEnvironmentUtil.SetGlowIntensity(0);
-            WorldEnvironmentUtil.TweenExposure(1f, .5f);
+            WorldEnvironmentUtil.TweenExposure(1f, .3f);
 
         } catch (Exception ex) {
-            Entry.Logger.Info($"[FallingStar] Error playing VFX: {ex.Message}");
+            Entry.Logger.Info($"Error playing VFX: {ex.Message}");
         }
     }
 
     public static async Task ClearAfter(Node2D? node) {
-        await Cmd.Wait(2f);
+        await Cmd.Wait(3f);
         if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

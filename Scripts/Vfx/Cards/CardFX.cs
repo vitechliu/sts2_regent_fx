@@ -15,16 +15,13 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
 public abstract class CardFX {
-
-    public CardFX(CardModel card) {
-        
-    }
     public static CardFX? FromCard(CardModel card) {
         return card switch {
-            MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(card),
+            MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(),
             MegaCrit.Sts2.Core.Models.Cards.CrescentSpear => new CrescentSpear(),
             MegaCrit.Sts2.Core.Models.Cards.Stardust => new Stardust(),
             MegaCrit.Sts2.Core.Models.Cards.SevenStars => new SevenStars(),
+            MegaCrit.Sts2.Core.Models.Cards.DyingStar => new DyingStar(),
             _ => null
         };
     }

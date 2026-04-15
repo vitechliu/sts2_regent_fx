@@ -1,4 +1,8 @@
 using Godot;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
 
 namespace RegentFX.Scripts;
 
@@ -35,5 +39,18 @@ public static class VFXUtil {
             return null;
         }
         return vfxNode;
+    }
+
+    public static Vector2 GetEnemiesCenter(CombatState state) {
+        Vector2 posFin = Vector2.Zero;
+        IReadOnlyList<Creature> enemies = state.HittableEnemies;
+        if (enemies.Count <= 0) return posFin;
+        foreach (var creature in enemies) {
+            NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);
+            if (targetNode == null) continue;
+            posFin += targetNode.VfxSpawnPosition;
+        }
+        posFin /= enemies.Count;
+        return posFin;
     }
 }

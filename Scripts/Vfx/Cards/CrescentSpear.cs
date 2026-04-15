@@ -18,7 +18,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// <summary>
 /// CrescentSpear 卡牌特效
 /// </summary>
-public class CrescentSpear(CardModel card) : CardFX(card) {
+public class CrescentSpear: CardFX {
     public override int StarCount => 1;
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);

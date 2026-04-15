@@ -22,7 +22,7 @@ public static class SimpleSfxUtil
     /// <returns>AudioStreamPlayer 实例，可用于后续控制</returns>
     public static AudioStreamPlayer? Play(string path, float volume = 1f)
     {
-        Entry.Logger.Info($"[SimpleSfxUtil] Attempting to play: {path}");
+        // Entry.Logger.Info($"[SimpleSfxUtil] Attempting to play: {path}");
 
         if (NGame.Instance == null)
         {
@@ -43,7 +43,7 @@ public static class SimpleSfxUtil
             return null;
         }
 
-        Entry.Logger.Info($"[SimpleSfxUtil] Audio loaded successfully: {path}");
+        // Entry.Logger.Info($"[SimpleSfxUtil] Audio loaded successfully: {path}");
         return PlayStream(stream, volume);
     }
 
