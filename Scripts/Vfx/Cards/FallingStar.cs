@@ -117,7 +117,12 @@ public static class FallingStarPatch {
 
             SimpleSfxUtil.Play(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
+            // WorldEnvironmentUtil.TweenGlowIntensity(3f, .05f);
+            WorldEnvironmentUtil.TweenExposure(4f, .1f);
             await Cmd.Wait(0.15f);
+            // WorldEnvironmentUtil.SetGlowIntensity(0);
+            WorldEnvironmentUtil.TweenExposure(1f, 1f);
+
         } catch (Exception ex) {
             Entry.Logger.Info($"[FallingStar] Error playing VFX: {ex.Message}");
         }
