@@ -6,8 +6,8 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mojsk"]
 shader = ExtResource("1_mojsk")
-shader_parameter/glow_intensity = 0.0
-shader_parameter/glow_color = Color(1, 1, 1, 1)
+shader_parameter/glow_intensity = 0.3750000178125
+shader_parameter/glow_color = Color(0.53999996, 0.77, 1, 1)
 shader_parameter/blur_intensity = 0.0
 shader_parameter/blur_samples = 8
 
