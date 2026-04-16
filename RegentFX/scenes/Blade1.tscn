@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bggke23ev6xts"]
+[gd_scene load_steps=5 format=3 uid="uid://bggke23ev6xts"]
 
 [ext_resource type="Texture2D" uid="uid://dukapbukf0c24" path="res://RegentFX/images/weapon1.png" id="1_75r01"]
+[ext_resource type="Script" uid="uid://ddjhp4yn1738p" path="res://Scripts/Vfx/Blade.cs" id="1_g4h6p"]
 [ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="1_mojsk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mojsk"]
@@ -11,7 +12,9 @@ shader_parameter/blur_intensity = 0.0
 shader_parameter/blur_samples = 8
 
 [node name="Blade" type="Node2D"]
+script = ExtResource("1_g4h6p")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mojsk")
+position = Vector2(-90, 0)
 texture = ExtResource("1_75r01")

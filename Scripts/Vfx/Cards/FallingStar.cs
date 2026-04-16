@@ -29,7 +29,7 @@ public class FallingStar : CardFX {
     
     private List<Vector2> starPos = new() {
         new Vector2(0f, 0f),
-        new Vector2(0f, -50f),
+        new Vector2(30f, -50f),
     };
     
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
@@ -124,7 +124,7 @@ public static class FallingStarPatch {
             WorldEnvironmentUtil.TweenExposure(1f, .5f);
 
         } catch (Exception ex) {
-            Entry.Logger.Info($"[FallingStar] Error playing VFX: {ex.Message}");
+            Entry.Logger.Error($"[FallingStar] Error playing VFX: {ex.Message}");
         }
     }
 

@@ -8,15 +8,14 @@ namespace RegentFX.Scripts.Vfx;
 /// 星星特效节点
 /// 支持自转、律动、随机变化效果
 /// </summary>
-public partial class Star : NLargeMagicMissileVfx
-{
-	public enum TintMode
-	{
+public partial class Star : Node2D {
+	public enum TintMode {
 		Multiply = 0,
 		Screen = 1,
 		Overlay = 2,
 		HueShift = 3,
 	}
+
 	#region 可配置参数 (可在Godot编辑器中调整)
 
 	[Export] public float RotationSpeed { get; set; } = 90f;
@@ -36,8 +35,7 @@ public partial class Star : NLargeMagicMissileVfx
 	[Export] public float BaseScale { get; set; } = 1f;
 	[Export] public bool EnableTrail { get; set; } = false;
 
-	[ExportGroup("Connection")]
-	[Export] public float ConnectionLineWidth { get; set; } = 2f;
+	[ExportGroup("Connection")] [Export] public float ConnectionLineWidth { get; set; } = 2f;
 	[Export] public Color ConnectionLineColor { get; set; } = Colors.White;
 	[Export] public float ConnectionLineAlpha { get; set; } = 1f;
 	[Export] public bool EnableConnectionLinePulse { get; set; } = true;
@@ -58,8 +56,7 @@ public partial class Star : NLargeMagicMissileVfx
 	private float _connectionLinePulsePhase;
 	private readonly Dictionary<Star, float> _connections = new();
 
-	public override void _Ready()
-	{
+	public override void _Ready() {
 		_sprite = GetNode<Sprite2D>("Sprite");
 		_trailParticles = GetNodeOrNull<GpuParticles2D>("TrailParticles");
 		_tintMaterial = (_sprite?.Material as ShaderMaterial)?.Duplicate() as ShaderMaterial;
@@ -74,8 +71,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 更新尾迹状态
 	/// </summary>
-	private void UpdateTrailState()
-	{
+	private void UpdateTrailState() {
 		if (_trailParticles == null) return;
 
 		_trailParticles.Visible = EnableTrail;
@@ -90,8 +86,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 初始化随机值，让每个星星都有独特的行为
 	/// </summary>
-	private void InitializeRandomValues()
-	{
+	private void InitializeRandomValues() {
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();
 
@@ -111,47 +106,39 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 应用初始变换
 	/// </summary>
-	private void ApplyInitialTransform()
-	{
+	private void ApplyInitialTransform() {
 		RotationDegrees = _rotationPhase;
 		UpdateScale(0f);
 	}
 
-	public override void _Process(double delta)
-	{
+	public override void _Process(double delta) {
 		float dt = (float)delta;
 
 		// 自转
-		if (Mathf.Abs(_actualRotationSpeed) > 0.001f)
-		{
+		if (Mathf.Abs(_actualRotationSpeed) > 0.001f) {
 			RotationDegrees += _actualRotationSpeed * dt;
 		}
 
 		// 律动
-		if (EnablePulse)
-		{
+		if (EnablePulse) {
 			UpdateScale(dt);
 		}
 
 		// 连线脉冲
-		if (EnableConnectionLinePulse && _connections.Count > 0)
-		{
+		if (EnableConnectionLinePulse && _connections.Count > 0) {
 			_connectionLinePulsePhase += ConnectionLinePulseSpeed * dt;
 			float pulseFactor = (Mathf.Sin(_connectionLinePulsePhase) + 1f) / 2f;
 			ConnectionLineAlpha = Mathf.Lerp(ConnectionLinePulseMinAlpha, ConnectionLinePulseMaxAlpha, pulseFactor);
 		}
 
 		// 需要重绘连线
-		if (_connections.Count > 0)
-		{
+		if (_connections.Count > 0) {
 			QueueRedraw();
 		}
 	}
 
-	public override void _Draw()
-	{
-		foreach (var (target, baseAlpha) in _connections)
-		{
+	public override void _Draw() {
+		foreach (var (target, baseAlpha) in _connections) {
 			if (target == null || !IsInstanceValid(target)) continue;
 
 			Vector2 targetPos = target.GlobalPosition;
@@ -168,8 +155,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 更新缩放实现律动效果
 	/// </summary>
-	private void UpdateScale(float dt)
-	{
+	private void UpdateScale(float dt) {
 		if (_sprite == null) return;
 
 		_pulsePhase += _actualPulseSpeed * dt;
@@ -184,24 +170,21 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 重新随机化当前星星的参数（用于动态变化）
 	/// </summary>
-	public void ReRandomize()
-	{
+	public void ReRandomize() {
 		InitializeRandomValues();
 	}
 
 	/// <summary>
 	/// 设置基础缩放
 	/// </summary>
-	public void SetBaseScale(float scale)
-	{
+	public void SetBaseScale(float scale) {
 		BaseScale = scale;
 	}
 
 	/// <summary>
 	/// 设置旋转速度
 	/// </summary>
-	public void SetRotationSpeed(float speed)
-	{
+	public void SetRotationSpeed(float speed) {
 		RotationSpeed = speed;
 		_actualRotationSpeed = speed * _rotationDirection;
 	}
@@ -209,8 +192,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 设置律动速度
 	/// </summary>
-	public void SetPulseSpeed(float speed)
-	{
+	public void SetPulseSpeed(float speed) {
 		PulseSpeed = speed;
 		_actualPulseSpeed = speed;
 	}
@@ -221,15 +203,13 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <param name="color">目标颜色</param>
 	/// <param name="duration">过渡时长(秒)，0为瞬间切换</param>
 	/// <param name="mode">混合模式，默认不变</param>
-	public void ChangeColorTo(Color color, float duration = 0.3f, TintMode? mode = null)
-	{
+	public void ChangeColorTo(Color color, float duration = 0.3f, TintMode? mode = null) {
 		if (_tintMaterial == null) return;
 
 		if (mode.HasValue)
 			SetTintMode(mode.Value);
 
-		if (duration <= 0f)
-		{
+		if (duration <= 0f) {
 			_tintMaterial.SetShaderParameter("tint_color", color);
 			UpdateTrailColor(color);
 			return;
@@ -239,8 +219,7 @@ public partial class Star : NLargeMagicMissileVfx
 		var tween = CreateTween();
 		tween.SetTrans(Tween.TransitionType.Quad);
 		tween.SetEase(Tween.EaseType.Out);
-		tween.TweenMethod(Callable.From<float>((t) =>
-		{
+		tween.TweenMethod(Callable.From<float>((t) => {
 			if (_tintMaterial == null) return;
 			Color c = from.Lerp(color, t);
 			_tintMaterial.SetShaderParameter("tint_color", c);
@@ -251,14 +230,12 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 设置色调混合模式
 	/// </summary>
-	public void SetTintMode(TintMode mode)
-	{
+	public void SetTintMode(TintMode mode) {
 		if (_tintMaterial == null) return;
 		_tintMaterial.SetShaderParameter("tint_mode", (int)mode);
 	}
 
-	private void UpdateTrailColor(Color color)
-	{
+	private void UpdateTrailColor(Color color) {
 		if (_trailParticles?.ProcessMaterial is not ParticleProcessMaterial mat) return;
 		color.A = 0.17254902f;
 		mat.Color = color;
@@ -267,8 +244,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 渐隐销毁
 	/// </summary>
-	public async void FadeOutAndDestroy(float duration = 0.5f)
-	{
+	public async void FadeOutAndDestroy(float duration = 0.5f) {
 		if (_sprite == null) return;
 
 		var tween = CreateTween();
@@ -285,11 +261,9 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 与目标星星建立连线
 	/// </summary>
-	public void ConnectTo(Star target, float? alpha = null)
-	{
+	public void ConnectTo(Star target, float? alpha = null) {
 		if (target == null || target == this) return;
-		if (!_connections.ContainsKey(target))
-		{
+		if (!_connections.ContainsKey(target)) {
 			_connections.Add(target, alpha ?? ConnectionLineAlpha);
 		}
 	}
@@ -297,10 +271,8 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 断开与目标星星的连线
 	/// </summary>
-	public void DisconnectFrom(Star target)
-	{
-		if (target != null)
-		{
+	public void DisconnectFrom(Star target) {
+		if (target != null) {
 			_connections.Remove(target);
 			QueueRedraw();
 		}
@@ -309,8 +281,7 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 断开所有连线
 	/// </summary>
-	public void DisconnectAll()
-	{
+	public void DisconnectAll() {
 		_connections.Clear();
 		QueueRedraw();
 	}
@@ -318,18 +289,15 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 检查是否与目标星星有连线
 	/// </summary>
-	public bool IsConnectedTo(Star target)
-	{
+	public bool IsConnectedTo(Star target) {
 		return target != null && _connections.ContainsKey(target);
 	}
 
 	/// <summary>
 	/// 设置指定连线的透明度
 	/// </summary>
-	public void SetConnectionAlpha(Star target, float alpha)
-	{
-		if (_connections.ContainsKey(target))
-		{
+	public void SetConnectionAlpha(Star target, float alpha) {
+		if (_connections.ContainsKey(target)) {
 			_connections[target] = alpha;
 		}
 	}
@@ -337,13 +305,11 @@ public partial class Star : NLargeMagicMissileVfx
 	/// <summary>
 	/// 获取所有已连接的星星
 	/// </summary>
-	public IReadOnlyDictionary<Star, float> GetConnections()
-	{
+	public IReadOnlyDictionary<Star, float> GetConnections() {
 		return _connections;
 	}
 
-	public override void _ExitTree()
-	{
+	public override void _ExitTree() {
 		DisconnectAll();
 	}
 }

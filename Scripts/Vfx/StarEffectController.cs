@@ -148,6 +148,7 @@ public partial class StarEffectController : Node2D {
         float shakeSpeed = _currentCardFX.ShakeSpeed;
 
         foreach (var star in _borrowedStars) {
+            if (star == null || !IsInstanceValid(star)) continue;
             if (!_starShakePhases.TryGetValue(star, out float phase)) continue;
             if (!_starTargetPositions.TryGetValue(star, out Vector2 targetPos)) continue;
 
@@ -182,22 +183,25 @@ public partial class StarEffectController : Node2D {
         StarRingController?.ResetStarCount();
     }
 
+
+    void ReturnStar(Star star) {
+        // 闪烁效果
+        var tween = CreateTween();
+        tween.SetTrans(Tween.TransitionType.Quad);
+        tween.SetEase(Tween.EaseType.Out);
+
+        // 闪烁：快速缩放后消失
+        tween.TweenProperty(star, "scale", star.Scale * 1.3f, 0.05f);
+        tween.TweenProperty(star, "modulate:a", 0f, 0.1f);
+
+        // 动画完成后销毁
+        tween.Finished += star.QueueFree;
+    }
+
     private void ReturnAllStars() {
         _isShaking = false;
         foreach (var star in _borrowedStars) {
-            // 闪烁效果
-            var tween = CreateTween();
-            tween.SetTrans(Tween.TransitionType.Quad);
-            tween.SetEase(Tween.EaseType.Out);
-
-            // 闪烁：快速缩放后消失
-            tween.TweenProperty(star, "scale", star.Scale * 1.3f, 0.05f);
-            tween.TweenProperty(star, "modulate:a", 0f, 0.1f);
-
-            // 动画完成后销毁
-            tween.Finished += () => {
-                star.QueueFree();
-            };
+            ReturnStar(star);
         }
 
         // 清空列表

@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ywneud0orne1"]
-
-[ext_resource type="PackedScene" uid="uid://bggke23ev6xts" path="res://RegentFX/scenes/Blade1.tscn" id="1_jdw3a"]
-
-[node name="BladeVfx1" type="Node2D"]
-
-[node name="Blade" parent="." instance=ExtResource("1_jdw3a")]
-position = Vector2(-689, -292)

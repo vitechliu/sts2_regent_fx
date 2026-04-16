@@ -1,4 +1,5 @@
 using Godot;
+using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -27,18 +28,7 @@ public static class VFXUtil {
     }
     
     public static Node2D? GenVFXNode(string scenePath) {
-        PackedScene scene = GD.Load<PackedScene>(scenePath);
-        if (scene == null) {
-            Entry.Logger.Info($"Failed to load scene: {scenePath}");
-            return null;
-        }
-
-        Node2D vfxNode = scene.Instantiate<Node2D>();
-        if (vfxNode == null) {
-            Entry.Logger.Info("Failed to instantiate VFX node");
-            return null;
-        }
-        return vfxNode;
+        return PreloadManager.Cache.GetScene(scenePath).Instantiate<Node2D>();
     }
 
     public static Vector2 GetEnemiesCenter(CombatState state) {
