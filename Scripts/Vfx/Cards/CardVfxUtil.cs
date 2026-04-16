@@ -65,8 +65,6 @@ public static class CardVfxUtil {
 
         try {
             Node2D vfxNode = VFXUtil.GenVFXNode(scenePath);
-            if (vfxNode == null) return;
-
             Node2D? startNode = vfxNode.FindChild("StartPos") as Node2D;
             if (startNode == null) {
                 Entry.Logger.Error($"[{logTag}] No StartPos found in VFX scene");

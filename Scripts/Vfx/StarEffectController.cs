@@ -67,12 +67,12 @@ public partial class StarEffectController : Node2D {
             return;
         }
         if (_currentCardFX == null) {
-            Entry.Logger.Warn("[StarEffectController] CardFX is null, cannot borrow stars");
             return;
         }
 
         // -1 表示借用所有星星
         int starCount = _currentCardFX.StarCount;
+        if (starCount == 0) return;
         int targetCount = starCount == -1 ? StarRingController.GetCurrentStarCount() : starCount;
 
         for (int i = 0; i < targetCount; i++) {

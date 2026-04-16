@@ -63,5 +63,6 @@ void fragment() {
     // 3. 合成最终颜色
     vec3 final_rgb = blurred_color.rgb + glow_rgb;
     
-    COLOR = vec4(final_rgb, tex_color.a);
+    float final_alpha = tex_color.a * COLOR.a;
+	COLOR = vec4(final_rgb, final_alpha);
 }

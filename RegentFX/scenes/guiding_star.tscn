@@ -1,35 +1,82 @@
-[gd_scene load_steps=32 format=3 uid="uid://bkhrtoastpr3n"]
+[gd_scene load_steps=34 format=3 uid="uid://bkhrtoastpr3n"]
 
-[ext_resource type="Texture2D" uid="uid://bvtjsxj1djbqa" path="res://RegentFX/frames/guiding_star/fn0001.png" id="1_vnrar"]
-[ext_resource type="Texture2D" uid="uid://cli10jkdx8r4p" path="res://RegentFX/frames/guiding_star/fn0002.png" id="2_m20t4"]
-[ext_resource type="Texture2D" uid="uid://b5xbpyf53fsyi" path="res://RegentFX/frames/guiding_star/fn0003.png" id="3_vepka"]
-[ext_resource type="Texture2D" uid="uid://b8spn50d1p81k" path="res://RegentFX/frames/guiding_star/fn0004.png" id="4_43wly"]
-[ext_resource type="Texture2D" uid="uid://dv3pdab0231hy" path="res://RegentFX/frames/guiding_star/fn0005.png" id="5_b36xi"]
-[ext_resource type="Texture2D" uid="uid://be47cm4myo4vh" path="res://RegentFX/frames/guiding_star/fn0006.png" id="6_v0kxj"]
-[ext_resource type="Texture2D" uid="uid://bdxu2t8wfqlam" path="res://RegentFX/frames/guiding_star/fn0007.png" id="7_26orh"]
-[ext_resource type="Texture2D" uid="uid://23wmv08rhpbe" path="res://RegentFX/frames/guiding_star/fn0008.png" id="8_iu3oa"]
-[ext_resource type="Texture2D" uid="uid://xqanamwtrp30" path="res://RegentFX/frames/guiding_star/fn0009.png" id="9_0l3cm"]
-[ext_resource type="Texture2D" uid="uid://ci10h7upyijoi" path="res://RegentFX/frames/guiding_star/fn0010.png" id="10_thuy2"]
-[ext_resource type="Texture2D" uid="uid://ckan1shmjms6n" path="res://RegentFX/frames/guiding_star/fn0011.png" id="11_qhre8"]
-[ext_resource type="Texture2D" uid="uid://dnjn2dck6ca1u" path="res://RegentFX/frames/guiding_star/fn0012.png" id="12_76yt8"]
-[ext_resource type="Texture2D" uid="uid://d0f852koc1d0o" path="res://RegentFX/frames/guiding_star/fn0013.png" id="13_4j0bi"]
-[ext_resource type="Texture2D" uid="uid://djtbevlgyggne" path="res://RegentFX/frames/guiding_star/fn0014.png" id="14_qlnap"]
-[ext_resource type="Texture2D" uid="uid://cwnbc4khmkf7a" path="res://RegentFX/frames/guiding_star/fn0015.png" id="15_p64wt"]
-[ext_resource type="Texture2D" uid="uid://bdvd0xob81pna" path="res://RegentFX/frames/guiding_star/fn0016.png" id="16_y11rw"]
-[ext_resource type="Texture2D" uid="uid://d5dct1f1rqyw" path="res://RegentFX/frames/guiding_star/fn0017.png" id="17_rfolk"]
-[ext_resource type="Texture2D" uid="uid://emi5t1luhl66" path="res://RegentFX/frames/guiding_star/fn0018.png" id="18_etcv7"]
-[ext_resource type="Texture2D" uid="uid://bfh1pws2j37fr" path="res://RegentFX/frames/guiding_star/fn0019.png" id="19_c77es"]
-[ext_resource type="Texture2D" uid="uid://b1cvdtk3x41m5" path="res://RegentFX/frames/guiding_star/fn0020.png" id="20_k2dto"]
-[ext_resource type="Texture2D" uid="uid://bcemuqnlmvpyw" path="res://RegentFX/frames/guiding_star/fn0021.png" id="21_2nir3"]
-[ext_resource type="Texture2D" uid="uid://c0j3xymhs8lvf" path="res://RegentFX/frames/guiding_star/fn0022.png" id="22_ro0eh"]
-[ext_resource type="Texture2D" uid="uid://ot15fwrj7w8v" path="res://RegentFX/frames/guiding_star/fn0023.png" id="23_akyf6"]
-[ext_resource type="Texture2D" uid="uid://c0tglnecom8ct" path="res://RegentFX/frames/guiding_star/fn0024.png" id="24_6cehi"]
-[ext_resource type="Texture2D" uid="uid://bcl5k25f4363f" path="res://RegentFX/frames/guiding_star/fn0025.png" id="25_oo4q0"]
-[ext_resource type="Texture2D" uid="uid://5iarj3pjd1wq" path="res://RegentFX/frames/guiding_star/fn0026.png" id="26_gtk2w"]
-[ext_resource type="Texture2D" uid="uid://cmrb8h4dd5y7k" path="res://RegentFX/frames/guiding_star/fn0027.png" id="27_kuk2u"]
-[ext_resource type="Texture2D" uid="uid://bhs31xj4y7ygb" path="res://RegentFX/frames/guiding_star/fn0028.png" id="28_vsqn7"]
-[ext_resource type="Texture2D" uid="uid://bgobbogr4tlhb" path="res://RegentFX/frames/guiding_star/fn0029.png" id="29_5xute"]
-[ext_resource type="Texture2D" uid="uid://b71813drtp7pg" path="res://RegentFX/frames/guiding_star/fn0030.png" id="30_tahw5"]
+[ext_resource type="Shader" uid="uid://c5d20bfpfdx5f" path="res://RegentFX/shaders/advanced.gdshader" id="1_m20t4"]
+[ext_resource type="Texture2D" uid="uid://b4t37s3w8ajp3" path="res://RegentFX/frames/guiding_star/fn0001.png" id="1_vnrar"]
+[ext_resource type="Texture2D" uid="uid://c2hawxgxavppx" path="res://RegentFX/frames/guiding_star/fn0002.png" id="2_m20t4"]
+[ext_resource type="Texture2D" uid="uid://cmy0p3ogtriiv" path="res://RegentFX/frames/guiding_star/fn0003.png" id="3_vepka"]
+[ext_resource type="Texture2D" uid="uid://ct0nv0dv0sd4b" path="res://RegentFX/frames/guiding_star/fn0004.png" id="4_43wly"]
+[ext_resource type="Texture2D" uid="uid://dfnoyorjfcnrc" path="res://RegentFX/frames/guiding_star/fn0005.png" id="5_b36xi"]
+[ext_resource type="Texture2D" uid="uid://b3wwag7r60r3g" path="res://RegentFX/frames/guiding_star/fn0006.png" id="6_v0kxj"]
+[ext_resource type="Texture2D" uid="uid://igqjsbjetrif" path="res://RegentFX/frames/guiding_star/fn0007.png" id="7_26orh"]
+[ext_resource type="Texture2D" uid="uid://hgqyhrvxxj0w" path="res://RegentFX/frames/guiding_star/fn0008.png" id="8_iu3oa"]
+[ext_resource type="Texture2D" uid="uid://tygokhj26d65" path="res://RegentFX/frames/guiding_star/fn0009.png" id="9_0l3cm"]
+[ext_resource type="Texture2D" uid="uid://qc85ioycct6t" path="res://RegentFX/frames/guiding_star/fn0010.png" id="10_thuy2"]
+[ext_resource type="Texture2D" uid="uid://cwtp5knmcekf6" path="res://RegentFX/frames/guiding_star/fn0011.png" id="11_qhre8"]
+[ext_resource type="Texture2D" uid="uid://d1g2fkrfgda5f" path="res://RegentFX/frames/guiding_star/fn0012.png" id="12_76yt8"]
+[ext_resource type="Texture2D" uid="uid://bvlg00vbsxhm" path="res://RegentFX/frames/guiding_star/fn0013.png" id="13_4j0bi"]
+[ext_resource type="Texture2D" uid="uid://dfbryubhhwqu5" path="res://RegentFX/frames/guiding_star/fn0014.png" id="14_qlnap"]
+[ext_resource type="Texture2D" uid="uid://dnujwmnf5shuk" path="res://RegentFX/frames/guiding_star/fn0015.png" id="15_p64wt"]
+[ext_resource type="Texture2D" uid="uid://dxcn68y7nrwg1" path="res://RegentFX/frames/guiding_star/fn0016.png" id="16_y11rw"]
+[ext_resource type="Texture2D" uid="uid://b8kcily70l423" path="res://RegentFX/frames/guiding_star/fn0017.png" id="17_rfolk"]
+[ext_resource type="Texture2D" uid="uid://bhvar8ssx0lcj" path="res://RegentFX/frames/guiding_star/fn0018.png" id="18_etcv7"]
+[ext_resource type="Texture2D" uid="uid://cwu7pkichxyjd" path="res://RegentFX/frames/guiding_star/fn0019.png" id="19_c77es"]
+[ext_resource type="Texture2D" uid="uid://blhdc70mm5yso" path="res://RegentFX/frames/guiding_star/fn0020.png" id="20_k2dto"]
+[ext_resource type="Texture2D" uid="uid://gwykvhx2f2xc" path="res://RegentFX/frames/guiding_star/fn0021.png" id="21_2nir3"]
+[ext_resource type="Texture2D" uid="uid://cols2l8823i40" path="res://RegentFX/frames/guiding_star/fn0022.png" id="22_ro0eh"]
+[ext_resource type="Texture2D" uid="uid://c7wf0kl10v1by" path="res://RegentFX/frames/guiding_star/fn0023.png" id="23_akyf6"]
+[ext_resource type="Texture2D" uid="uid://bgqiby77m3eo0" path="res://RegentFX/frames/guiding_star/fn0024.png" id="24_6cehi"]
+[ext_resource type="Texture2D" uid="uid://bq2xu8wupi4x0" path="res://RegentFX/frames/guiding_star/fn0025.png" id="25_oo4q0"]
+[ext_resource type="Texture2D" uid="uid://b1ujh4vgd6gql" path="res://RegentFX/frames/guiding_star/fn0026.png" id="26_gtk2w"]
+[ext_resource type="Texture2D" uid="uid://cq3gdxqgdjbd0" path="res://RegentFX/frames/guiding_star/fn0027.png" id="27_kuk2u"]
+[ext_resource type="Texture2D" uid="uid://c62kcdd5pn4h6" path="res://RegentFX/frames/guiding_star/fn0028.png" id="28_vsqn7"]
+[ext_resource type="Texture2D" uid="uid://db0bmtjn6mdm4" path="res://RegentFX/frames/guiding_star/fn0029.png" id="29_5xute"]
+[ext_resource type="Texture2D" uid="uid://84qkdomamq0t" path="res://RegentFX/frames/guiding_star/fn0030.png" id="30_tahw5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vepka"]
+shader = ExtResource("1_m20t4")
+shader_parameter/opacity = 1.0
+shader_parameter/enable_glow = false
+shader_parameter/glow_intensity = 1.690000080275
+shader_parameter/glow_radius = 0.0
+shader_parameter/glow_color = Color(0.9333334, 0, 1, 1)
+shader_parameter/glow_threshold = 0.3930000186675
+shader_parameter/glow_softness = 1.0
+shader_parameter/bloom_intensity = 0.0
+shader_parameter/bloom_radius = 4.0
+shader_parameter/enable_blur = true
+shader_parameter/blur_radius = 0.0
+shader_parameter/blur_direction = 0
+shader_parameter/motion_blur_angle = 175.294008326465
+shader_parameter/motion_blur_distance = 20.0
+shader_parameter/enable_sharpen = false
+shader_parameter/sharpen_amount = 1.0
+shader_parameter/sharpen_radius = 1.0
+shader_parameter/enable_distortion = false
+shader_parameter/ripple_intensity = 0.0
+shader_parameter/ripple_frequency = 10.0
+shader_parameter/ripple_speed = 1.0
+shader_parameter/swirl_intensity = 0.0
+shader_parameter/swirl_center = Vector2(0.5, 0.5)
+shader_parameter/lens_distort = 0.0
+shader_parameter/chromatic_aberration = 0.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/saturation = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/contrast = 1.0
+shader_parameter/enable_color_overlay = false
+shader_parameter/overlay_color = Color(1, 0, 0, 0.5)
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/enable_gradient_map = false
+shader_parameter/gradient_color1 = Color(0, 0, 0, 1)
+shader_parameter/gradient_color2 = Color(1, 1, 1, 1)
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/pixelate_size = 0.0
+shader_parameter/invert_colors = false
+shader_parameter/grayscale = false
+shader_parameter/sepia = false
+shader_parameter/threshold_level = 0.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_j4mq6"]
 animations = [{
@@ -132,6 +179,7 @@ animations = [{
 [node name="GudingStar" type="Node2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_vepka")
 position = Vector2(-322, 5)
 sprite_frames = SubResource("SpriteFrames_j4mq6")
 autoplay = "default"

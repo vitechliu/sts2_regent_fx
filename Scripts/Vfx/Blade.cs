@@ -1,4 +1,5 @@
 using Godot;
+using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 
@@ -13,11 +14,11 @@ public partial class Blade : Node2D {
 	[Export] public float ShakeDuration { get; set; } = 0.5f;
 	[Export] public float ShakeIntensity { get; set; } = 4f;
 	[Export] public float ShakeSpeed { get; set; } = 30f;
-	[Export] public float FadeOutDuration { get; set; } = 0.3f;
+	[Export] public float FadeOutDuration { get; set; } = .3f;
 	[Export] public float StartScaleX { get; set; } = 3f;
 	[Export] public float EndScaleX { get; set; } = 1f;
 	[Export] public float StartGlowIntensity { get; set; } = 2.0f;
-	[Export] public float EndGlowIntensity { get; set; } = 0.0f;
+	[Export] public float EndGlowIntensity { get; set; } = 0.2f;
 	[Export] public Color StartGlowColor { get; set; } = new(1f, 1f, 1f, 1f);
 	[Export] public Color EndGlowColor { get; set; } = new(1f, 1f, 0.8f, 1f);
 
@@ -78,16 +79,6 @@ public partial class Blade : Node2D {
 		scaleTween.SetEase(Tween.EaseType.Out);
 		scaleTween.TweenProperty(this, "scale:x", EndScaleX, MoveDuration);
 
-		// 发光从强到弱
-		var glowTween = CreateTween();
-		glowTween.SetTrans(Tween.TransitionType.Quad);
-		glowTween.SetEase(Tween.EaseType.Out);
-		glowTween.TweenMethod(Callable.From<float>(t => {
-			float intensity = Mathf.Lerp(StartGlowIntensity, EndGlowIntensity, t);
-			Color color = StartGlowColor.Lerp(EndGlowColor, t);
-			SetGlow(intensity, color);
-		}), 0f, 1f, MoveDuration);
-
 		_moveTween.Finished += OnHitTarget;
 	}
 
@@ -100,6 +91,16 @@ public partial class Blade : Node2D {
 		var delayTween = CreateTween();
 		delayTween.TweenInterval(ShakeDuration);
 		delayTween.Finished += StartFadeOut;
+		
+		// 发光从强到弱
+		var glowTween = CreateTween();
+		glowTween.SetTrans(Tween.TransitionType.Quad);
+		glowTween.SetEase(Tween.EaseType.Out);
+		glowTween.TweenMethod(Callable.From<float>(t => {
+			float intensity = Mathf.Lerp(StartGlowIntensity, EndGlowIntensity, t);
+			Color color = StartGlowColor.Lerp(EndGlowColor, t);
+			SetGlow(intensity, color);
+		}), 0f, 1f, ShakeDuration + FadeOutDuration);
 	}
 
 	private void StartFadeOut() {
@@ -122,22 +123,14 @@ public partial class Blade : Node2D {
 		_shaderMaterial.SetShaderParameter("glow_color", color);
 	}
 
+	public static string Blade1Path = "res://RegentFX/scenes/Blade1.tscn";
+	public static string Blade2Path = "res://RegentFX/scenes/Blade2.tscn";
+
 	/// <summary>
 	/// 静态便捷方法：加载场景并发射飞刀
 	/// </summary>
 	public static Blade? SpawnAndLaunch(string scenePath, Vector2 from, Vector2 to, Node? parent = null) {
-		var scene = GD.Load<PackedScene>(scenePath);
-		if (scene == null) {
-			Entry.Logger.Warn($"[Blade] Failed to load scene: {scenePath}");
-			return null;
-		}
-
-		var blade = scene.Instantiate<Blade>();
-		if (blade == null) {
-			Entry.Logger.Warn("[Blade] Failed to instantiate blade");
-			return null;
-		}
-
+		var blade = VFXUtil.GenVFXNode<Blade>(scenePath);
 		if (parent == null) {
 			parent = NCombatRoom.Instance?.CombatVfxContainer;
 		}

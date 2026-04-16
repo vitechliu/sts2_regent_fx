@@ -27,8 +27,11 @@ public static class VFXUtil {
         node.Scale = Vector2.One * scale;
     }
     
-    public static Node2D? GenVFXNode(string scenePath) {
+    public static Node2D GenVFXNode(string scenePath) {
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<Node2D>();
+    }
+    public static T GenVFXNode<T>(string scenePath) where T : Node2D {
+        return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
 
     public static Vector2 GetEnemiesCenter(CombatState state) {
