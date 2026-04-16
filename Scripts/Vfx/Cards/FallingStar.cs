@@ -1,7 +1,6 @@
-﻿using Godot;
+using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -15,7 +14,6 @@ using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
-
 namespace RegentFX.Scripts.Vfx.Cards;
 
 /// <summary>
@@ -26,16 +24,22 @@ public class FallingStar : CardFX {
 
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -450f);
-    
+
+    public override string VfxScenePath => "res://RegentFX/scenes/falling_star.tscn";
+    public override string HitSfxPath => "res://RegentFX/sfx/falling_star.mp3";
+    public override bool HasExposureEffect => true;
+    public override float ExposureInDuration => 0.1f;
+    public override float ExposureOutDuration => 0.5f;
+
     private List<Vector2> starPos = new() {
         new Vector2(0f, 0f),
         new Vector2(30f, -50f),
     };
-    
+
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + (starPos[index] * 1.2f);
     }
-    
+
     public override void OnStartHolding(Star star, int index) {
         if (index == 0) {
             star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
@@ -48,10 +52,7 @@ public class FallingStar : CardFX {
 
 [HarmonyPatch]
 public static class FallingStarPatch {
-    
-    private const string HitSFX = "res://RegentFX/sfx/falling_star.mp3";
-    private const string ScenePath = "res://RegentFX/scenes/falling_star.tscn";
-    
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.FallingStar), "OnPlay")]
     public static bool OnPlay(
@@ -67,69 +68,19 @@ public static class FallingStarPatch {
         MegaCrit.Sts2.Core.Models.Cards.FallingStar card,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay) {
-        
-        
+
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        var config = CardFX.FromCard(card)!;
         var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
             .FromCard(card)
             .Targeting(cardPlay.Target)
             .BeforeDamage(async delegate {
-                await PlayVFX(card.Owner.Creature, cardPlay.Target);
+                await CardVfxUtil.PlayTargetedVfx(config, card.Owner.Creature, cardPlay.Target, nameof(FallingStar));
             });
         cmd._attackerAnimName = null;
-        // Entry.Logger.Info("HasHitVFX?:" + cmd.HitVfx);
         await cmd.Execute(choiceContext);
         WeakPower weakPower = await PowerCmd.Apply<WeakPower>(cardPlay.Target, card.DynamicVars.Weak.BaseValue, card.Owner.Creature, card);
         VulnerablePower vulnerablePower = await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, card.DynamicVars.Vulnerable.BaseValue, card.Owner.Creature, card);
-    }
-    
-    
-    private static async Task PlayVFX(Creature owner, Creature target) {
-        if (TestMode.IsOn) {
-            return;
-        }
-        NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
-        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
-
-        if (ownerNode == null || targetNode == null) {
-            Entry.Logger.Info("[CrescentSpear] Could not get creature nodes for VFX");
-            return;
-        }
-        try {
-            Node2D vfxNode = VFXUtil.GenVFXNode(ScenePath);
-            if (vfxNode == null) return;
-
-            var startNode = vfxNode.FindChild("StartPos") as Node2D;
-            if (startNode == null) {
-                Entry.Logger.Error("no start pos find");
-                return;
-            }
-            var startPos = ownerNode.GlobalPosition + new FallingStar().TargetOffset;
-            var targetPos = targetNode.VfxSpawnPosition;
-            vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, startPos, targetPos);
-            vfxNode.GlobalPosition = targetPos;
-
-
-            Entry.StarEffectController?.OnCancelCard();
-            // 添加到战斗特效容器
-            NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
-
-            SimpleSfxUtil.Play(HitSFX);
-            TaskHelper.RunSafely(ClearAfter(vfxNode));
-            // WorldEnvironmentUtil.TweenGlowIntensity(3f, .05f);
-            WorldEnvironmentUtil.TweenExposure(3f, .1f);
-            await Cmd.Wait(0.15f);
-            // WorldEnvironmentUtil.SetGlowIntensity(0);
-            WorldEnvironmentUtil.TweenExposure(1f, .5f);
-
-        } catch (Exception ex) {
-            Entry.Logger.Error($"[FallingStar] Error playing VFX: {ex.Message}");
-        }
-    }
-
-    public static async Task ClearAfter(Node2D? node) {
-        await Cmd.Wait(2f);
-        if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

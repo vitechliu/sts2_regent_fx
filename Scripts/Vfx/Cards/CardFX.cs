@@ -67,6 +67,50 @@ public abstract class CardFX {
     /// </summary>
     public virtual string? HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
 
+    /// <summary>
+    /// VFX 场景路径
+    /// </summary>
+    public virtual string? VfxScenePath => null;
+
+    /// <summary>
+    /// 命中音效路径
+    /// </summary>
+    public virtual string? HitSfxPath => null;
+
+    /// <summary>
+    /// 第二段音效路径（如需要）
+    /// </summary>
+    public virtual string? SecondarySfxPath => null;
+
+    /// <summary>
+    /// VFX 清理延迟（秒）
+    /// </summary>
+    public virtual float VfxClearDelay => 2f;
+
+    /// <summary>
+    /// 是否触发曝光效果
+    /// </summary>
+    public virtual bool HasExposureEffect => false;
+
+    /// <summary>
+    /// 曝光峰值
+    /// </summary>
+    public virtual float ExposurePeak => 3f;
+
+    /// <summary>
+    /// 曝光进入时长
+    /// </summary>
+    public virtual float ExposureInDuration => 0.1f;
+
+    /// <summary>
+    /// 曝光恢复时长
+    /// </summary>
+    public virtual float ExposureOutDuration => 0.5f;
+
+    /// <summary>
+    /// 播放 VFX 时是否通知 StarEffectController 取消卡牌效果
+    /// </summary>
+    public virtual bool CancelsStarEffect => true;
 
     // public virtual string? AttackerAnimNameChange => null;
     
