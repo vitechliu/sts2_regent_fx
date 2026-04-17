@@ -108,12 +108,12 @@ public partial class Blade : Node2D {
 
 		_fadeTween = CreateTween();
 		_fadeTween.SetTrans(Tween.TransitionType.Quad);
-		_fadeTween.SetEase(Tween.EaseType.Out);
-
+		_fadeTween.SetEase(Tween.EaseType.In);
+		
 		if (_sprite != null) {
 			_fadeTween.TweenProperty(_sprite, "modulate:a", 0f, FadeOutDuration);
 		}
-		_fadeTween.TweenProperty(this, "scale", Vector2.Zero, FadeOutDuration);
+		_fadeTween.TweenProperty(this, "scale:y", .2f, FadeOutDuration);
 		_fadeTween.Finished += QueueFree;
 	}
 
