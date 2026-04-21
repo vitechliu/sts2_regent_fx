@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://7kv6gfqug3cp"]
+[gd_scene load_steps=52 format=3 uid="uid://7kv6gfqug3cp"]
 
 [ext_resource type="Texture2D" uid="uid://odjr00rmalfg" path="res://RegentFX/frames/falling_star/falling_star0001.png" id="1_gmptg"]
 [ext_resource type="Texture2D" uid="uid://cek64h0eq2vmx" path="res://RegentFX/frames/falling_star/falling_star0002.png" id="2_56wjo"]
@@ -50,10 +50,6 @@
 [ext_resource type="Texture2D" uid="uid://c06rbxxag434f" path="res://RegentFX/frames/falling_star/falling_star0048.png" id="48_bvyfi"]
 [ext_resource type="Texture2D" uid="uid://dmqq4o3txi4s" path="res://RegentFX/frames/falling_star/falling_star0049.png" id="49_lvn03"]
 [ext_resource type="Texture2D" uid="uid://da0xhm7ldjdn5" path="res://RegentFX/frames/falling_star/falling_star0050.png" id="50_78igb"]
-[ext_resource type="Texture2D" uid="uid://dc1i2rkpjfqpp" path="res://RegentFX/frames/falling_star/falling_star0051.png" id="51_2g7er"]
-[ext_resource type="Texture2D" uid="uid://bm0brut6ukeac" path="res://RegentFX/frames/falling_star/falling_star0052.png" id="52_bbxyi"]
-[ext_resource type="Texture2D" uid="uid://xje2lut0rocb" path="res://RegentFX/frames/falling_star/falling_star0053.png" id="53_pfc51"]
-[ext_resource type="Texture2D" uid="uid://elhu8o5qv7m8" path="res://RegentFX/frames/falling_star/falling_star0054.png" id="54_iy8v7"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g6ioe"]
 animations = [{
@@ -209,16 +205,7 @@ animations = [{
 "texture": ExtResource("50_78igb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("51_2g7er")
-}, {
-"duration": 1.0,
-"texture": ExtResource("52_bbxyi")
-}, {
-"duration": 1.0,
-"texture": ExtResource("53_pfc51")
-}, {
-"duration": 1.0,
-"texture": ExtResource("54_iy8v7")
+"texture": null
 }],
 "loop": false,
 "name": &"default",

@@ -139,6 +139,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("34_l0h6s")
+}, {
+"duration": 1.0,
+"texture": null
 }],
 "loop": false,
 "name": &"default",

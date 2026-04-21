@@ -67,7 +67,7 @@ public static class StrikeRegentPatch {
         if (GD.Randf() < 0.5f) {
             Blade.SpawnAndLaunch(Blade.Blade2Path, startPos - new Vector2(300f, 300f), targetPos);
         }
-        Entry.StarEffectController?.OnPlayCard();
+        // Entry.StarEffectController?.OnPlayCard();
         await Cmd.Wait(0.05f);
     }
 }

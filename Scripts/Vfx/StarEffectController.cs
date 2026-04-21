@@ -201,6 +201,7 @@ public partial class StarEffectController : Node2D {
     private void ReturnAllStars() {
         _isShaking = false;
         foreach (var star in _borrowedStars) {
+            if (!IsInstanceValid(star)) continue;
             ReturnStar(star);
         }
 

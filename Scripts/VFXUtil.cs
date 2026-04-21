@@ -2,8 +2,10 @@ using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.TestSupport;
 
 namespace RegentFX.Scripts;
 
@@ -25,6 +27,21 @@ public static class VFXUtil {
         
         node.Rotation = angle;
         node.Scale = Vector2.One * scale;
+    }
+
+    public static void PlaySimple(string scenePath, Vector2 position, float lifetime = 2f) {
+        if (!TestMode.IsOn && NCombatRoom.Instance != null) {
+            Node2D node2D = GenVFXNode(scenePath);
+            NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
+            node2D.GlobalPosition = position;
+            
+            SceneTreeTimer timer = node2D.GetTree().CreateTimer(lifetime);
+            timer.Timeout += () => {
+                if (GodotObject.IsInstanceValid(node2D)) {
+                    node2D.QueueFreeSafely();
+                }
+            };
+        }
     }
     
     public static Node2D GenVFXNode(string scenePath) {
