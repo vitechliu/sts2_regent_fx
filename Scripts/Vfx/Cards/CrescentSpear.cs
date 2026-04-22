@@ -18,6 +18,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// <summary>
 /// CrescentSpear 卡牌特效
 /// </summary>
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.CrescentSpear))]
 public class CrescentSpear: CardFX {
     public override int StarCount => 1;
     // 更靠左上的位置

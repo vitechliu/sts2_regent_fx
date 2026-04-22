@@ -12,6 +12,7 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.SevenStars))]
 public class SevenStars : CardFX {
     // -1 表示使用所有星星
     public override int StarCount => 7;

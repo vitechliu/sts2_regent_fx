@@ -17,6 +17,7 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.DyingStar))]
 public class DyingStar : CardFX {
     public override int StarCount => 3;
 

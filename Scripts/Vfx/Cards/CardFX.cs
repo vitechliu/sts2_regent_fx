@@ -1,12 +1,5 @@
-﻿using Godot;
-using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Helpers;
+using Godot;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -15,17 +8,34 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
 public abstract class CardFX {
+    private static readonly Dictionary<Type, Type> CardFxRegistry = new();
+    private static bool _registryInitialized;
+
+    private static void EnsureRegistry() {
+        if (_registryInitialized) return;
+        _registryInitialized = true;
+
+        var fxTypes = typeof(CardFX).Assembly.GetTypes()
+            .Where(t => t.IsSubclassOf(typeof(CardFX)) && !t.IsAbstract);
+
+        foreach (var fxType in fxTypes) {
+            var attr = fxType.GetCustomAttributes(typeof(CardFxAttribute), false)
+                .Cast<CardFxAttribute>()
+                .FirstOrDefault();
+            if (attr != null) {
+                CardFxRegistry[attr.CardType] = fxType;
+            }
+        }
+    }
+
     public static CardFX? FromCard(CardModel card) {
-        return card switch {
-            MegaCrit.Sts2.Core.Models.Cards.FallingStar => new FallingStar(),
-            MegaCrit.Sts2.Core.Models.Cards.CrescentSpear => new CrescentSpear(),
-            MegaCrit.Sts2.Core.Models.Cards.Stardust => new Stardust(),
-            MegaCrit.Sts2.Core.Models.Cards.SevenStars => new SevenStars(),
-            MegaCrit.Sts2.Core.Models.Cards.DyingStar => new DyingStar(),
-            MegaCrit.Sts2.Core.Models.Cards.GuidingStar => new GuidingStar(),
-            MegaCrit.Sts2.Core.Models.Cards.StrikeRegent => new StrikeRegent(),
-            _ => null
-        };
+        EnsureRegistry();
+        if (card == null) return null;
+        var cardType = card.GetType();
+        if (CardFxRegistry.TryGetValue(cardType, out var fxType)) {
+            return (CardFX?)Activator.CreateInstance(fxType);
+        }
+        return null;
     }
     
     /// <summary>

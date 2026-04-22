@@ -19,6 +19,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// <summary>
 /// GuidingStar 卡牌特效
 /// </summary>
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.GuidingStar))]
 public class GuidingStar : CardFX {
     public override int StarCount => 3;
 

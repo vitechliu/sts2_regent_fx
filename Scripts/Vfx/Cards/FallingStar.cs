@@ -19,6 +19,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// <summary>
 /// FallingStar 卡牌特效
 /// </summary>
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.FallingStar))]
 public class FallingStar : CardFX {
     public override int StarCount => 2;
 
