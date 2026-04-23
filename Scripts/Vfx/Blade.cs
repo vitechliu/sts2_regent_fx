@@ -2,6 +2,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.TestSupport;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -151,5 +152,15 @@ public partial class Blade : Node2D {
 		_shakeTween?.Kill();
 		_fadeTween?.Kill();
 		base._ExitTree();
+	}
+
+	public static void PlayBlade(Vector2 position) {
+		if (TestMode.IsOn) return;
+		Vector2 startPos = GD.Randf() < 0.7 ? new Vector2(GD.Randi() % 600, 0f) : new Vector2(0f, GD.Randi() % 500);
+		Vector2 targetPos = position + new Vector2((float)GD.RandRange(-30f, 30f), (float)GD.RandRange(-30f, 30f));
+		SpawnAndLaunch(Blade.Blade1Path, startPos, targetPos);
+		if (GD.Randf() < 0.5f) {
+			SpawnAndLaunch(Blade.Blade2Path, startPos - new Vector2(300f, 300f), targetPos);
+		}
 	}
 }

@@ -1,0 +1,200 @@
+[gd_scene load_steps=37 format=3 uid="uid://70nb5xyqoivy"]
+
+[ext_resource type="Shader" uid="uid://c5d20bfpfdx5f" path="res://RegentFX/shaders/advanced.gdshader" id="1_2undt"]
+[ext_resource type="Texture2D" uid="uid://dg8k04jeos3lr" path="res://RegentFX/frames/wrought_in_war/fn0001.png" id="2_mg305"]
+[ext_resource type="Texture2D" uid="uid://dd0cm4f8gicl" path="res://RegentFX/frames/wrought_in_war/fn0002.png" id="3_rcga7"]
+[ext_resource type="Texture2D" uid="uid://dxsqo80qgneeg" path="res://RegentFX/frames/wrought_in_war/fn0003.png" id="4_w0n7r"]
+[ext_resource type="Texture2D" uid="uid://drg5x6oguxaha" path="res://RegentFX/frames/wrought_in_war/fn0004.png" id="5_coau7"]
+[ext_resource type="Texture2D" uid="uid://bbasdl7cwludx" path="res://RegentFX/frames/wrought_in_war/fn0005.png" id="6_kfqjf"]
+[ext_resource type="Texture2D" uid="uid://cl4scns51fi4k" path="res://RegentFX/frames/wrought_in_war/fn0006.png" id="7_dk6pe"]
+[ext_resource type="Texture2D" uid="uid://b4542hq7n0dtg" path="res://RegentFX/frames/wrought_in_war/fn0007.png" id="8_kdj7w"]
+[ext_resource type="Texture2D" uid="uid://b5rjul3a7i83h" path="res://RegentFX/frames/wrought_in_war/fn0008.png" id="9_g138c"]
+[ext_resource type="Texture2D" uid="uid://bsodxvxemgqss" path="res://RegentFX/frames/wrought_in_war/fn0009.png" id="10_2b3jf"]
+[ext_resource type="Texture2D" uid="uid://cbe2qqmro2fr1" path="res://RegentFX/frames/wrought_in_war/fn0010.png" id="11_o2lk8"]
+[ext_resource type="Texture2D" uid="uid://crsbhs50s404s" path="res://RegentFX/frames/wrought_in_war/fn0011.png" id="12_i65ly"]
+[ext_resource type="Texture2D" uid="uid://b1gbcwy6x63v7" path="res://RegentFX/frames/wrought_in_war/fn0012.png" id="13_dbwqm"]
+[ext_resource type="Texture2D" uid="uid://d4acf8m6vjrhm" path="res://RegentFX/frames/wrought_in_war/fn0013.png" id="14_a0srr"]
+[ext_resource type="Texture2D" uid="uid://cvxammbct1vp2" path="res://RegentFX/frames/wrought_in_war/fn0014.png" id="15_6y0ck"]
+[ext_resource type="Texture2D" uid="uid://5r7mg56nyipg" path="res://RegentFX/frames/wrought_in_war/fn0015.png" id="16_t5u5n"]
+[ext_resource type="Texture2D" uid="uid://d3hxx7u7n0gy1" path="res://RegentFX/frames/wrought_in_war/fn0016.png" id="17_w5vwf"]
+[ext_resource type="Texture2D" uid="uid://bxh2u2kcoa6cq" path="res://RegentFX/frames/wrought_in_war/fn0017.png" id="18_7s57c"]
+[ext_resource type="Texture2D" uid="uid://degae0dknudq1" path="res://RegentFX/frames/wrought_in_war/fn0018.png" id="19_o1o6b"]
+[ext_resource type="Texture2D" uid="uid://cmj2hitq7ff8j" path="res://RegentFX/frames/wrought_in_war/fn0019.png" id="20_44g72"]
+[ext_resource type="Texture2D" uid="uid://dlmwv30wifqev" path="res://RegentFX/frames/wrought_in_war/fn0020.png" id="21_r2fhn"]
+[ext_resource type="Texture2D" uid="uid://ch0iyp8rbu7lr" path="res://RegentFX/frames/wrought_in_war/fn0021.png" id="22_n22r8"]
+[ext_resource type="Texture2D" uid="uid://dqs3n56xgljyt" path="res://RegentFX/frames/wrought_in_war/fn0022.png" id="23_q5nxe"]
+[ext_resource type="Texture2D" uid="uid://vejns8effukx" path="res://RegentFX/frames/wrought_in_war/fn0023.png" id="24_ipj75"]
+[ext_resource type="Texture2D" uid="uid://c8wbfsrh4r6hr" path="res://RegentFX/frames/wrought_in_war/fn0024.png" id="25_u2ubh"]
+[ext_resource type="Texture2D" uid="uid://cak35x7ci45wj" path="res://RegentFX/frames/wrought_in_war/fn0025.png" id="26_xcwx6"]
+[ext_resource type="Texture2D" uid="uid://bxbs8egl0e5mk" path="res://RegentFX/frames/wrought_in_war/fn0026.png" id="27_jcftq"]
+[ext_resource type="Texture2D" uid="uid://bit8kue0lv463" path="res://RegentFX/frames/wrought_in_war/fn0027.png" id="28_0wldy"]
+[ext_resource type="Texture2D" uid="uid://byd3byvk536yu" path="res://RegentFX/frames/wrought_in_war/fn0028.png" id="29_uqt4n"]
+[ext_resource type="Texture2D" uid="uid://siu53wnh0ev4" path="res://RegentFX/frames/wrought_in_war/fn0029.png" id="30_apbi1"]
+[ext_resource type="Texture2D" uid="uid://blb5174af5y8m" path="res://RegentFX/frames/wrought_in_war/fn0030.png" id="31_m3b05"]
+[ext_resource type="Texture2D" uid="uid://cp28yejq6jnhm" path="res://RegentFX/frames/wrought_in_war/fn0031.png" id="32_rlq63"]
+[ext_resource type="Texture2D" uid="uid://y33j2ac1ldkl" path="res://RegentFX/frames/wrought_in_war/fn0032.png" id="33_4cq2l"]
+[ext_resource type="Texture2D" uid="uid://b0ru76vllv1lp" path="res://RegentFX/frames/wrought_in_war/fn0033.png" id="34_y0rqj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1qy2n"]
+shader = ExtResource("1_2undt")
+shader_parameter/opacity = 1.0
+shader_parameter/enable_glow = true
+shader_parameter/glow_intensity = 0.122000005795
+shader_parameter/glow_radius = 0.20400000969
+shader_parameter/glow_color = Color(0.39999998, 0.73999995, 1, 1)
+shader_parameter/glow_threshold = 0.1970000093575
+shader_parameter/glow_softness = 0.97200004617
+shader_parameter/bloom_intensity = 0.0
+shader_parameter/bloom_radius = 0.0
+shader_parameter/enable_blur = false
+shader_parameter/blur_radius = 2.4530001165175
+shader_parameter/blur_direction = 1
+shader_parameter/motion_blur_angle = 0.0
+shader_parameter/motion_blur_distance = 0.0
+shader_parameter/enable_sharpen = false
+shader_parameter/sharpen_amount = 1.0
+shader_parameter/sharpen_radius = 1.0
+shader_parameter/enable_distortion = false
+shader_parameter/ripple_intensity = 0.0
+shader_parameter/ripple_frequency = 10.0
+shader_parameter/ripple_speed = 1.0
+shader_parameter/swirl_intensity = 0.0
+shader_parameter/swirl_center = Vector2(0.5, 0.5)
+shader_parameter/lens_distort = 0.0
+shader_parameter/chromatic_aberration = 0.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/saturation = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/contrast = 1.0
+shader_parameter/enable_color_overlay = false
+shader_parameter/overlay_color = Color(1, 0, 0, 0.5)
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/enable_gradient_map = false
+shader_parameter/gradient_color1 = Color(0, 0, 0, 1)
+shader_parameter/gradient_color2 = Color(1, 1, 1, 1)
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/pixelate_size = 0.0
+shader_parameter/invert_colors = false
+shader_parameter/grayscale = false
+shader_parameter/sepia = false
+shader_parameter/threshold_level = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c2i1x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mg305")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_rcga7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_w0n7r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_coau7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_kfqjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_dk6pe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kdj7w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_g138c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2b3jf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_o2lk8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_i65ly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_dbwqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_a0srr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_6y0ck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_t5u5n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_w5vwf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_7s57c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_o1o6b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_44g72")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_r2fhn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_n22r8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_q5nxe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_ipj75")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_u2ubh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_xcwx6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_jcftq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_0wldy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_uqt4n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_apbi1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_m3b05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_rlq63")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_4cq2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_y0rqj")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="WroughtInWar" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_1qy2n")
+position = Vector2(-458, 8)
+sprite_frames = SubResource("SpriteFrames_c2i1x")
+autoplay = "default"
