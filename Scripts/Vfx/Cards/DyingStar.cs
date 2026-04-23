@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
 using RegentFx.Core.Audio;
 
@@ -72,12 +73,13 @@ public static class DyingStarPatch {
         var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
             .FromCard(card)
             .TargetingAllOpponents(card.CombatState)
-            .WithHitFx("vfx/vfx_starry_impact")
+            .WithNoAttackerAnim()
             .SpawningHitVfxOnEachCreature()
             .BeforeDamage(async delegate {
+                VFXUtil.ShakeAfter(0.2f, ShakeStrength.Strong, ShakeDuration.Normal);
                 await CardVfxUtil.PlayAoeVfx(config, card.Owner.Creature, card.CombatState, nameof(DyingStar));
+                await Cmd.Wait(0.3f);
             });
-        cmd._attackerAnimName = null;
         await cmd.Execute(choiceContext);
         foreach (Creature enemy in enemies) {
             await PowerCmd.Apply<DyingStarPower>(enemy,

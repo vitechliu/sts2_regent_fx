@@ -4,9 +4,12 @@ using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
@@ -52,8 +55,10 @@ public static class WroughtInWarPatch {
             Entry.Logger.Info("Could not get creature nodes for VFX");
             return;
         }
-        // SfxCmd.Play("event:/sfx/characters/regent/regent_attack");
+        SimpleSfxUtil.Play("res://RegentFX/sfx/wiw1.mp3");
         VFXUtil.PlaySimple("res://RegentFX/scenes/wrought_in_war.tscn", targetNode.VfxSpawnPosition);
-        await Cmd.Wait(0.25f);
+        await Cmd.Wait(0.1f);
+        NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Normal);
+        await Cmd.Wait(0.15f);
     }
 }

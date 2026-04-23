@@ -1,10 +1,14 @@
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
 
 namespace RegentFX.Scripts;
@@ -29,7 +33,7 @@ public static class VFXUtil {
         node.Scale = Vector2.One * scale;
     }
 
-    public static void PlaySimple(string scenePath, Vector2 position, float lifetime = 2f) {
+    public static Node2D? PlaySimple(string scenePath, Vector2 position, float lifetime = 2f) {
         if (!TestMode.IsOn && NCombatRoom.Instance != null) {
             Node2D node2D = GenVFXNode(scenePath);
             NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
@@ -41,7 +45,33 @@ public static class VFXUtil {
                     node2D.QueueFreeSafely();
                 }
             };
+            return node2D;
         }
+        return null;
+    }
+
+    public static async void ShakeAfter(float time, ShakeStrength strength, ShakeDuration duration, float degAngle = -1f) {
+        await Cmd.Wait(time);
+        NGame.Instance?.ScreenShake(strength, duration, degAngle);
+    }
+    public static HashSet<ulong> StarryImpactNodes = new();
+
+    public static void PlaySpecialStarAt(Vector2 position) {
+        if (!TestMode.IsOn && NCombatRoom.Instance != null) {
+            NStarryImpactVfx node2D = GenVFXNode<NStarryImpactVfx>("res://scenes/vfx/vfx_starry_impact.tscn");
+            StarryImpactNodes.Add(node2D.GetInstanceId());
+            NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
+            node2D.GlobalPosition = position;
+        }
+    }
+    public static T? PlaySimple<T>(string scenePath, Vector2 position) where T : Node2D {
+        if (!TestMode.IsOn && NCombatRoom.Instance != null) {
+            T node2D = GenVFXNode<T>(scenePath);
+            NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
+            node2D.GlobalPosition = position;
+            return node2D;
+        }
+        return null;
     }
     
     public static Node2D GenVFXNode(string scenePath) {

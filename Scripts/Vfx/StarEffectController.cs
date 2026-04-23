@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
 using RegentFx.Core.Audio;
 using RegentFX.Scripts.Vfx.Cards;
 
@@ -61,6 +62,18 @@ public partial class StarEffectController : Node2D {
         }
     }
 
+
+    public void PopStar(CardFX fx) {
+        if (_currentCardFX.GetType() == fx.GetType()) {
+            if (_borrowedStars.Count > 0) {
+                Star? target = _borrowedStars.FindLast(IsInstanceValid);
+                if (target != null) {
+                    ReturnStar(target);
+                    _borrowedStars.Remove(target);
+                }
+            }
+        }
+    }
     private void BorrowStars() {
         if (StarRingController == null) {
             Entry.Logger.Warn("[StarEffectController] StarRingController is null, cannot borrow stars");
@@ -184,7 +197,12 @@ public partial class StarEffectController : Node2D {
     }
 
 
+    // public HashSet<ulong> StarryImpactNodes = new();
+
     void ReturnStar(Star star) {
+        VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
+    
+        
         // 闪烁效果
         var tween = CreateTween();
         tween.SetTrans(Tween.TransitionType.Quad);

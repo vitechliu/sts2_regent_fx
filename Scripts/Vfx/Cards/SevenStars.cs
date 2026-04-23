@@ -1,5 +1,6 @@
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -67,28 +68,43 @@ public static class SevenStarPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
-        return true;
+        __result = MyOnPlay(__instance, choiceContext, cardPlay);
+        return false;
     }
 
     private static async Task MyOnPlay(
         MegaCrit.Sts2.Core.Models.Cards.SevenStars card,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay) {
-        Entry.Logger.Info("a1");
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        CardFX fx = CardFX.FromCard(card);
         var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
             .WithHitCount(card.DynamicVars.Repeat.IntValue)
             .FromCard(card)
             .TargetingAllOpponents(card.CombatState)
-            .WithHitFx("vfx/vfx_starry_impact", null, "slash_attack.mp3")
-            .BeforeDamage(delegate {
-                Entry.Logger.Info("a2");
-                return Task.CompletedTask;
+            .WithNoAttackerAnim()
+            .WithHitFx("vfx/vfx_starry_impact")
+            .BeforeDamage(async delegate {
+                await PlayVfx(fx, card.CombatState);
             })
             .SpawningHitVfxOnEachCreature();
         // await CreatureCmd.TriggerAnim(card.Owner.Creature, "Attack", card.Owner.Character.CastAnimDelay);
-        cmd._attackerAnimName = null;
         await cmd.Execute(choiceContext);
-        Entry.Logger.Info("a3");
+    }
+    
+    private static async Task PlayVfx(CardFX fx, CombatState combatState) {
+        if (TestMode.IsOn) return;
+        Entry.StarEffectController?.PopStar(fx);
+        IReadOnlyList<Creature> enemies = combatState.HittableEnemies;
+        SfxCmd.Play("event:/sfx/characters/regent/regent_attack");
+        foreach (Creature enemy in enemies) {
+            NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(enemy);
+            if (targetNode == null) {
+                Entry.Logger.Info("Could not get creature nodes for VFX");
+                continue;
+            }
+            Blade.PlayBlade(targetNode.VfxSpawnPosition);
+        }
+        await Cmd.Wait(0.05f);
     }
 }
