@@ -53,8 +53,15 @@ public partial class StarEffectController : Node2D {
 
         _currentCardFX = cardFX;
 
-        // 从 StarRingController 借取星星
-        BorrowStars();
+        if (cardFX.BorrowStar) {
+            // 从 StarRingController 借取星星
+            BorrowStars();
+        }
+        else {
+            //凭空创建星星
+            //todo
+        }
+        
 
         // 播放音效
         if (!string.IsNullOrEmpty(cardFX.HoldSfxPath)) {
@@ -102,6 +109,7 @@ public partial class StarEffectController : Node2D {
             // 先从原父节点移除，再添加到当前控制器
             star.GetParent()?.RemoveChild(star);
             AddChild(star);
+            star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
             _borrowedStars.Add(star);
 
             // 计算目标位置（使用 CardFX 的配置）
@@ -179,19 +187,13 @@ public partial class StarEffectController : Node2D {
     }
 
     public void OnPlayCard() {
-        _isShaking = false;
-        foreach (var star in _borrowedStars) {
-           star.QueueFree();
-        }
-        // 通知 StarRingController 重置星星数量
-        StarRingController?.ResetStarCount();
+        OnCancelCard();
     }
     public void OnCancelCard() {
         if (_borrowedStars.Count > 0) {
             ReturnAllStars();
             Entry.Logger.Info($"[StarEffectController] OnCancelCard called, returning {_borrowedStars.Count} stars");
         }
-
         // 通知 StarRingController 重置星星数量
         StarRingController?.ResetStarCount();
     }
@@ -202,7 +204,6 @@ public partial class StarEffectController : Node2D {
     void ReturnStar(Star star) {
         VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
     
-        
         // 闪烁效果
         var tween = CreateTween();
         tween.SetTrans(Tween.TransitionType.Quad);

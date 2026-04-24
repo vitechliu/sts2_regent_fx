@@ -21,8 +21,8 @@ public partial class StarRingController : Node2D {
     [Export] public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
 
 
-    private const int STAR_FRONT_ZINDEX = 0;
-    private const int STAR_BACK_ZINDEX = -5;
+    public const int STAR_FRONT_ZINDEX = 0;
+    public const int STAR_BACK_ZINDEX = -5;
 
     private readonly List<StarData> _orbitStars = new();
     private NCreature? _playerNode;
@@ -109,10 +109,7 @@ public partial class StarRingController : Node2D {
         float baseSpawnAngle = Mathf.Pi;
 
         for (int i = 0; i < count; i++) {
-            var starScene = GD.Load<PackedScene>("res://RegentFX/scenes/Star.tscn");
-            if (starScene == null) continue;
-
-            var star = starScene.Instantiate<Star>();
+            var star = VFXUtil.GenVFXNode<Star>("res://RegentFX/scenes/Star.tscn");
             if (star == null) continue;
 
             AddChild(star);

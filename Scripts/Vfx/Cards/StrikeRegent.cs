@@ -54,6 +54,13 @@ public static class StrikeRegentPatch {
     
     private static async Task PlayVfx(Creature owner, Creature target) {
         if (TestMode.IsOn) return;
+        
+        // //test
+        // NCreature ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+        // Node2D ntest = VFXUtil.PlaySimple("res://RegentFX/scenes/vfx/distortions/vfx_outward_screen_distortion_ellipse.tscn", ownerNode.VfxSpawnPosition);
+        // ntest.Scale = new Vector2(4f, 0.5f);
+        // VFXUtil.ReplayAllParticles(ntest);
+        
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) {
             Entry.Logger.Info("Could not get creature nodes for VFX");

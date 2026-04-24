@@ -37,7 +37,8 @@ public abstract class CardFX {
         }
         return null;
     }
-    
+
+    public virtual bool BorrowStar => true;
     /// <summary>
     /// 星星数量，-1 表示使用所有星星
     /// </summary>

@@ -81,6 +81,17 @@ public static class VFXUtil {
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
 
+    public static void ReplayAllParticles(Node2D node) {
+        if (node is GpuParticles2D particles) {
+            particles.Restart();
+        }
+        foreach (Node child in node.GetChildren()) {
+            if (child is Node2D childNode) {
+                ReplayAllParticles(childNode);
+            }
+        }
+    }
+
     public static Vector2 GetEnemiesCenter(CombatState state) {
         Vector2 posFin = Vector2.Zero;
         IReadOnlyList<Creature> enemies = state.HittableEnemies;

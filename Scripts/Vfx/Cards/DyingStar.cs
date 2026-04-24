@@ -30,7 +30,7 @@ public class DyingStar : CardFX {
     public override string SecondarySfxPath => "res://RegentFX/sfx/dying_star.mp3";
     public override float VfxClearDelay => 3f;
     public override bool HasExposureEffect => true;
-    public override float ExposureInDuration => 0.2f;
+    public override float ExposureInDuration => 0.5f;
     public override float ExposureOutDuration => 0.3f;
 
     private List<Vector2> starPos = new() {
@@ -76,7 +76,7 @@ public static class DyingStarPatch {
             .WithNoAttackerAnim()
             .SpawningHitVfxOnEachCreature()
             .BeforeDamage(async delegate {
-                VFXUtil.ShakeAfter(0.2f, ShakeStrength.Strong, ShakeDuration.Normal);
+                VFXUtil.ShakeAfter(0.35f, ShakeStrength.Strong, ShakeDuration.Normal);
                 await CardVfxUtil.PlayAoeVfx(config, card.Owner.Creature, card.CombatState, nameof(DyingStar));
                 await Cmd.Wait(0.3f);
             });

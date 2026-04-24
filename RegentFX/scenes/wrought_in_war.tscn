@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://70nb5xyqoivy"]
+[gd_scene load_steps=37 format=3 uid="uid://jb863odb3jce"]
 
 [ext_resource type="Shader" uid="uid://c5d20bfpfdx5f" path="res://RegentFX/shaders/advanced.gdshader" id="1_2undt"]
 [ext_resource type="Texture2D" uid="uid://dg8k04jeos3lr" path="res://RegentFX/frames/wrought_in_war/fn0001.png" id="2_mg305"]

@@ -1,7 +1,8 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dksu61j1holvv"]
 
-[ext_resource type="Shader" uid="uid://cvoq7y3pm0jyv" path="res://RegentFX/shaders/vfx/distortion/vfx_screen_distortion_outward_shader.gdshader" id="1_ejb5m"]
+[ext_resource type="Shader" uid="uid://i2raxhvqq6lj" path="res://RegentFX/shaders/vfx/distortion/vfx_screen_distortion_ellipse_shader.gdshader" id="1_w8qj0"]
 
 [resource]
-shader = ExtResource("1_ejb5m")
+shader = ExtResource("1_w8qj0")
 shader_parameter/distortion_base_intensity = 0.04
+shader_parameter/aspect_ratio = 0.1

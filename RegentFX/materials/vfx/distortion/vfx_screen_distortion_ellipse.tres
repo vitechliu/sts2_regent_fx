@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cl8ivrfgqirnm"]
+
+[ext_resource type="Shader" uid="uid://cvoq7y3pm0jyv" path="res://RegentFX/shaders/vfx/distortion/vfx_screen_distortion_ellipse_shader.gdshader" id="1_ejb5m"]
+
+[resource]
+shader = ExtResource("1_ejb5m")
+shader_parameter/distortion_base_intensity = 0.04
+shader_parameter/aspect_ratio = 0.5
