@@ -93,13 +93,15 @@ public static class WorldEnvironmentUtil
     /// <summary>
     /// Tween 动画设置曝光。
     /// </summary>
-    public static Tween? TweenExposure(float exposure, float duration, Tween.EaseType ease = Tween.EaseType.InOut, Tween.TransitionType trans = Tween.TransitionType.Cubic)
-    {
+    public static Tween? TweenExposure(float exposure, float duration, Tween.EaseType ease = Tween.EaseType.InOut, Tween.TransitionType trans = Tween.TransitionType.Cubic) {
+        float threshold = Setting.ExposureThreshold;
+        if (threshold <= 0.001f) return null;
+        float finalExposure = (exposure - 1) * threshold + exposure;
         var env = GetOrActivateEnvironment();
         if (env == null) return null;
 
         var tween = env.CreateTween();
-        tween?.TweenProperty(env, "environment:tonemap_exposure", exposure, duration)
+        tween?.TweenProperty(env, "environment:tonemap_exposure", finalExposure, duration)
             .SetEase(ease)
             .SetTrans(trans);
         return tween;

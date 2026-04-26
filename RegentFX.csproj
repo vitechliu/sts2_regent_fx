@@ -46,6 +46,7 @@
     <Content Include="opencode.json" />
     <Content Include="RegentFX.json" />
     <Content Include="Scripts\.gdignore" />
+    <Content Include="ThirdParty\.gdignore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RegentFX\scripts\" />
@@ -53,7 +54,10 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);MSB3270;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>
   </PropertyGroup>
-
+  <ItemGroup>
+     <!-- Value = 全限定类名，该类必须在同一程序集、且 Ritsu 扫描时已被加载 -->
+     <AssemblyMetadata Include="RitsuLib.ModSettingsInterop.ProviderType" Value="RegentFX.ThirdParty.RitsuLibModConfig"/>
+  </ItemGroup>
 
   <Target Name="Copy Mod" AfterTargets="PostBuildEvent">
     <Message Text="Copying mod to Slay the Spire 2 mods folder..." Importance="high" />
