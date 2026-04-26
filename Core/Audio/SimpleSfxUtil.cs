@@ -57,7 +57,7 @@ public static class SimpleSfxUtil
     {
         if (NGame.Instance == null)
         {
-            GD.PrintErr("[SimpleSfxUtil] NGame.Instance is null, cannot create player!");
+            Entry.Logger.Error("[SimpleSfxUtil] NGame.Instance is null, cannot create player!");
             return null;
         }
 
@@ -70,7 +70,7 @@ public static class SimpleSfxUtil
         var finalVolume = CalculateVolume(volume);
         player.VolumeLinear = finalVolume;
 
-        GD.Print($"[SimpleSfxUtil] Playing with volume: {finalVolume} (user: {volume}, gameSfx: {GetGameSfxVolume()})");
+        // GD.Print($"[SimpleSfxUtil] Playing with volume: {finalVolume} (user: {volume}, gameSfx: {GetGameSfxVolume()})");
 
         // 播放完成后自动释放
         player.Finished += () =>
@@ -79,7 +79,7 @@ public static class SimpleSfxUtil
         };
 
         player.Play();
-        GD.Print($"[SimpleSfxUtil] Player started playing");
+        // GD.Print($"[SimpleSfxUtil] Player started playing");
         return player;
     }
 

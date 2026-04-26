@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhf57wdvo4nbx"]
 
-[ext_resource type="Script" uid="uid://ddjhp4yn1738p" path="res://Scripts/Vfx/Blade.cs" id="1_qngg6"]
+[ext_resource type="Script" path="res://Scripts/Vfx/Blade.cs" id="1_qngg6"]
 [ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="1_w6p3m"]
 [ext_resource type="Texture2D" uid="uid://ut1a6ddb8jy7" path="res://RegentFX/images/weapon2.png" id="2_w6p3m"]
 

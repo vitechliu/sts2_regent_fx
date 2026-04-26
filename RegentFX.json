@@ -1,11 +1,11 @@
 {
   "id": "RegentFX",
-  "name": "RegentFX",
+  "name": "万象辉星[RegentFX]",
   "author": "Vitech",
-  "description": "Regent VFX",
-  "version": "0.1",
+  "description": "为储君的部分卡牌按照卡面还原了特效。Q群1042906424。\n鸣谢:Dior, OLC, Reme",
+  "version": "0.2.0",
   "has_pck": true,
   "has_dll": true,   
   "dependencies": [], 
-  "affects_gameplay": false
+  "affects_gameplay": true
 }

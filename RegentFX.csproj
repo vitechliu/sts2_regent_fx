@@ -55,6 +55,9 @@
     <Content Include="opencode.json" />
     <Content Include="Scripts\.gdignore" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RegentFX\scripts\" />
+  </ItemGroup>
   <PropertyGroup>
     <NoWarn>$(NoWarn);MSB3270;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>
   </PropertyGroup>

@@ -194,4 +194,3 @@ animations = [{
 position = Vector2(-2, -20)
 sprite_frames = SubResource("SpriteFrames_c2i1x")
 autoplay = "default"
-frame = 11

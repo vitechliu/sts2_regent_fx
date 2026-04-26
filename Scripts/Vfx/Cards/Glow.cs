@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
@@ -24,6 +25,7 @@ public static class GlowPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
+        if (!LocalContext.IsMe(__instance.Owner)) return true;
         __result = MyOnPlay(__instance, choiceContext, cardPlay);
         return false;
     }
@@ -45,5 +47,6 @@ public static class GlowPatch {
         await PlayerCmd.GainStars(card.DynamicVars.Stars.BaseValue, card.Owner);
         IEnumerable<CardModel> cardModels = await CardPileCmd.Draw(choiceContext, card.DynamicVars.Cards.BaseValue, card.Owner);
         DrawCardsNextTurnPower cardsNextTurnPower = await PowerCmd.Apply<DrawCardsNextTurnPower>(card.Owner.Creature, card.DynamicVars.Cards.BaseValue, card.Owner.Creature, card);
+        
     }
 }

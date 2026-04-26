@@ -1,5 +1,11 @@
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -43,7 +49,17 @@ public class Alignment : CardFX {
 public static class AlignmentPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.Alignment), "OnPlay")]
-    public static void OnPlay() {
+    public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.Alignment __instance) {
+        if (!LocalContext.IsMe(__instance.Owner)) return;
+        Creature owner = __instance.Owner.Creature;
+        NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+        if (ownerNode == null) {
+            Entry.Logger.Info("Could not get creature nodes for VFX");
+        }
+        else {
+            SimpleSfxUtil.Play("res://RegentFX/sfx/alignment.mp3");
+            VFXUtil.PlaySimple("res://RegentFX/scenes/alignment.tscn", ownerNode.VfxSpawnPosition, 2f);
+        }
         Entry.StarEffectController?.OnPlayCard();
     }
 }

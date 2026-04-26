@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b4yd32ieheum6"]
+[gd_scene load_steps=8 format=3 uid="uid://cfvkj725l0tva"]
 
 [ext_resource type="Material" uid="uid://dksu61j1holvv" path="res://RegentFX/materials/vfx/distortion/vfx_screen_distortion_ring.tres" id="1_2ukhp"]
 [ext_resource type="Texture2D" uid="uid://bcexg03xwufoa" path="res://RegentFX/images/vfx/distortion/distortion_ring.png" id="2_30kid"]

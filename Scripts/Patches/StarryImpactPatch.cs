@@ -14,9 +14,10 @@ public static class StarryImpactPatch {
     [HarmonyPrefix]
     public static bool p(NStarryImpactVfx __instance, ref Task __result) {
         if (Entry.StarEffectController != null) {
-            Entry.Logger.Info("Node:" + __instance.GetInstanceId());
+            // Entry.Logger.Info("Node:" + __instance.GetInstanceId());
             ulong id = __instance.GetInstanceId();
             if (VFXUtil.StarryImpactNodes.Contains(id)) {
+                Entry.Logger.Info("aaaa:" + id);
                 __result = MyTask(__instance);
                 VFXUtil.StarryImpactNodes.Remove(id);
                 return false;
@@ -48,6 +49,6 @@ public static class StarryImpactPatch {
             }
         }
         await Cmd.Wait(2f, node._cts.Token);
-        node.QueueFreeSafely();
+        if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

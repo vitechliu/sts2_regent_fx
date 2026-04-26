@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -68,6 +69,7 @@ public static class SevenStarPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
+        if (!LocalContext.IsMe(__instance.Owner)) return true;
         __result = MyOnPlay(__instance, choiceContext, cardPlay);
         return false;
     }
