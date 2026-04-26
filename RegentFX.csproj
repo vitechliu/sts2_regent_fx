@@ -13,20 +13,7 @@
     <IsWindows Condition="$([MSBuild]::IsOSPlatform('Windows'))">true</IsWindows>
     <IsOSX Condition="$([MSBuild]::IsOSPlatform('OSX'))">true</IsOSX>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
-    <GodotPath>D:\softwares\megadot\MegaDot_v4.5.1-stable_mono_win64.exe</GodotPath>
-    <GodotPreset>Windows</GodotPreset>
-    <Sts2Dir>D:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
-    <Sts2DataDir>$(Sts2Dir)/data_sts2_windows_x86_64</Sts2DataDir>
-    <Sts2ModDir>$(Sts2Dir)/mods</Sts2ModDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(IsOSX)' == 'true'">
-    <GodotPath>/Users/vitech/Applications/Megadot.app/Contents/MacOS/Godot</GodotPath>
-    <GodotPreset>mac</GodotPreset>
-    <Sts2Dir>/Users/vitech/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents</Sts2Dir>
-    <Sts2DataDir>$(Sts2Dir)/Resources/data_sts2_macos_arm64</Sts2DataDir>
-    <Sts2ModDir>$(Sts2Dir)/MacOS/mods</Sts2ModDir>
-  </PropertyGroup>
+  <Import Project="env.props" Condition="Exists('env.props')" />
 
   <ItemGroup>
     <Reference Include="sts2">
@@ -47,11 +34,14 @@
   </ItemGroup>
   <ItemGroup>
     <Publicize Include="sts2" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
-<!--    <PublicizeAll>true</PublicizeAll>-->
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gdignore" />
+    <Content Include="env.props" />
+    <Content Include="env.props.example_mac" />
+    <Content Include="env.props.example_windows" />
     <Content Include="export_presets.cfg" />
+    <Content Include="icon.svg" />
     <Content Include="opencode.json" />
     <Content Include="Scripts\.gdignore" />
   </ItemGroup>
@@ -68,11 +58,6 @@
     <MakeDir Directories="$(Sts2Dir)\mods\" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Sts2ModDir)/RegentFX/" />
     <Copy SourceFiles="RegentFX.json" DestinationFolder="$(Sts2ModDir)/RegentFX/" />
-    <!-- <Message Text="Copying BaseLib to mods folder." Importance="high" />
-    <ItemGroup>
-      <BaseLibFiles Include="$(NuGetPackageRoot)/alchyr.sts2.baselib/**/lib/**/BaseLib.dll;$(NuGetPackageRoot)/alchyr.sts2.baselib/**/Content/BaseLib.pck;$(NuGetPackageRoot)/alchyr.sts2.baselib/**/Content/BaseLib.json;"/>
-    </ItemGroup>
-    <Copy SourceFiles="@(BaseLibFiles)" DestinationFolder="$(Sts2ModDir)/BaseLib/" /> -->
   </Target>
 
   <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
