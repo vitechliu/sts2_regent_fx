@@ -67,7 +67,9 @@ public class SevenStars : CardFX {
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;
     public override async Task OnBeforeDamage(AttackCommand command) {
-        await PlayVfx(card.CombatState.HittableEnemies);
+        var enemies = VFXUtil.GetHittableEnemiesFromCard(card);
+        if (enemies != null)
+            await PlayVfx(enemies);
     }
 }
 

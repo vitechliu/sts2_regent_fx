@@ -1,5 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
@@ -92,16 +93,26 @@ public static class VFXUtil {
         }
     }
 
-    public static Vector2? GetEnemiesCenter(CardModel card) {
-        
+    public static IReadOnlyList<Creature>? GetHittableEnemiesFromCard(CardModel card) {
         var combatStateProp = card.GetType().GetProperty("CombatState");
         if (combatStateProp == null) return null;
         var combatState = combatStateProp.GetValue(card);
         if (combatState == null) return null;
-        // 反射获取 HittableEnemies
         var hittableProp = combatState.GetType().GetProperty("HittableEnemies");
+        if (hittableProp == null) return null;
         try {
             IReadOnlyList<Creature> enemies = hittableProp?.GetValue(combatState) as IReadOnlyList<Creature>;
+            return enemies;
+        }
+        catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static Vector2? GetEnemiesCenter(CardModel card) {
+        try {
+            IReadOnlyList<Creature>? enemies = GetHittableEnemiesFromCard(card);
+            if (enemies == null)  return null;
             Vector2 posFin = Vector2.Zero;
             if (enemies.Count <= 0) return null;
             foreach (var creature in enemies) {
