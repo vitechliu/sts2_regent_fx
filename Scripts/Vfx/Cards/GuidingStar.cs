@@ -41,6 +41,7 @@ public class GuidingStar : CardFX {
         Creature? target = command._singleTarget;
         if (owner == null || target == null || command._singleTarget == null) return;
         Entry.StarEffectController?.OnPlayCard();
+        SfxCmd.Play("event:/sfx/characters/regent/regent_guiding_star");
         await CardVfxUtil.PlayTargetedVfx(this, card.Owner.Creature, target, nameof(GuidingStar));
     }
 }
