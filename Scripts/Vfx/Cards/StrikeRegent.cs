@@ -15,8 +15,11 @@ public class StrikeRegent : CardFX {
     
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;
-    
+    public override string? ChangeHitFx => "vfx/vfx_starry_impact";
+
+
     public override async Task OnBeforeDamage(AttackCommand command) {
+        SfxCmd.Play("event:/sfx/characters/regent/regent_attack");
         Creature? target = command._singleTarget;
         if (target == null || command._singleTarget == null) return;
         await PlayVfx(target);

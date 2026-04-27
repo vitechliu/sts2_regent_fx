@@ -34,6 +34,10 @@ public static class CardAnimPatch {
                     await cardFX.OnBeforeDamage(__instance);
                 });
             }
+
+            if (cardFX.ChangeHitFx != null) {
+                __instance.WithHitFx(cardFX.ChangeHitFx);
+            }
             if (cardFX.HasOnBeforeExecute) {
                 __result = RunCustomFlow(cardFX, card, __instance, choiceContext);
                 return false;

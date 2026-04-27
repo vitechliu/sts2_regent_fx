@@ -142,6 +142,7 @@ public abstract class CardFX {
     public virtual bool HasOnBeforeDamage => false;
     public virtual async Task OnBeforeDamage(AttackCommand command) {}
 
+    public virtual string? ChangeHitFx => null;
 
 
     /// <summary>
