@@ -1,10 +1,6 @@
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using RegentFX.Scripts;
 using RegentFX.Scripts.Vfx.Cards;
 
 namespace RegentFX.Scripts.Patches;
@@ -43,7 +39,7 @@ public static class CardPlayTimingPatch {
     public static void CardCancel(NCardPlay __instance) {
         string isTrying = __instance._isTryingToPlayCard.ToString();
         
-        Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出 isTryingToPlayCard:" + isTrying);
+        // Entry.Logger.Info($"[CardPlayTiming] 卡牌放弃打出 isTryingToPlayCard:" + isTrying);
         if (!__instance._isTryingToPlayCard) {
             Entry.StarEffectController?.OnCancelCard();
         }

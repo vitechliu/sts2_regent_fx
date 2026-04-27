@@ -1,4 +1,5 @@
 using Godot;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
 
 namespace RegentFX.Scripts.Vfx.Cards;
@@ -33,10 +34,14 @@ public abstract class CardFX {
         if (card == null) return null;
         var cardType = card.GetType();
         if (CardFxRegistry.TryGetValue(cardType, out var fxType)) {
-            return (CardFX?)Activator.CreateInstance(fxType);
+            CardFX? fx = (CardFX?)Activator.CreateInstance(fxType);
+            if (fx != null) fx.card = card;
+            return fx;
         }
         return null;
     }
+
+    public CardModel? card;
 
     public virtual bool BorrowStar => true;
     /// <summary>
@@ -77,7 +82,7 @@ public abstract class CardFX {
     /// <summary>
     /// 音效路径
     /// </summary>
-    public virtual string? HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
+    public virtual string HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
 
     /// <summary>
     /// VFX 场景路径
@@ -119,14 +124,23 @@ public abstract class CardFX {
     /// </summary>
     public virtual float ExposureOutDuration => 0.5f;
 
-    /// <summary>
-    /// 播放 VFX 时是否通知 StarEffectController 取消卡牌效果
-    /// </summary>
-    public virtual bool CancelsStarEffect => true;
+
+
+    public virtual bool UseV2Patch => false;
 
     // public virtual string? AttackerAnimNameChange => null;
     
-    // public virtual bool DisableWeaponAnim => false;
+    //v2Patch
+    public virtual bool DisableAttackAnim => true;
+    public virtual bool PlayCastAnim => true;
+    
+    //AttackExecute执行前触发
+    public virtual bool HasOnBeforeExecute => false;
+    public virtual async Task OnBeforeExecute() {}
+    
+    //BeforeDamage植入
+    public virtual bool HasOnBeforeDamage => false;
+    public virtual async Task OnBeforeDamage(AttackCommand command) {}
 
 
 

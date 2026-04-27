@@ -1,12 +1,8 @@
 ﻿using Godot;
-using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
@@ -28,45 +24,22 @@ public class CrescentSpear: CardFX {
     public override void OnStartHolding(Star star, int index) {
         star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
     }
-}
 
-[HarmonyPatch]
-public static class CrescentSpearPatch {
-    private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
-    private const string ScenePath = "res://RegentFX/scenes/crescent_spear.tscn";
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.CrescentSpear), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.CrescentSpear __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? owner = card?.Owner.Creature;
+        Creature? target = command._singleTarget;
+        if (owner == null || target == null) return;
+        await PlayCrescentSpearVfx(owner, target);
     }
-
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.CrescentSpear card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        var cmd = DamageCmd.Attack(card.DynamicVars.CalculatedDamage)
-            .FromCard(card)
-            .Targeting(cardPlay.Target)
-            .BeforeDamage(async delegate {
-                await PlayCrescentSpearVfx(card.Owner.Creature, cardPlay.Target);
-            });
-        cmd._attackerAnimName = null;
-        // Entry.Logger.Info("HasHitVFX?:" + cmd.HitVfx);
-        await cmd.Execute(choiceContext);
-    }
-
+    
     private const float SpearLength = 900f;
     private const float ScaleFactor = 1.2f;
 
+    private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
+    private const string ScenePath = "res://RegentFX/scenes/crescent_spear.tscn";
+    
     private static async Task PlayCrescentSpearVfx(Creature owner, Creature target) {
         if (TestMode.IsOn) {
             return;
@@ -75,7 +48,7 @@ public static class CrescentSpearPatch {
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
 
         if (ownerNode == null || targetNode == null) {
-            Entry.Logger.Info("[CrescentSpear] Could not get creature nodes for VFX");
+            Entry.Logger.Warn("[CrescentSpear] Could not get creature nodes for VFX");
             return;
         }
         try {
@@ -111,7 +84,7 @@ public static class CrescentSpearPatch {
             await Cmd.Wait(0.15f);
 
         } catch (Exception ex) {
-            Entry.Logger.Info($"[CrescentSpear] Error playing VFX: {ex.Message}");
+            Entry.Logger.Warn($"[CrescentSpear] Error playing VFX: {ex.Message}");
         }
     }
 

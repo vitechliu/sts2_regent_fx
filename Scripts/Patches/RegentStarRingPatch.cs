@@ -4,9 +4,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models.Characters;
-using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFX.Scripts;
 using RegentFX.Scripts.Vfx;
 
 namespace RegentFX.Scripts.Patches;
@@ -34,12 +32,12 @@ public static class RegentStarRingPatch {
     [HarmonyPatch(typeof(NCombatRoom), nameof(NCombatRoom.CreateAllyNodes))]
     public static class CreateAllyNodesPatch {
         public static void Postfix() {
-            Entry.Logger.Info("CreateAllyNodesPatch_PostFix");
+            // Entry.Logger.Info("CreateAllyNodesPatch_PostFix");
             if (NCombatRoom.Instance == null) return;
             // 获取所有玩家
             var players = CombatManager.Instance.DebugOnlyGetState()?.Players;
             if (players == null) return;
-            Entry.Logger.Info("CreateAllyNodesPatch_PostFix2");
+            // Entry.Logger.Info("CreateAllyNodesPatch_PostFix2");
 
             // 找到本地储君玩家
             foreach (var player in players) {
@@ -80,7 +78,7 @@ public static class RegentStarRingPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(NCombatRoom), nameof(NCombatRoom.OnProceedButtonPressed))]
     public static void CombatEndPatch() {
-        Entry.Logger.Info("[RegentStarRing] NCombatRoom OnProceedButtonPressed");
+        // Entry.Logger.Info("[RegentStarRing] NCombatRoom OnProceedButtonPressed");
         ClearStarRing();
     }
     [HarmonyPatch(typeof(NCombatRoom), "_ExitTree")]

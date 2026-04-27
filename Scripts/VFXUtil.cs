@@ -1,9 +1,9 @@
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -92,9 +92,9 @@ public static class VFXUtil {
         }
     }
 
-    public static Vector2 GetEnemiesCenter(CombatState state) {
+    public static Vector2 GetEnemiesCenter(CardModel card) {
         Vector2 posFin = Vector2.Zero;
-        IReadOnlyList<Creature> enemies = state.HittableEnemies;
+        IReadOnlyList<Creature> enemies = card.CombatState.HittableEnemies;
         if (enemies.Count <= 0) return posFin;
         foreach (var creature in enemies) {
             NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);

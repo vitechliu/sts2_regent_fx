@@ -1,14 +1,12 @@
 #pragma warning disable CS4014
 
 using Godot;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
 using RegentFx.Core.Audio;
 
@@ -27,7 +25,7 @@ public static class CardVfxUtil {
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
 
         if (ownerNode == null || targetNode == null) {
-            Entry.Logger.Info($"[{logTag}] Could not get creature nodes for VFX");
+            Entry.Logger.Warn($"[{logTag}] Could not get creature nodes for VFX");
             return;
         }
 
@@ -39,15 +37,15 @@ public static class CardVfxUtil {
     /// <summary>
     /// 播放从 owner 飞向敌人中心点的 AOE VFX
     /// </summary>
-    public static async Task PlayAoeVfx(CardFX config, Creature owner, CombatState combatState, string logTag) {
+    public static async Task PlayAoeVfx(CardFX config, Creature owner, CardModel card, string logTag) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
         if (ownerNode == null) {
-            Entry.Logger.Info($"[{logTag}] Could not get owner creature node for VFX");
+            Entry.Logger.Warn($"[{logTag}] Could not get owner creature node for VFX");
             return;
         }
 
         Vector2 startPos = ownerNode.GlobalPosition + config.TargetOffset;
-        Vector2 targetPos = VFXUtil.GetEnemiesCenter(combatState);
+        Vector2 targetPos = VFXUtil.GetEnemiesCenter(card);
         await PlayVfxInternal(config, startPos, targetPos, logTag);
     }
 
@@ -76,10 +74,6 @@ public static class CardVfxUtil {
             vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, startPos, targetPos);
             vfxNode.GlobalPosition = targetPos;
 
-            if (config.CancelsStarEffect) {
-                Entry.StarEffectController?.OnCancelCard();
-            }
-
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
             if (!string.IsNullOrEmpty(config.HitSfxPath)) {
@@ -101,7 +95,7 @@ public static class CardVfxUtil {
             }
 
         } catch (Exception ex) {
-            Entry.Logger.Info($"[{logTag}] Error playing VFX: {ex.Message}");
+            Entry.Logger.Warn($"[{logTag}] Error playing VFX: {ex.Message}");
         }
     }
 

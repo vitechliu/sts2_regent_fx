@@ -2,9 +2,7 @@ using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
-using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 
 namespace RegentFX.Scripts.Patches;
 
@@ -17,7 +15,7 @@ public static class StarryImpactPatch {
             // Entry.Logger.Info("Node:" + __instance.GetInstanceId());
             ulong id = __instance.GetInstanceId();
             if (VFXUtil.StarryImpactNodes.Contains(id)) {
-                Entry.Logger.Info("aaaa:" + id);
+                // Entry.Logger.Info("aaaa:" + id);
                 __result = MyTask(__instance);
                 VFXUtil.StarryImpactNodes.Remove(id);
                 return false;
@@ -35,13 +33,13 @@ public static class StarryImpactPatch {
         foreach (GpuParticles2D p in node._particles) {
             // Entry.Logger.Info("Name:" + p.Name);
             if (exceptNodes.Contains(p.Name)) {
-                Entry.Logger.Info("Dispose:" + p.Name);
+                // Entry.Logger.Info("Dispose:" + p.Name);
                 ParticleProcessMaterial pm = (ParticleProcessMaterial)p.ProcessMaterial.Duplicate();
                 pm.Scale *= 0.01f;
                 p.ProcessMaterial = pm;
             }
             else {
-                Entry.Logger.Info("Restart:" + p.Name);
+                // Entry.Logger.Info("Restart:" + p.Name);
                 ParticleProcessMaterial pm = (ParticleProcessMaterial)p.ProcessMaterial.Duplicate();
                 pm.Scale *= 0.2f;
                 p.ProcessMaterial = pm;

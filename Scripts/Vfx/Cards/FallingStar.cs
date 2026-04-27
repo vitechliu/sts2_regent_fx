@@ -1,17 +1,6 @@
 using Godot;
-using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
@@ -50,40 +39,15 @@ public class FallingStar : CardFX {
             star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
         }
     }
-}
-
-[HarmonyPatch]
-public static class FallingStarPatch {
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.FallingStar), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.FallingStar __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
-    }
-
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.FallingStar card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        var config = CardFX.FromCard(card)!;
-        var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .FromCard(card)
-            .Targeting(cardPlay.Target)
-            .BeforeDamage(async delegate {
-                await CardVfxUtil.PlayTargetedVfx(config, card.Owner.Creature, cardPlay.Target, nameof(FallingStar));
-            });
-        cmd._attackerAnimName = null;
-        await cmd.Execute(choiceContext);
-        WeakPower weakPower = await PowerCmd.Apply<WeakPower>(cardPlay.Target, card.DynamicVars.Weak.BaseValue, card.Owner.Creature, card);
-        VulnerablePower vulnerablePower = await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, card.DynamicVars.Vulnerable.BaseValue, card.Owner.Creature, card);
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? owner = card?.Owner.Creature;
+        Creature? target = command._singleTarget;
+        if (owner == null || target == null || command._singleTarget == null) return;
+        Entry.StarEffectController?.OnPlayCard();
+        await CardVfxUtil.PlayTargetedVfx(this, card.Owner.Creature, target, nameof(FallingStar));
     }
 }

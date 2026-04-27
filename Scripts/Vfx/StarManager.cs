@@ -1,5 +1,4 @@
 using Godot;
-using System.Collections.Generic;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Helpers;
 

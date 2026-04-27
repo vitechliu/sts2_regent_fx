@@ -1,7 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Vfx;
 using RegentFx.Core.Audio;
 using RegentFX.Scripts.Vfx.Cards;
 
@@ -71,6 +70,7 @@ public partial class StarEffectController : Node2D {
 
 
     public void PopStar(CardFX fx) {
+        if (_currentCardFX == null || fx == null) return;
         if (_currentCardFX.GetType() == fx.GetType()) {
             if (_borrowedStars.Count > 0) {
                 Star? target = _borrowedStars.FindLast(IsInstanceValid);
@@ -192,7 +192,7 @@ public partial class StarEffectController : Node2D {
     public void OnCancelCard() {
         if (_borrowedStars.Count > 0) {
             ReturnAllStars();
-            Entry.Logger.Info($"[StarEffectController] OnCancelCard called, returning {_borrowedStars.Count} stars");
+            // Entry.Logger.Info($"[StarEffectController] OnCancelCard called, returning {_borrowedStars.Count} stars");
         }
         // 通知 StarRingController 重置星星数量
         StarRingController?.ResetStarCount();

@@ -1,6 +1,5 @@
 using Godot;
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -9,6 +8,7 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+//前置动画，无需迁移
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.Alignment))]
 public class Alignment : CardFX {
     // -1 表示使用所有星星

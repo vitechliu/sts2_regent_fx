@@ -1,16 +1,10 @@
 using Godot;
-using HarmonyLib;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -19,12 +13,12 @@ public class SevenStars : CardFX {
     // -1 表示使用所有星星
     public override int StarCount => 7;
 
-    public override string? HoldSfxPath => "res://RegentFX/sfx/seven_stars_hold.mp3";
+    public override string HoldSfxPath => "res://RegentFX/sfx/seven_stars_hold.mp3";
 
     // 更高的位置
     public override Vector2 TargetOffset => new(-100f, -450f);
 
-    private List<Vector2> starPos = new() {
+    private readonly List<Vector2> starPos = new() {
         new Vector2(5f, 0f),      // 天枢
         new Vector2(-47f, -5f),    // 天璇
         new Vector2(-55f, 54f),   // 天玑
@@ -42,7 +36,7 @@ public class SevenStars : CardFX {
             star.ConnectTo(lastStar);
         }
         else {
-            Entry.Logger.Info("MainStar");
+            // Entry.Logger.Info("MainStar");
             //天枢
             star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
             star.PulseSpeed = 2.4f;
@@ -54,50 +48,10 @@ public class SevenStars : CardFX {
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + (starPos[index] * 1.2f);
     }
-}
-
-
-[HarmonyPatch]
-public static class SevenStarPatch {
-    private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
-    private const string ScenePath = "res://RegentFX/scenes/crescent_spear.tscn";
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.SevenStars), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.SevenStars __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
-    }
-
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.SevenStars card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        CardFX fx = CardFX.FromCard(card);
-        var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .WithHitCount(card.DynamicVars.Repeat.IntValue)
-            .FromCard(card)
-            .TargetingAllOpponents(card.CombatState)
-            .WithNoAttackerAnim()
-            .WithHitFx("vfx/vfx_starry_impact")
-            .BeforeDamage(async delegate {
-                await PlayVfx(fx, card.CombatState);
-            })
-            .SpawningHitVfxOnEachCreature();
-        // await CreatureCmd.TriggerAnim(card.Owner.Creature, "Attack", card.Owner.Character.CastAnimDelay);
-        await cmd.Execute(choiceContext);
-    }
     
-    private static async Task PlayVfx(CardFX fx, CombatState combatState) {
+    private async Task PlayVfx(IReadOnlyList<Creature> enemies) {
         if (TestMode.IsOn) return;
-        Entry.StarEffectController?.PopStar(fx);
-        IReadOnlyList<Creature> enemies = combatState.HittableEnemies;
+        Entry.StarEffectController?.PopStar(this);
         SfxCmd.Play("event:/sfx/characters/regent/regent_attack");
         foreach (Creature enemy in enemies) {
             NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(enemy);
@@ -109,4 +63,11 @@ public static class SevenStarPatch {
         }
         await Cmd.Wait(0.05f);
     }
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        await PlayVfx(card.CombatState.HittableEnemies);
+    }
 }
+

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Godot;
-using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace RegentFX.Scripts.Vfx;
 

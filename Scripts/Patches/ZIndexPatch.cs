@@ -1,8 +1,6 @@
 using HarmonyLib;
-using Godot;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFX.Scripts;
 
 namespace RegentFX.Scripts.Patches;
 
@@ -21,7 +19,7 @@ public class ZIndexPatch {
         // 将角色的ZIndex设置为10（相对于父节点）
         __instance.ZIndex = 10;
         __instance.ZAsRelative = true;
-        Entry.Logger.Info($"[ZIndexPatch] Set NCreature ZIndex to 10");
+        // Entry.Logger.Info($"[ZIndexPatch] Set NCreature ZIndex to 10");
     }
 
     /// <summary>
@@ -33,13 +31,13 @@ public class ZIndexPatch {
         // 将背景的ZIndex设置为-20（确保比角色低很多）
         if (__instance.BgContainer != null) {
             __instance.BgContainer.ZIndex = -20;
-            Entry.Logger.Info($"[ZIndexPatch] Set BgContainer ZIndex to -20");
+            // Entry.Logger.Info($"[ZIndexPatch] Set BgContainer ZIndex to -20");
         }
 
         // 将CombatVfxContainer的ZIndex设置为0（在中间）
         if (__instance.CombatVfxContainer != null) {
             __instance.CombatVfxContainer.ZIndex = 0;
-            Entry.Logger.Info($"[ZIndexPatch] Set CombatVfxContainer ZIndex to 0");
+            // Entry.Logger.Info($"[ZIndexPatch] Set CombatVfxContainer ZIndex to 0");
         }
     }
 }

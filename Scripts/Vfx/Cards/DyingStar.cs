@@ -1,19 +1,8 @@
 using Godot;
-using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
@@ -32,7 +21,7 @@ public class DyingStar : CardFX {
     public override float VfxClearDelay => 3f;
     public override bool HasExposureEffect => true;
     public override float ExposureInDuration => 0.5f;
-    public override float ExposureOutDuration => 0.3f;
+    public override float ExposureOutDuration => 0.2f;
 
     private List<Vector2> starPos = new() {
         new Vector2(0f, 0f),
@@ -48,44 +37,16 @@ public class DyingStar : CardFX {
         star.PulseMinScale *= 2f;
         star.PulseMaxScale *= 1.8f;
     }
-}
-
-[HarmonyPatch]
-public static class DyingStarPatch {
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.DyingStar), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.DyingStar __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
-    }
-
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.DyingStar card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        IReadOnlyList<Creature> enemies = card.CombatState.HittableEnemies;
-        var config = CardFX.FromCard(card)!;
-        var cmd = DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .FromCard(card)
-            .TargetingAllOpponents(card.CombatState)
-            .WithNoAttackerAnim()
-            .SpawningHitVfxOnEachCreature()
-            .BeforeDamage(async delegate {
-                VFXUtil.ShakeAfter(0.35f, ShakeStrength.Strong, ShakeDuration.Normal);
-                await CardVfxUtil.PlayAoeVfx(config, card.Owner.Creature, card.CombatState, nameof(DyingStar));
-                await Cmd.Wait(0.3f);
-            });
-        await cmd.Execute(choiceContext);
-        foreach (Creature enemy in enemies) {
-            await PowerCmd.Apply<DyingStarPower>(enemy,
-                card.DynamicVars["StrengthLoss"].BaseValue, card.Owner.Creature, card);
-        }
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? owner = card?.Owner.Creature;
+        if (owner == null) return;
+        VFXUtil.ShakeAfter(0.35f, ShakeStrength.Strong, ShakeDuration.Normal);
+        Entry.StarEffectController?.OnPlayCard();
+        await CardVfxUtil.PlayAoeVfx(this, owner, card, nameof(DyingStar));
+        await Cmd.Wait(0.3f);
     }
 }

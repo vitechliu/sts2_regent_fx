@@ -1,25 +1,18 @@
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Nodes.Rooms;
-using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
-/// <summary>
-/// GuidingStar 卡牌特效
-/// </summary>
+//引导之星仍然需要手动patch
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.GuidingStar))]
 public class GuidingStar : CardFX {
     public override int StarCount => 3;
@@ -37,6 +30,18 @@ public class GuidingStar : CardFX {
 
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + starPos[index];
+    }
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    public override bool PlayCastAnim => false;
+
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? owner = card?.Owner.Creature;
+        Creature? target = command._singleTarget;
+        if (owner == null || target == null || command._singleTarget == null) return;
+        Entry.StarEffectController?.OnPlayCard();
+        await CardVfxUtil.PlayTargetedVfx(this, card.Owner.Creature, target, nameof(GuidingStar));
     }
 }
 
@@ -61,16 +66,11 @@ public static class GuidingStarPatch {
         CardPlay cardPlay) {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        SfxCmd.Play("event:/sfx/characters/regent/regent_guiding_star");
-        var config = CardFX.FromCard(card)!;
         await DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
             .FromCard(card)
             .Targeting(cardPlay.Target)
-            .BeforeDamage(async delegate {
-                await CardVfxUtil.PlayTargetedVfx(config, card.Owner.Creature, cardPlay.Target, nameof(GuidingStar));
-            })
             .WithNoAttackerAnim()
             .Execute(choiceContext);
-        IEnumerable<CardModel> cardModels = await CardPileCmd.Draw(choiceContext, card.DynamicVars.Cards.BaseValue, card.Owner);
+        await CardPileCmd.Draw(choiceContext, card.DynamicVars.Cards.BaseValue, card.Owner);
     }
 }

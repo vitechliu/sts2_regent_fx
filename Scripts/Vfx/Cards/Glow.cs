@@ -1,10 +1,6 @@
 ﻿using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using RegentFx.Core.Audio;
@@ -20,21 +16,13 @@ public class Glow : CardFX {
 public static class GlowPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.Glow), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.Glow __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
+    public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.Glow __instance) {
+        if (!LocalContext.IsMe(__instance.Owner)) return;
+        MyOnPlay(__instance);
     }
     
     private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.Glow card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        MegaCrit.Sts2.Core.Models.Cards.Glow card) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
             SimpleSfxUtil.Play("res://RegentFX/sfx/glow.mp3");
@@ -44,9 +32,5 @@ public static class GlowPatch {
             await Cmd.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(1f, .3f);
         }
-        await PlayerCmd.GainStars(card.DynamicVars.Stars.BaseValue, card.Owner);
-        IEnumerable<CardModel> cardModels = await CardPileCmd.Draw(choiceContext, card.DynamicVars.Cards.BaseValue, card.Owner);
-        DrawCardsNextTurnPower cardsNextTurnPower = await PowerCmd.Apply<DrawCardsNextTurnPower>(card.Owner.Creature, card.DynamicVars.Cards.BaseValue, card.Owner.Creature, card);
-        
     }
 }

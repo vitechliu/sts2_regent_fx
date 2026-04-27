@@ -1,5 +1,3 @@
-using System;
-
 namespace RegentFX.Scripts.Vfx.Cards;
 
 /// <summary>

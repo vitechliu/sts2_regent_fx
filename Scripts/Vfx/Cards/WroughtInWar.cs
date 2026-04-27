@@ -1,10 +1,6 @@
-﻿using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -17,40 +13,17 @@ using RegentFx.Core.Audio;
 namespace RegentFX.Scripts.Vfx.Cards;
 
 public class WroughtInWar : CardFX {
-}
-
-[HarmonyPatch]
-public static class WroughtInWarPatch {
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.WroughtInWar), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.WroughtInWar __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
+    public override bool BorrowStar => false;
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? target = command._singleTarget;
+        if (target == null || command._singleTarget == null) return;
+        await PlayVfx(target);
     }
     
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.WroughtInWar card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        ArgumentNullException.ThrowIfNull((object) cardPlay.Target, "cardPlay.Target");
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        AttackCommand attackCommand = await DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .FromCard(card)
-            .Targeting(cardPlay.Target)
-            .BeforeDamage(async delegate {
-                await PlayVfx(card.Owner.Creature, cardPlay.Target);
-            })
-            .WithNoAttackerAnim()
-            .Execute(choiceContext);
-        await ForgeCmd.Forge((Decimal) card.DynamicVars.Forge.IntValue, card.Owner, card);
-    }
-    
-    private static async Task PlayVfx(Creature owner, Creature target) {
+    private static async Task PlayVfx(Creature target) {
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) {

@@ -1,18 +1,9 @@
 using Godot;
-using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
-using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using MegaCrit.Sts2.Core.TestSupport;
 using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
@@ -47,28 +38,13 @@ public class AstralPulse : CardFX {
         star.PulseSpeed *= 3f;
         star.ChangeColorTo(new Color(14.551f, 0.683f, 9.982f)); //pink
     }
-}
 
-[HarmonyPatch]
-public static class AstralPulsePatch {
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeExecute => true;
+    public override async Task OnBeforeExecute() {
+        await Cmd.Wait(5f);
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.AstralPulse), "OnPlay")]
-    public static bool OnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.AstralPulse __instance,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay,
-        ref Task __result) {
-        if (!LocalContext.IsMe(__instance.Owner)) return true;
-        __result = MyOnPlay(__instance, choiceContext, cardPlay);
-        return false;
-    }
-
-    private static async Task MyOnPlay(
-        MegaCrit.Sts2.Core.Models.Cards.AstralPulse card,
-        PlayerChoiceContext choiceContext,
-        CardPlay cardPlay) {
-        await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+        if (card == null) return;
         
         Creature owner = card.Owner.Creature;
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
@@ -89,12 +65,55 @@ public static class AstralPulsePatch {
             WorldEnvironmentUtil.TweenExposure(1f, 0.44f);
         }
         Entry.StarEffectController?.OnPlayCard();
-        await DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .FromCard((CardModel) card)
-            .TargetingAllOpponents(card.CombatState)
-            .WithHitFx("vfx/vfx_starry_impact")
-            .WithNoAttackerAnim()
-            .SpawningHitVfxOnEachCreature()
-            .Execute(choiceContext);
     }
 }
+//
+// [HarmonyPatch]
+// public static class AstralPulsePatch {
+//
+//     [HarmonyPrefix]
+//     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.AstralPulse), "OnPlay")]
+//     public static bool OnPlay(
+//         MegaCrit.Sts2.Core.Models.Cards.AstralPulse __instance,
+//         PlayerChoiceContext choiceContext,
+//         CardPlay cardPlay,
+//         ref Task __result) {
+//         if (!LocalContext.IsMe(__instance.Owner)) return true;
+//         __result = MyOnPlay(__instance, choiceContext, cardPlay);
+//         return false;
+//     }
+//
+//     private static async Task MyOnPlay(
+//         MegaCrit.Sts2.Core.Models.Cards.AstralPulse card,
+//         PlayerChoiceContext choiceContext,
+//         CardPlay cardPlay) {
+//         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
+//         
+//         Creature owner = card.Owner.Creature;
+//         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+//         if (ownerNode == null) {
+//             Entry.Logger.Info("Could not get creature nodes for VFX");
+//         }
+//         else {
+//             SimpleSfxUtil.Play("res://RegentFX/sfx/common_magic_1.mp3");
+//             VFXUtil.ShakeAfter(0.03f, ShakeStrength.Strong, ShakeDuration.Normal);
+//             Node2D? node = VFXUtil.PlaySimple("res://RegentFX/scenes/astral_pulse.tscn", ownerNode.VfxSpawnPosition);
+//             if (node != null) {
+//                 node.Scale *= 1.3f;
+//             }
+//             WorldEnvironmentUtil.TweenExposure(2.8f, 0.05f);
+//             await Cmd.Wait(0.15f);
+//             Node2D ntest = VFXUtil.PlaySimple("res://RegentFX/scenes/vfx/distortions/vfx_outward_screen_distortion_ellipse.tscn", ownerNode.VfxSpawnPosition);
+//             VFXUtil.ReplayAllParticles(ntest);
+//             WorldEnvironmentUtil.TweenExposure(1f, 0.44f);
+//         }
+//         Entry.StarEffectController?.OnPlayCard();
+//         await DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
+//             .FromCard((CardModel) card)
+//             .TargetingAllOpponents(card.CombatState)
+//             .WithHitFx("vfx/vfx_starry_impact")
+//             .WithNoAttackerAnim()
+//             .SpawningHitVfxOnEachCreature()
+//             .Execute(choiceContext);
+//     }
+// }
