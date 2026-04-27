@@ -45,8 +45,10 @@ public static class CardVfxUtil {
         }
 
         Vector2 startPos = ownerNode.GlobalPosition + config.TargetOffset;
-        Vector2 targetPos = VFXUtil.GetEnemiesCenter(card);
-        await PlayVfxInternal(config, startPos, targetPos, logTag);
+        Vector2? targetPos = VFXUtil.GetEnemiesCenter(card);
+        if (targetPos.HasValue) {
+            await PlayVfxInternal(config, startPos, targetPos.Value, logTag);
+        }
     }
 
     /// <summary>

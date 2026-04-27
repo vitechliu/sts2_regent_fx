@@ -92,16 +92,28 @@ public static class VFXUtil {
         }
     }
 
-    public static Vector2 GetEnemiesCenter(CardModel card) {
-        Vector2 posFin = Vector2.Zero;
-        IReadOnlyList<Creature> enemies = card.CombatState.HittableEnemies;
-        if (enemies.Count <= 0) return posFin;
-        foreach (var creature in enemies) {
-            NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);
-            if (targetNode == null) continue;
-            posFin += targetNode.VfxSpawnPosition;
+    public static Vector2? GetEnemiesCenter(CardModel card) {
+        
+        var combatStateProp = card.GetType().GetProperty("CombatState");
+        if (combatStateProp == null) return null;
+        var combatState = combatStateProp.GetValue(card);
+        if (combatState == null) return null;
+        // 反射获取 HittableEnemies
+        var hittableProp = combatState.GetType().GetProperty("HittableEnemies");
+        try {
+            IReadOnlyList<Creature> enemies = hittableProp?.GetValue(combatState) as IReadOnlyList<Creature>;
+            Vector2 posFin = Vector2.Zero;
+            if (enemies.Count <= 0) return null;
+            foreach (var creature in enemies) {
+                NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);
+                if (targetNode == null) continue;
+                posFin += targetNode.VfxSpawnPosition;
+            }
+            posFin /= enemies.Count;
+            return posFin;
         }
-        posFin /= enemies.Count;
-        return posFin;
+        catch (Exception ex) {
+            return null;
+        }
     }
 }
