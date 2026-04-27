@@ -70,12 +70,21 @@ public partial class StarEffectController : Node2D {
 
 
     public void PopStar(CardFX fx) {
+        Entry.Logger.Info("aaaa1");
         if (_currentCardFX == null || fx == null) return;
+        Entry.Logger.Info("aaaa2");
         if (_currentCardFX.GetType() == fx.GetType()) {
+            Entry.Logger.Info("aaaa3");
+        
             if (_borrowedStars.Count > 0) {
+                Entry.Logger.Info("aaaa4");
+            
                 Star? target = _borrowedStars.FindLast(IsInstanceValid);
                 if (target != null) {
+                    Entry.Logger.Info("aaaa5");
+                    
                     ReturnStar(target);
+                    Entry.Logger.Info("aaaa6");
                     _borrowedStars.Remove(target);
                 }
             }
