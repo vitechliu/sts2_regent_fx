@@ -55,6 +55,10 @@ public partial class StarEffectController : Node2D {
         if (cardFX.BorrowStar) {
             // 从 StarRingController 借取星星
             BorrowStars();
+            // 播放音效
+            if (!string.IsNullOrEmpty(cardFX.HoldSfxPath)) {
+                SimpleSfxUtil.Play(cardFX.HoldSfxPath);
+            }
         }
         else {
             //凭空创建星星
@@ -62,10 +66,7 @@ public partial class StarEffectController : Node2D {
         }
         
 
-        // 播放音效
-        if (!string.IsNullOrEmpty(cardFX.HoldSfxPath)) {
-            SimpleSfxUtil.Play(cardFX.HoldSfxPath);
-        }
+        
     }
 
 
