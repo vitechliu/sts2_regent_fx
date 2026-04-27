@@ -11,6 +11,8 @@ public static class WorldEnvironmentUtil
 {
     private static WorldEnvironment? _cachedEnv;
 
+    public const bool ENABLE_EXPOSURE = true;
+
     /// <summary>
     /// 获取当前激活的 WorldEnvironment 节点。
     /// 如果没有激活，会自动调用 NGame.Instance.ActivateWorldEnvironment()。
@@ -94,6 +96,7 @@ public static class WorldEnvironmentUtil
     /// Tween 动画设置曝光。
     /// </summary>
     public static Tween? TweenExposure(float exposure, float duration, Tween.EaseType ease = Tween.EaseType.InOut, Tween.TransitionType trans = Tween.TransitionType.Cubic) {
+        if (!ENABLE_EXPOSURE) return null;
         float threshold = Setting.ExposureThreshold;
         if (threshold <= 0.001f) return null;
         float finalExposure = (exposure - 1) * threshold + exposure;

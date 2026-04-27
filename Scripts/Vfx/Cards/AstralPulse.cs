@@ -42,10 +42,7 @@ public class AstralPulse : CardFX {
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeExecute => true;
     public override async Task OnBeforeExecute() {
-        await Cmd.Wait(5f);
-
         if (card == null) return;
-        
         Creature owner = card.Owner.Creature;
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
         if (ownerNode == null) {

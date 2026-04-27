@@ -12,6 +12,7 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.WroughtInWar))]
 public class WroughtInWar : CardFX {
     public override bool BorrowStar => false;
     
@@ -19,7 +20,7 @@ public class WroughtInWar : CardFX {
     public override bool HasOnBeforeDamage => true;
     public override async Task OnBeforeDamage(AttackCommand command) {
         Creature? target = command._singleTarget;
-        if (target == null || command._singleTarget == null) return;
+        if (target == null) return;
         await PlayVfx(target);
     }
     
