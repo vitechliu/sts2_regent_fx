@@ -85,9 +85,12 @@ public static class CardVfxUtil {
             TaskHelper.RunSafely(ClearAfter(vfxNode, config.VfxClearDelay));
 
             if (config.HasExposureEffect) {
-                WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
-                await Cmd.Wait(config.ExposureInDuration + 0.05f);
-                WorldEnvironmentUtil.TweenExposure(1f, config.ExposureOutDuration);
+                try {
+                    WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
+                    await Cmd.Wait(config.ExposureInDuration + 0.05f);
+                } finally {
+                    WorldEnvironmentUtil.TweenExposure(1f, config.ExposureOutDuration);
+                }
             } else {
                 await Cmd.Wait(0.15f);
             }
