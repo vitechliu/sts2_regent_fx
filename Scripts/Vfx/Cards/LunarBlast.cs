@@ -1,0 +1,142 @@
+using Godot;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands.Builders;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Extensions;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
+
+namespace RegentFX.Scripts.Vfx.Cards;
+
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.LunarBlast))]
+public class LunarBlast : CardFX {
+    // -1 表示使用所有星星
+    public override HoldingModes HoldingMode => HoldingModes.Custom;
+
+    // 更高的位置
+    public override Vector2 TargetOffset => new(150f, -350f);
+    Vector2 GeneratePosAt() {
+        return TargetOffset + new Vector2((float)GD.RandRange(-50f, 50f),  (float)GD.RandRange(-50f, 50f));
+    }
+
+    private static List<string> LunarScenePaths = new() {
+        "res://RegentFX/scenes/lunar_blast_1.tscn",
+        "res://RegentFX/scenes/lunar_blast_2.tscn",
+    };
+    
+    public override string VfxScenePath => "res://RegentFX/scenes/laser_1.tscn";
+    public static string LunarScenePath => LunarScenePaths[GD.RandRange(0,  LunarScenePaths.Count - 1)];
+
+    public override bool HasExposureEffect => false;
+    public override string HitSfxPath => "res://RegentFX/sfx/lunarTest1.mp3";
+    public string HitSfxPath2 => "res://RegentFX/sfx/lunarTest1.mp3";
+    
+    public override void HoldingCustom() {
+        if (card is MegaCrit.Sts2.Core.Models.Cards.LunarBlast lb) {
+            int starCount = (int)((CalculatedVar)lb.DynamicVars["CalculatedHits"]).Calculate(null);
+            Entry.Logger.Info("Lunar Blast Hits: " + starCount);
+            Creature owner = card.Owner.Creature;
+            NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+            if (Entry.StarEffectController == null) return;
+            if (ownerNode == null) return;
+            if (starCount > 0) {
+                for (var i = 0; i < starCount; i++) {
+                    var starPos = GeneratePosAt();
+                    Entry.StarEffectController.GenerateStarAt(starPos);
+                }
+                Entry.StarEffectController.StartShaking();
+                TryPlayHoldingSfx();
+            }
+        }
+    }
+    
+    public override bool UseV2Patch => true;
+    public override bool HasOnBeforeDamage => true;
+    public override async Task OnBeforeDamage(AttackCommand command) {
+        Creature? owner = card?.Owner.Creature;
+        Creature? target = command._singleTarget;
+        if (owner == null || target == null || command._singleTarget == null) return;
+        Vector2? starPos = Entry.StarEffectController?.PopStar(this);
+        if (!starPos.HasValue) {
+            starPos = GeneratePosAt();
+        }
+        else {
+            Entry.Logger.Info("PopStarSuccess:" + starPos.Value);
+        }
+        if (TestMode.IsOn) return;
+        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
+        if (targetNode == null) return;
+        Vector2 targetPos = targetNode.VfxSpawnPosition;
+        await Task.WhenAll(
+            PlayLunarVfx(targetPos, starPos.Value),
+            PlayLaserVfx(targetPos, starPos.Value)
+        );
+    }
+
+    private async Task PlayLaserVfx(Vector2 targetPos, Vector2 starPos) {
+        string scenePath = VfxScenePath;
+        try {
+            Node2D vfxNode = VFXUtil.GenVFXNode(scenePath);
+            Node2D? startNode = vfxNode.FindChild("StartPos") as Node2D;
+            if (startNode == null) {
+                Entry.Logger.Error($"[Laser] No StartPos found in VFX scene");
+                return;
+            }
+
+            vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, starPos, targetPos);
+            vfxNode.GlobalPosition = targetPos;
+
+            NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
+
+            SimpleSfxUtil.Play(HitSfxPath);
+            SimpleSfxUtil.Play(HitSfxPath2);
+
+            TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
+            //
+            // if (config.HasExposureEffect) {
+            //     WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
+            //     await Cmd.Wait(config.ExposureInDuration + 0.05f);
+            //     WorldEnvironmentUtil.TweenExposure(1f, config.ExposureOutDuration);
+            // } else {
+            //     await Cmd.Wait(0.15f);
+            // }
+            //
+            // if (!string.IsNullOrEmpty(config.SecondarySfxPath)) {
+            //     _ = SimpleSfxUtil.Play(config.SecondarySfxPath);
+            // }
+
+        } catch (Exception ex) {
+            Entry.Logger.Warn($"[Laser] Error playing VFX: {ex.Message}");
+        }
+    }
+
+    private async Task PlayLunarVfx(Vector2 targetPos, Vector2 starPos) {
+        try {
+            Node2D vfxNode = VFXUtil.GenVFXNode(LunarScenePath);
+            if (vfxNode == null) return;
+            // 计算旋转角度，使特效朝向目标
+            Vector2 direction = targetPos - starPos;
+            float rotationDegrees = Mathf.RadToDeg(Mathf.Atan2(direction.Y, direction.X));
+            vfxNode.RotationDegrees = rotationDegrees;
+
+            // 特效位置: 目标位置减去长矛长度（沿旋转方向）
+            Vector2 rotationDirection = direction.Normalized();
+            vfxNode.GlobalPosition = starPos;
+
+            // 添加到战斗特效容器
+            NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
+
+            TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 2f));
+            await Cmd.Wait(0.15f);
+
+        } catch (Exception ex) {
+            Entry.Logger.Warn($"[CrescentSpear] Error playing VFX: {ex.Message}");
+        }
+    }
+}
+

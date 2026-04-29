@@ -1,4 +1,5 @@
 using Godot;
+using HarmonyLib;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -93,20 +94,29 @@ public static class VFXUtil {
         }
     }
 
+    //为了兼容103和104
     public static IReadOnlyList<Creature>? GetHittableEnemiesFromCard(CardModel card) {
-        var combatStateProp = card.GetType().GetProperty("CombatState");
-        if (combatStateProp == null) return null;
-        var combatState = combatStateProp.GetValue(card);
+        var combatState = Traverse.Create(card).Property("CombatState").GetValue();
         if (combatState == null) return null;
-        var hittableProp = combatState.GetType().GetProperty("HittableEnemies");
-        if (hittableProp == null) return null;
-        try {
-            IReadOnlyList<Creature> enemies = hittableProp?.GetValue(combatState) as IReadOnlyList<Creature>;
+        var enemiesRaw = Traverse.Create(combatState).Property("HittableEnemies").GetValue();
+        if (enemiesRaw is IReadOnlyList<Creature> enemies) {
             return enemies;
         }
-        catch (Exception ex) {
-            return null;
+        return null;
+    }
+
+    public static Vector2? GetCombatSidePos(CardModel card) {
+        var combatState = Traverse.Create(card).Property("CombatState").GetValue();
+        if (combatState == null) return null;
+        //首先反射获取SideCenter
+        var method = Traverse.Create(typeof(VfxCmd)).Method("GetSideCenter", CombatSide.Enemy, combatState);
+        if (method == null) return null;
+        var combatSidePos = method.GetValue();
+        if (combatSidePos is Vector2 pos) {
+            // Entry.Logger.Info("GCSP:" + pos);
+            return pos;
         }
+        return null;
     }
 
     public static Vector2? GetEnemiesCenter(CardModel card) {

@@ -7,6 +7,13 @@ namespace RegentFX.Scripts.Vfx;
 /// 支持自转、律动、随机变化效果
 /// </summary>
 public partial class Star : Node2D {
+
+
+
+	public static Star Create() {
+		return VFXUtil.GenVFXNode<Star>("res://RegentFX/scenes/Star.tscn");
+	}
+	
 	public enum TintMode {
 		Multiply = 0,
 		Screen = 1,

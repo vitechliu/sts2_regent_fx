@@ -52,58 +52,63 @@ public partial class StarEffectController : Node2D {
 
         _currentCardFX = cardFX;
 
-        if (cardFX.BorrowStar) {
-            // 从 StarRingController 借取星星
-            BorrowStars();
-            // 播放音效
-            if (!string.IsNullOrEmpty(cardFX.HoldSfxPath)) {
-                SimpleSfxUtil.Play(cardFX.HoldSfxPath);
-            }
+        switch (cardFX.HoldingMode) {
+            case CardFX.HoldingModes.BorrowDefault:
+            case CardFX.HoldingModes.BorrowAll:
+                BorrowStars();
+                cardFX.TryPlayHoldingSfx();
+                break;
+            case CardFX.HoldingModes.Custom:
+                cardFX.HoldingCustom();
+                break;
+            case CardFX.HoldingModes.None:
+            default:
+                //todo
+                break;
         }
-        else {
-            //凭空创建星星
-            //todo
-        }
-        
-
-        
     }
 
 
-    public void PopStar(CardFX fx) {
-        // Entry.Logger.Info("aaaa1");
-        if (_currentCardFX == null || fx == null) return;
-        // Entry.Logger.Info("aaaa2");
+    public Vector2? PopStar(CardFX fx) {
+        if (_currentCardFX == null) return null;
         if (_currentCardFX.GetType() == fx.GetType()) {
-            // Entry.Logger.Info("aaaa3");
-        
+            Entry.Logger.Info("PopStarCount:" + _borrowedStars.Count);
             if (_borrowedStars.Count > 0) {
-                // Entry.Logger.Info("aaaa4");
-            
                 Star? target = _borrowedStars.FindLast(IsInstanceValid);
                 if (target != null) {
-                    // Entry.Logger.Info("aaaa5");
-                    
+                    Vector2 starPos = target.GlobalPosition;
                     ReturnStar(target);
-                    // Entry.Logger.Info("aaaa6");
                     _borrowedStars.Remove(target);
+                    return starPos;
                 }
             }
         }
+        return null;
     }
-    private void BorrowStars() {
-        if (StarRingController == null) {
-            Entry.Logger.Warn("[StarEffectController] StarRingController is null, cannot borrow stars");
-            return;
-        }
-        if (_currentCardFX == null) {
-            return;
-        }
 
+
+    public void GenerateStarAt(Vector2 position) {
+        Entry.Logger.Info("GenerateStarAt " + position);
+        var star = Star.Create();
+        AddChild(star);
+        // 配置星星参数
+        star.EnablePulse = true;
+        star.PulseSpeed = 2f + GD.Randf() * 1f;
+        star.RotationSpeed = 45f + GD.Randf() * 45f;
+        star.ZAsRelative = true;
+        star.Scale = Vector2.One;
+        star.EnableTrail = false;
+        star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
+        star.Position = position;
+        _borrowedStars.Add(star);
+        VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
+    }
+    
+    private void BorrowStars() {
+        if (StarRingController == null || _currentCardFX == null) return;
         // -1 表示借用所有星星
-        int starCount = _currentCardFX.StarCount;
-        if (starCount == 0) return;
-        int targetCount = starCount == -1 ? StarRingController.GetCurrentStarCount() : starCount;
+        int targetCount = _currentCardFX.HoldingMode == CardFX.HoldingModes.BorrowAll ? StarRingController.GetCurrentStarCount() : _currentCardFX.StarCount;
+        if (targetCount <= 0) return;
 
         for (int i = 0; i < targetCount; i++) {
             var star = StarRingController.TakeStarForProjectile();
@@ -166,7 +171,7 @@ public partial class StarEffectController : Node2D {
         }
     }
 
-    private void StartShaking() {
+    public void StartShaking() {
         _isShaking = true;
         InitializeShakePhases();
     }
