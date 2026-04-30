@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
+using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -43,7 +44,18 @@ public abstract class CardFX {
 
     public CardModel? card;
 
-    public virtual bool BorrowStar => true;
+    
+    public enum HoldingModes {
+        BorrowDefault,
+        BorrowAll,
+        Custom,
+        None, //不借取
+    }
+
+
+    public virtual HoldingModes HoldingMode => HoldingModes.BorrowDefault;
+    public virtual void HoldingCustom() {}
+    
     /// <summary>
     /// 星星数量，-1 表示使用所有星星
     /// </summary>
@@ -142,6 +154,9 @@ public abstract class CardFX {
     public virtual bool HasOnBeforeDamage => false;
     public virtual async Task OnBeforeDamage(AttackCommand command) {}
 
+    public virtual bool HasAfterPlay => false;
+    public virtual void AfterPlay() {}
+
     public virtual string? ChangeHitFx => null;
 
 
@@ -161,4 +176,11 @@ public abstract class CardFX {
     }
 
     public virtual void OnStartHolding(Star star, int index) {}
+
+
+    public void TryPlayHoldingSfx() {
+        if (!string.IsNullOrEmpty(HoldSfxPath)) {
+            SimpleSfxUtil.Play(HoldSfxPath);
+        }
+    }
 }

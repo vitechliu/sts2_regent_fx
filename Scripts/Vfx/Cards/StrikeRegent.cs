@@ -11,7 +11,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.StrikeRegent))]
 public class StrikeRegent : CardFX {
-    public override bool BorrowStar => false;
+    public override HoldingModes HoldingMode => HoldingModes.None;
     
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;

@@ -1,4 +1,5 @@
 using Godot;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Nodes;
 
 namespace RegentFX.Scripts.Vfx;
@@ -92,6 +93,17 @@ public static class WorldEnvironmentUtil
         env.Environment.TonemapExposure = exposure;
     }
 
+
+    public static async Task FullExposure(float exposure, float waitTime, float inTime, float outTime) {
+        if (!ENABLE_EXPOSURE) return;
+        await Cmd.Wait(waitTime);
+        TweenExposure(exposure, inTime);
+        await Cmd.Wait(inTime);
+        TweenExposure(1f, outTime);
+    }
+    
+    
+    
     /// <summary>
     /// Tween 动画设置曝光。
     /// </summary>

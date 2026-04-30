@@ -14,8 +14,8 @@ namespace RegentFX.Scripts.Vfx.Cards;
 
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.WroughtInWar))]
 public class WroughtInWar : CardFX {
-    public override bool BorrowStar => false;
-    
+    public override HoldingModes HoldingMode => HoldingModes.None;
+
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;
     public override async Task OnBeforeDamage(AttackCommand command) {

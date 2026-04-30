@@ -1,0 +1,164 @@
+[gd_scene load_steps=27 format=3 uid="uid://dvamiqn8t4n83"]
+
+[ext_resource type="Shader" uid="uid://c5d20bfpfdx5f" path="res://RegentFX/shaders/advanced.gdshader" id="1_mgv1v"]
+[ext_resource type="Texture2D" uid="uid://w0k4aikxyiov" path="res://RegentFX/frames/laser_1/fn0001.png" id="2_tyxqc"]
+[ext_resource type="Texture2D" uid="uid://c4a7r75ttv8d1" path="res://RegentFX/frames/laser_1/fn0002.png" id="3_2jits"]
+[ext_resource type="Texture2D" uid="uid://bns2mfwl5sxx8" path="res://RegentFX/frames/laser_1/fn0003.png" id="4_6g8wq"]
+[ext_resource type="Texture2D" uid="uid://brvhpsk0l5vnc" path="res://RegentFX/frames/laser_1/fn0004.png" id="5_c344l"]
+[ext_resource type="Texture2D" uid="uid://cftmww8n2484i" path="res://RegentFX/frames/laser_1/fn0005.png" id="6_454uh"]
+[ext_resource type="Texture2D" uid="uid://dobmqcsixrvrb" path="res://RegentFX/frames/laser_1/fn0006.png" id="7_a6w5h"]
+[ext_resource type="Texture2D" uid="uid://ckrpptlxt0ca4" path="res://RegentFX/frames/laser_1/fn0007.png" id="8_t1mq6"]
+[ext_resource type="Texture2D" uid="uid://cy7nxwus4r8vg" path="res://RegentFX/frames/laser_1/fn0008.png" id="9_t2pji"]
+[ext_resource type="Texture2D" uid="uid://qdihjn1gvuut" path="res://RegentFX/frames/laser_1/fn0009.png" id="10_ryliv"]
+[ext_resource type="Texture2D" uid="uid://b5s8stuw5hdjf" path="res://RegentFX/frames/laser_1/fn0010.png" id="11_ebxq1"]
+[ext_resource type="Texture2D" uid="uid://dtlgs7hne0sdp" path="res://RegentFX/frames/laser_1/fn0011.png" id="12_2f5j5"]
+[ext_resource type="Texture2D" uid="uid://u880xp4yxjq5" path="res://RegentFX/frames/laser_1/fn0012.png" id="13_ncsft"]
+[ext_resource type="Texture2D" uid="uid://dirvjgyivay1h" path="res://RegentFX/frames/laser_1/fn0013.png" id="14_2tupc"]
+[ext_resource type="Texture2D" uid="uid://bilaoqe88yrgf" path="res://RegentFX/frames/laser_1/fn0014.png" id="15_ig5ca"]
+[ext_resource type="Texture2D" uid="uid://bnptw1r208dpp" path="res://RegentFX/frames/laser_1/fn0015.png" id="16_ghd3i"]
+[ext_resource type="Texture2D" uid="uid://bogbqx7nmkg7e" path="res://RegentFX/frames/laser_1/fn0016.png" id="17_low24"]
+[ext_resource type="Texture2D" uid="uid://cxph6qh5on3rm" path="res://RegentFX/frames/laser_1/fn0017.png" id="18_c5trf"]
+[ext_resource type="Texture2D" uid="uid://n27lsp3uyxuo" path="res://RegentFX/frames/laser_1/fn0018.png" id="19_oh84s"]
+[ext_resource type="Texture2D" uid="uid://beb8eblxss6hh" path="res://RegentFX/frames/laser_1/fn0019.png" id="20_t8e7x"]
+[ext_resource type="Texture2D" uid="uid://b5j6t05pkl3uk" path="res://RegentFX/frames/laser_1/fn0020.png" id="21_ryggo"]
+[ext_resource type="Texture2D" uid="uid://cxohodlkjw4q8" path="res://RegentFX/frames/laser_1/fn0021.png" id="22_5ff7k"]
+[ext_resource type="Texture2D" uid="uid://gl005urtohws" path="res://RegentFX/frames/laser_1/fn0022.png" id="23_p3l61"]
+[ext_resource type="Texture2D" uid="uid://ca0yd1lq7gijv" path="res://RegentFX/frames/laser_1/fn0023.png" id="24_i7e4u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uldo3"]
+shader = ExtResource("1_mgv1v")
+shader_parameter/opacity = 1.0
+shader_parameter/enable_glow = false
+shader_parameter/glow_intensity = 1.16400005529
+shader_parameter/glow_radius = 19.71200093632
+shader_parameter/glow_color = Color(0.59565, 0.88090456, 0.9929678, 1)
+shader_parameter/glow_threshold = 0.2
+shader_parameter/glow_softness = 1.0
+shader_parameter/bloom_intensity = 0.0
+shader_parameter/bloom_radius = 9.75200046322
+shader_parameter/enable_blur = true
+shader_parameter/blur_radius = 3.634000172615
+shader_parameter/blur_direction = 0
+shader_parameter/motion_blur_angle = 0.0
+shader_parameter/motion_blur_distance = 0.0
+shader_parameter/enable_sharpen = false
+shader_parameter/sharpen_amount = 1.0
+shader_parameter/sharpen_radius = 1.0
+shader_parameter/enable_distortion = false
+shader_parameter/ripple_intensity = 0.0
+shader_parameter/ripple_frequency = 10.0
+shader_parameter/ripple_speed = 1.0
+shader_parameter/swirl_intensity = 0.0
+shader_parameter/swirl_center = Vector2(0.5, 0.5)
+shader_parameter/lens_distort = 0.0
+shader_parameter/chromatic_aberration = 0.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/saturation = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/contrast = 1.0
+shader_parameter/enable_color_overlay = false
+shader_parameter/overlay_color = Color(1, 0, 0, 0.5)
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/enable_gradient_map = false
+shader_parameter/gradient_color1 = Color(0, 0, 0, 1)
+shader_parameter/gradient_color2 = Color(1, 1, 1, 1)
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/pixelate_size = 0.0
+shader_parameter/invert_colors = false
+shader_parameter/grayscale = false
+shader_parameter/sepia = false
+shader_parameter/threshold_level = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wkulb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tyxqc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2jits")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6g8wq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_c344l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_454uh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_a6w5h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_t1mq6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_t2pji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ryliv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ebxq1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_2f5j5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ncsft")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2tupc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ig5ca")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ghd3i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_low24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_c5trf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_oh84s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_t8e7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_ryggo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_5ff7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_p3l61")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_i7e4u")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="Laser1" type="Node2D"]
+
+[node name="StartPos" type="Node2D" parent="."]
+position = Vector2(-362, -1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_uldo3")
+position = Vector2(-164, -14)
+sprite_frames = SubResource("SpriteFrames_wkulb")
+autoplay = "default"
+metadata/_edit_lock_ = true

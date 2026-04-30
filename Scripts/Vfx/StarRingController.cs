@@ -109,8 +109,7 @@ public partial class StarRingController : Node2D {
         float baseSpawnAngle = Mathf.Pi;
 
         for (int i = 0; i < count; i++) {
-            var star = VFXUtil.GenVFXNode<Star>("res://RegentFX/scenes/Star.tscn");
-            if (star == null) continue;
+            var star = Star.Create();
 
             AddChild(star);
 
