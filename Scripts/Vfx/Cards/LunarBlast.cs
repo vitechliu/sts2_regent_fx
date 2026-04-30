@@ -19,9 +19,10 @@ public class LunarBlast : CardFX {
     public override HoldingModes HoldingMode => HoldingModes.Custom;
 
     // 更高的位置
-    public override Vector2 TargetOffset => new(150f, -350f);
+    public override Vector2 TargetOffset => new(100f, -450f);
     Vector2 GeneratePosAt() {
-        return TargetOffset + new Vector2((float)GD.RandRange(-50f, 50f),  (float)GD.RandRange(-50f, 50f));
+        float baseRand = 100f;
+        return TargetOffset + new Vector2((float)GD.RandRange(-1f, 1f) * baseRand,  (float)GD.RandRange(-1f, 1f) * baseRand);
     }
 
     private static List<string> LunarScenePaths = new() {
@@ -72,6 +73,7 @@ public class LunarBlast : CardFX {
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) return;
         Vector2 targetPos = targetNode.VfxSpawnPosition;
+        _ = WorldEnvironmentUtil.FullExposure(1.5f, 0f, 0.05f, 0.05f);
         await Task.WhenAll(
             PlayLunarVfx(targetPos, starPos.Value),
             PlayLaserVfx(targetPos, starPos.Value)
@@ -96,7 +98,8 @@ public class LunarBlast : CardFX {
             SimpleSfxUtil.Play(HitSfxPath);
             SimpleSfxUtil.Play(HitSfxPath2);
 
-            TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
+            _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
+            await Cmd.Wait(0.15f);
             //
             // if (config.HasExposureEffect) {
             //     WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
@@ -131,7 +134,7 @@ public class LunarBlast : CardFX {
             // 添加到战斗特效容器
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
-            TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 2f));
+            _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 2f));
             await Cmd.Wait(0.15f);
 
         } catch (Exception ex) {

@@ -154,6 +154,9 @@ public abstract class CardFX {
     public virtual bool HasOnBeforeDamage => false;
     public virtual async Task OnBeforeDamage(AttackCommand command) {}
 
+    public virtual bool HasAfterPlay => false;
+    public virtual void AfterPlay() {}
+
     public virtual string? ChangeHitFx => null;
 
 

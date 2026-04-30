@@ -102,6 +102,7 @@ public partial class StarEffectController : Node2D {
         star.Position = position;
         _borrowedStars.Add(star);
         VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
+        _starTargetPositions[star] = star.GlobalPosition;
     }
     
     private void BorrowStars() {

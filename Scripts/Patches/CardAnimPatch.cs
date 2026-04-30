@@ -65,5 +65,15 @@ public static class CardAnimPatch {
         }
         await cardFX.OnBeforeExecute();
     }
+
+
+    [HarmonyPatch(typeof(CardModel), "OnPlay")]
+    [HarmonyPostfix]
+    public static void PostOnPlayPatch(CardModel __instance) {
+        var cardFX = CardFX.FromCard(__instance);
+        if (cardFX == null) return;
+        if (!cardFX.UseV2Patch) return;
+    }
+    
     
 }
