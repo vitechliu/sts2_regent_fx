@@ -87,7 +87,7 @@ public partial class StarEffectController : Node2D {
     }
 
 
-    public void GenerateStarAt(Vector2 position) {
+    public void GenerateStarAt(Vector2 position, Color? color = null) {
         Entry.Logger.Info("GenerateStarAt " + position);
         var star = Star.Create();
         AddChild(star);
@@ -100,6 +100,7 @@ public partial class StarEffectController : Node2D {
         star.EnableTrail = false;
         star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
         star.Position = position;
+        if (color.HasValue) star.ChangeColorTo(color.Value);
         _borrowedStars.Add(star);
         VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
         _starTargetPositions[star] = star.GlobalPosition;

@@ -26,7 +26,8 @@ public static class StarryImpactPatch {
 
 
     private static HashSet<string> exceptNodes = new() {
-        "vfx_starry_impact_smoke_flipbook"
+        "vfx_starry_impact_smoke_flipbook",
+        "vfx_outward_screen_distortion",
     };
     static async Task MyTask(NStarryImpactVfx node) {
         node._cts = new CancellationTokenSource();
@@ -34,9 +35,7 @@ public static class StarryImpactPatch {
             // Entry.Logger.Info("Name:" + p.Name);
             if (exceptNodes.Contains(p.Name)) {
                 // Entry.Logger.Info("Dispose:" + p.Name);
-                ParticleProcessMaterial pm = (ParticleProcessMaterial)p.ProcessMaterial.Duplicate();
-                pm.Scale *= 0.01f;
-                p.ProcessMaterial = pm;
+                p.Dispose();
             }
             else {
                 // Entry.Logger.Info("Restart:" + p.Name);

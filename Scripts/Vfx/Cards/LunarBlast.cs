@@ -48,7 +48,7 @@ public class LunarBlast : CardFX {
             if (starCount > 0) {
                 for (var i = 0; i < starCount; i++) {
                     var starPos = GeneratePosAt();
-                    Entry.StarEffectController.GenerateStarAt(starPos);
+                    Entry.StarEffectController.GenerateStarAt(starPos, new Color(8.4f, 8.9f, 9f));
                 }
                 Entry.StarEffectController.StartShaking();
                 TryPlayHoldingSfx();

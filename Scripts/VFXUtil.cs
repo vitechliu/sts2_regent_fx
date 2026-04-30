@@ -56,7 +56,7 @@ public static class VFXUtil {
         await Cmd.Wait(time);
         NGame.Instance?.ScreenShake(strength, duration, degAngle);
     }
-    public static HashSet<ulong> StarryImpactNodes = new();
+    public static readonly HashSet<ulong> StarryImpactNodes = new();
 
     public static void PlaySpecialStarAt(Vector2 position) {
         if (!TestMode.IsOn && NCombatRoom.Instance != null) {
