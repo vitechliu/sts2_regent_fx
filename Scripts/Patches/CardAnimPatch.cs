@@ -53,7 +53,7 @@ public static class CardAnimPatch {
         try {
             await BeforeExecute(cardFX, card, instance);
             return await instance.Execute(choiceContext);
-        } finally{
+        } finally {
             _isProcessing = false;
         }
     }

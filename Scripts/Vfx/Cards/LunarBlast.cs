@@ -100,18 +100,6 @@ public class LunarBlast : CardFX {
 
             _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
             await Cmd.Wait(0.15f);
-            //
-            // if (config.HasExposureEffect) {
-            //     WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
-            //     await Cmd.Wait(config.ExposureInDuration + 0.05f);
-            //     WorldEnvironmentUtil.TweenExposure(1f, config.ExposureOutDuration);
-            // } else {
-            //     await Cmd.Wait(0.15f);
-            // }
-            //
-            // if (!string.IsNullOrEmpty(config.SecondarySfxPath)) {
-            //     _ = SimpleSfxUtil.Play(config.SecondarySfxPath);
-            // }
 
         } catch (Exception ex) {
             Entry.Logger.Warn($"[Laser] Error playing VFX: {ex.Message}");
