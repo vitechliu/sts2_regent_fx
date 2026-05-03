@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://blackhole_burst_mat"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c6n78cy5dgixq"]
 
-[ext_resource type="Shader" path="res://RegentFX/shaders/vfx/blackhole/blackhole_burst_distortion.gdshader" id="1_burst"]
+[ext_resource type="Shader" uid="uid://57nejvqadns8" path="res://RegentFX/shaders/vfx/blackhole/blackhole_burst_distortion.gdshader" id="1_burst"]
 
 [resource]
 shader = ExtResource("1_burst")

@@ -13,8 +13,8 @@ uniform float swirl_strength : hint_range(0.0, 2.0) = 0.8;
 uniform float time_offset = 0.0;
 
 // === 常量 ===
-const vec3 EDGE_GLOW_COLOR = vec3(0.29, 0.05, 0.18); // 暗紫红色 #4a0e2e
-const float EDGE_GLOW_BASE = 0.6;
+const vec3 EDGE_GLOW_COLOR = vec3(0.49, 0.9, 0.98); // 暗紫红色 #4a0e2e
+const float EDGE_GLOW_BASE = 0.9;
 const float SINGULARITY_TWINKLE_FREQ = 3.0;
 const float SINGULARITY_TWINKLE_INTENSITY = 0.3;
 
@@ -80,8 +80,8 @@ void fragment() {
     alpha *= tex_alpha;
     
     // 5. 边缘辉光（Event Horizon）
-    float glow_width = 0.08;
-    float glow_start = 0.85 - glow_width;
+    float glow_width = 0.05;
+    float glow_start = 0.90 - glow_width;
     float glow_mask = smoothstep(glow_start, glow_start + glow_width * 0.3, normalized_dist) 
                     * smoothstep(1.0, 0.9, normalized_dist);
     
@@ -94,7 +94,7 @@ void fragment() {
     // 6. 奇点闪烁（中心极暗区域）
     float singularity_mask = 1.0 - smoothstep(0.0, 0.3, normalized_dist);
     float twinkle = singularity_twinkle(time);
-    vec3 singularity_color = vec3(0.02, 0.0, 0.01) * twinkle * singularity_mask;
+    vec3 singularity_color = vec3(0.12, 0.2, 0.31) * twinkle * singularity_mask;
     
     // 7. 合成颜色
     vec3 final_color = vec3(0.0); // 基础黑色

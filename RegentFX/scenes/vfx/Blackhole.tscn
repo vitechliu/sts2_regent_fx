@@ -1,9 +1,60 @@
-[gd_scene load_steps=6 format=3 uid="uid://blackhole00001"]
+[gd_scene load_steps=14 format=3 uid="uid://cqtyy2hmsseom"]
 
 [ext_resource type="Script" path="res://Scripts/Vfx/Blackhole.cs" id="1_blackhole"]
-[ext_resource type="Texture2D" uid="uid://blackhole_base" path="res://RegentFX/images/blackhole_base.png" id="2_base"]
-[ext_resource type="Material" uid="uid://blackhole_core_mat" path="res://RegentFX/materials/vfx/blackhole/blackhole_core_material.tres" id="3_core_mat"]
-[ext_resource type="Material" uid="uid://blackhole_burst_mat" path="res://RegentFX/materials/vfx/blackhole/blackhole_burst_material.tres" id="4_burst_mat"]
+[ext_resource type="Texture2D" uid="uid://b6xx188ywmnur" path="res://RegentFX/images/blackhole_base.png" id="2_base"]
+[ext_resource type="Material" uid="uid://ct6om08k6bqmx" path="res://RegentFX/materials/vfx/blackhole/blackhole_core_material.tres" id="3_core_mat"]
+[ext_resource type="Material" uid="uid://c6n78cy5dgixq" path="res://RegentFX/materials/vfx/blackhole/blackhole_burst_material.tres" id="4_burst_mat"]
+[ext_resource type="Texture2D" uid="uid://cgwxeurltq1ba" path="res://RegentFX/images/black_hole_shards.png" id="5_yd761"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yd761"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_4g27y"]
+colors = PackedColorArray(0.32639998, 0.87552005, 0.96, 0, 0.45590004, 0.8500435, 0.97, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hpy4s"]
+gradient = SubResource("Gradient_4g27y")
+
+[sub_resource type="Gradient" id="Gradient_yd761"]
+offsets = PackedFloat32Array(0, 0.29174313, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4g27y"]
+gradient = SubResource("Gradient_yd761")
+
+[sub_resource type="Curve" id="Curve_hpy4s"]
+_data = [Vector2(0, 1), 0.0, -0.079056226, 0, 0, Vector2(1, 0.36340195), -1.8220357, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_d0v81"]
+curve = SubResource("Curve_hpy4s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yd761"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 101.0
+emission_ring_inner_radius = 96.65
+emission_ring_cone_angle = 90.0
+spread = 0.0
+initial_velocity_max = 0.099999994
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -27.650002
+radial_accel_max = -10.660002
+tangential_accel_min = 11.949998
+tangential_accel_max = 17.049997
+attractor_interaction_enabled = false
+scale_min = 0.5
+scale_max = 0.7
+scale_curve = SubResource("CurveTexture_d0v81")
+color_ramp = SubResource("GradientTexture1D_4g27y")
+color_initial_ramp = SubResource("GradientTexture1D_hpy4s")
+anim_offset_max = 1.0
 
 [node name="Blackhole" type="Node2D"]
 script = ExtResource("1_blackhole")
@@ -13,9 +64,16 @@ material = ExtResource("3_core_mat")
 texture = ExtResource("2_base")
 
 [node name="BurstDistortion" type="Sprite2D" parent="."]
+visible = false
 material = ExtResource("4_burst_mat")
 scale = Vector2(6, 6)
 texture = ExtResource("2_base")
-visible = false
 
 [node name="ParticleSlot" type="Node2D" parent="."]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ParticleSlot"]
+material = SubResource("CanvasItemMaterial_yd761")
+amount = 60
+texture = ExtResource("5_yd761")
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_yd761")

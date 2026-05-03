@@ -131,8 +131,11 @@ public abstract class CardFX {
     // public virtual string? AttackerAnimNameChange => null;
     
     //v2Patch
-    public virtual bool DisableAttackAnim => true;
-    public virtual bool PlayCastAnim => true;
+    // public virtual bool DisableAttackAnim => true;
+    // public virtual bool PlayCastAnim => true;
+
+    //是否要阻止默认的储君武器动画
+    public virtual bool ShouldDisableRegentWeaponAttack => true;
     
     //AttackExecute执行前触发
     public virtual bool HasOnBeforeExecute => false;

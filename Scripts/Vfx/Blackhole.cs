@@ -1,7 +1,10 @@
 using Godot;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -24,11 +27,11 @@ public partial class Blackhole : Node2D {
 
     #region 常量
 
-    private const float BURST_DURATION = 2.5f;
-    private const float BURST_PEAK_TIME = 0.3f;
-    private const float BURST_MAX_SCALE = 2.5f;
+    private const float BURST_DURATION = 0.4f;
+    private const float BURST_PEAK_TIME = 0.15f;
+    private const float BURST_MAX_SCALE = 1.5f;
     private const float BURST_MAX_DISTORTION = 0.15f;
-    private const float BURST_RADIUS = 600f;
+    private const float BURST_RADIUS = 300f;
     private const float BURST_PULSE_MULTIPLIER = 3f;
 
     #endregion
@@ -104,6 +107,8 @@ public partial class Blackhole : Node2D {
     public void Burst() {
         if (_isBursting) return;
 
+        SimpleSfxUtil.Play("res://RegentFX/sfx/black_hole_1.mp3");
+
         _isBursting = true;
         _burstTimer = 0f;
         _baseScale = Scale.X;
@@ -114,7 +119,7 @@ public partial class Blackhole : Node2D {
             _burstSprite.GlobalPosition = GlobalPosition;
         }
 
-        Entry.Logger.Debug($"[Blackhole] Burst triggered at position {GlobalPosition}");
+        Entry.Logger.Info($"[Blackhole] Burst triggered at position {GlobalPosition}");
     }
 
     /// <summary>
@@ -128,11 +133,11 @@ public partial class Blackhole : Node2D {
             return;
         }
 
-        // === 阶段1: 快速 buildup (0 - 0.3s) ===
+        // === 阶段1: 快速 buildup ===
         float buildupProgress = Mathf.Min(_burstTimer / BURST_PEAK_TIME, 1.0f);
         float buildupEase = Mathf.Ease(buildupProgress, 0.0f); // Out
 
-        // === 阶段2: 缓慢 decay (0.3s - 2.5s) ===
+        // === 阶段2: 缓慢 decay ===
         float decayProgress = Mathf.Max(0f, (_burstTimer - BURST_PEAK_TIME) / (BURST_DURATION - BURST_PEAK_TIME));
         float decayEase = 1.0f - Mathf.Ease(decayProgress, 1.0f); // In
 
@@ -251,26 +256,23 @@ public partial class Blackhole : Node2D {
     /// <summary>
     /// 在指定位置创建黑洞
     /// </summary>
-    public static Blackhole? Create(Vector2 position, float size = 100f, Node? parent = null) {
+    public static Blackhole? Create(Creature creature, float size = 100f) {
         if (TestMode.IsOn) return null;
-
+        NCreature nCreature = NCombatRoom.Instance?.GetCreatureNode(creature);
+        if (nCreature == null) return null;
         try {
             var blackhole = VFXUtil.GenVFXNode<Blackhole>("res://RegentFX/scenes/vfx/Blackhole.tscn");
 
-            if (parent == null) {
-                parent = NCombatRoom.Instance?.CombatVfxContainer;
-            }
-
-            if (parent == null) {
-                Entry.Logger.Warn("[Blackhole] No parent available for blackhole");
+            Node? backVfx = NCombatRoom.Instance?.BackCombatVfxContainer;
+            if (backVfx == null) {
+                Entry.Logger.Warn("[Blackhole] No BackCombatVfxContainer available for blackhole");
                 blackhole.QueueFree();
                 return null;
             }
-
-            parent.AddChildSafely(blackhole);
-            blackhole.GlobalPosition = position;
+            backVfx.AddChildSafely(blackhole);
+            blackhole.GlobalPosition = nCreature.VfxSpawnPosition;
             blackhole.SetSize(size);
-
+            Blackholes[creature] = blackhole;
             return blackhole;
         }
         catch (Exception ex) {
@@ -281,6 +283,9 @@ public partial class Blackhole : Node2D {
 
     #endregion
 
+    public static Dictionary<Creature, Blackhole> Blackholes = new();
+    
+    
     #region 清理
 
     public override void _ExitTree() {

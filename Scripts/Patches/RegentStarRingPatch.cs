@@ -137,5 +137,7 @@ public static class RegentStarRingPatch {
             Entry.StarEffectController.QueueFree();
             Entry.StarEffectController = null;
         }
+        
+        Blackhole.Blackholes.Clear();
     }
 }

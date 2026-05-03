@@ -34,7 +34,7 @@ public class GuidingStar : CardFX {
     
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;
-    public override bool PlayCastAnim => false;
+    // public override bool PlayCastAnim => false;
 
     public override async Task OnBeforeDamage(AttackCommand command) {
         Creature? owner = card?.Owner.Creature;
