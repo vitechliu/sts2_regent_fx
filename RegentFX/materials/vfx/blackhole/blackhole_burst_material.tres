@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://blackhole_burst_mat"]
+
+[ext_resource type="Shader" path="res://RegentFX/shaders/vfx/blackhole/blackhole_burst_distortion.gdshader" id="1_burst"]
+
+[resource]
+shader = ExtResource("1_burst")
+shader_parameter/distortion_intensity = 0.0
+shader_parameter/distortion_radius = 600.0
+shader_parameter/center_uv = Vector2(0.5, 0.5)
+shader_parameter/wave_count = 4.0
+shader_parameter/time_offset = 0.0

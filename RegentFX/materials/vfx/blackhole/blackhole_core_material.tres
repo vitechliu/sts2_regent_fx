@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://blackhole_core_mat"]
+
+[ext_resource type="Shader" path="res://RegentFX/shaders/vfx/blackhole/blackhole_core.gdshader" id="1_core"]
+
+[resource]
+shader = ExtResource("1_core")
+shader_parameter/blackhole_size = 100.0
+shader_parameter/pulse_frequency = 1.5
+shader_parameter/pulse_intensity = 0.15
+shader_parameter/swirl_strength = 0.8
+shader_parameter/time_offset = 0.0

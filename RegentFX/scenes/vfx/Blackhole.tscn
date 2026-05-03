@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://blackhole00001"]
+
+[ext_resource type="Script" path="res://Scripts/Vfx/Blackhole.cs" id="1_blackhole"]
+[ext_resource type="Texture2D" uid="uid://blackhole_base" path="res://RegentFX/images/blackhole_base.png" id="2_base"]
+[ext_resource type="Material" uid="uid://blackhole_core_mat" path="res://RegentFX/materials/vfx/blackhole/blackhole_core_material.tres" id="3_core_mat"]
+[ext_resource type="Material" uid="uid://blackhole_burst_mat" path="res://RegentFX/materials/vfx/blackhole/blackhole_burst_material.tres" id="4_burst_mat"]
+
+[node name="Blackhole" type="Node2D"]
+script = ExtResource("1_blackhole")
+
+[node name="Core" type="Sprite2D" parent="."]
+material = ExtResource("3_core_mat")
+texture = ExtResource("2_base")
+
+[node name="BurstDistortion" type="Sprite2D" parent="."]
+material = ExtResource("4_burst_mat")
+scale = Vector2(6, 6)
+texture = ExtResource("2_base")
+visible = false
+
+[node name="ParticleSlot" type="Node2D" parent="."]

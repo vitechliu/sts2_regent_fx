@@ -52,28 +52,16 @@ public abstract class CardFX {
         None, //不借取
     }
 
-
     public virtual HoldingModes HoldingMode => HoldingModes.BorrowDefault;
     public virtual void HoldingCustom() {}
     
-    /// <summary>
-    /// 星星数量，-1 表示使用所有星星
-    /// </summary>
+    //星星数量
     public virtual int StarCount => 0;
-
-    /// <summary>
-    /// 目标位置偏移（相对于角色位置）
-    /// </summary>
+    //目标位置偏移（相对于角色位置）
     public virtual Vector2 TargetOffset => new(-260f, -400f);
-
-    /// <summary>
-    /// 星星间距
-    /// </summary>
+    //星星间距
     public virtual float StarSpacing => 40f;
-
-    /// <summary>
-    /// 基础移动时长
-    /// </summary>
+    // 基础移动时长
     public virtual float MoveDuration => 0.3f;
 
     /// <summary>
