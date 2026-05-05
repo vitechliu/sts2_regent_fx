@@ -105,6 +105,13 @@ public static class VFXUtil {
         return null;
     }
 
+
+    public static bool IsCharacterFacingRight(Creature creature) {
+        Node2D? body = NCombatRoom.Instance?.GetCreatureNode(creature)?.Body;
+        if (body == null) return true;
+        return body.Scale.X > 0;
+    }
+    
     public static Vector2? GetCombatSidePos(CardModel card) {
         var combatState = Traverse.Create(card).Property("CombatState").GetValue();
         if (combatState == null) return null;
@@ -119,22 +126,22 @@ public static class VFXUtil {
         return null;
     }
 
-    public static Vector2? GetEnemiesCenter(CardModel card) {
-        try {
-            IReadOnlyList<Creature>? enemies = GetHittableEnemiesFromCard(card);
-            if (enemies == null)  return null;
-            Vector2 posFin = Vector2.Zero;
-            if (enemies.Count <= 0) return null;
-            foreach (var creature in enemies) {
-                NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);
-                if (targetNode == null) continue;
-                posFin += targetNode.VfxSpawnPosition;
-            }
-            posFin /= enemies.Count;
-            return posFin;
-        }
-        catch (Exception ex) {
-            return null;
-        }
-    }
+    // public static Vector2? GetEnemiesCenter(CardModel card) {
+    //     try {
+    //         IReadOnlyList<Creature>? enemies = GetHittableEnemiesFromCard(card);
+    //         if (enemies == null)  return null;
+    //         Vector2 posFin = Vector2.Zero;
+    //         if (enemies.Count <= 0) return null;
+    //         foreach (var creature in enemies) {
+    //             NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(creature);
+    //             if (targetNode == null) continue;
+    //             posFin += targetNode.VfxSpawnPosition;
+    //         }
+    //         posFin /= enemies.Count;
+    //         return posFin;
+    //     }
+    //     catch (Exception ex) {
+    //         return null;
+    //     }
+    // }
 }
