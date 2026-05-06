@@ -16,6 +16,8 @@ namespace RegentFX.Scripts.Vfx.Cards;
 public class WroughtInWar : CardFX {
     public override HoldingModes HoldingMode => HoldingModes.None;
 
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/wrought_in_war.tscn";
+
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamage => true;
     public override async Task OnBeforeDamage(AttackCommand command) {
@@ -24,7 +26,7 @@ public class WroughtInWar : CardFX {
         await PlayVfx(target);
     }
     
-    private static async Task PlayVfx(Creature target) {
+    private async Task PlayVfx(Creature target) {
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) {
@@ -32,7 +34,7 @@ public class WroughtInWar : CardFX {
             return;
         }
         SimpleSfxUtil.Play("res://RegentFX/sfx/wiw1.mp3");
-        VFXUtil.PlaySimple("res://RegentFX/scenes/wrought_in_war.tscn", targetNode.VfxSpawnPosition);
+        VFXUtil.PlaySimple(VfxScenePath, targetNode.VfxSpawnPosition);
         await Cmd.Wait(0.1f);
         NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Normal);
         await Cmd.Wait(0.15f);

@@ -26,11 +26,13 @@ public class LunarBlast : CardFX {
     }
 
     private static List<string> LunarScenePaths = new() {
-        "res://RegentFX/scenes/lunar_blast_1.tscn",
-        "res://RegentFX/scenes/lunar_blast_2.tscn",
+        "res://RegentFX/scenes/vfx/lunar_blast_1.tscn",
+        "res://RegentFX/scenes/vfx/lunar_blast_2.tscn",
     };
-    
-    public override string VfxScenePath => "res://RegentFX/scenes/laser_1.tscn";
+
+    public override List<string> AssetPaths => (new List<string> {VfxScenePath}).Concat(LunarScenePaths).ToList();
+
+    public override string VfxScenePath => "res://RegentFX/scenes/vfx/laser_1.tscn";
     public static string LunarScenePath => LunarScenePaths[GD.RandRange(0,  LunarScenePaths.Count - 1)];
 
     public override bool HasExposureEffect => false;
@@ -65,9 +67,6 @@ public class LunarBlast : CardFX {
         Vector2? starPos = Entry.StarEffectController?.PopStar(this);
         if (!starPos.HasValue) {
             starPos = GeneratePosAt();
-        }
-        else {
-            Entry.Logger.Info("PopStarSuccess:" + starPos.Value);
         }
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);

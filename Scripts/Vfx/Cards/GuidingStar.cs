@@ -20,7 +20,7 @@ public class GuidingStar : CardFX {
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -450f);
 
-    public override string VfxScenePath => "res://RegentFX/scenes/guiding_star.tscn";
+    public override string VfxScenePath => "res://RegentFX/scenes/vfx/guiding_star.tscn";
 
     private List<Vector2> starPos = new() {
         new Vector2(2f, 2f),

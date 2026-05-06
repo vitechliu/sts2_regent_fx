@@ -13,7 +13,8 @@ namespace RegentFX.Scripts.Vfx.Cards;
 public class Alignment : CardFX {
     // -1 表示使用所有星星
     public override int StarCount => 3;
-    // 更高的位置
+    
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/alignment.tscn";
 
     private List<Vector2> starPos = new() {
         new Vector2(-90f, -320f), 
@@ -58,7 +59,7 @@ public static class AlignmentPatch {
         }
         else {
             SimpleSfxUtil.Play("res://RegentFX/sfx/alignment.mp3");
-            VFXUtil.PlaySimple("res://RegentFX/scenes/alignment.tscn", ownerNode.VfxSpawnPosition, 2f);
+            VFXUtil.PlaySimple(CardFX.FromCard(__instance).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
         }
         Entry.StarEffectController?.OnPlayCard();
     }

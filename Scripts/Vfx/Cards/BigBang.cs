@@ -10,7 +10,9 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.BigBang))]
 public class BigBang : CardFX {
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/big_bang.tscn";
 }
 
 [HarmonyPatch]
@@ -25,7 +27,7 @@ public static class BigBangPatch {
     private static async Task MyOnPlay(MegaCrit.Sts2.Core.Models.Cards.BigBang card) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
-            VFXUtil.PlaySimple("res://RegentFX/scenes/big_bang.tscn", ownerNode.VfxSpawnPosition, 2f);
+            VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             VFXUtil.ShakeAfter(0.3f, ShakeStrength.Strong, ShakeDuration.Normal);
             await Cmd.Wait( .25f);
             SimpleSfxUtil.Play("res://RegentFX/sfx/big_bang_1.mp3");

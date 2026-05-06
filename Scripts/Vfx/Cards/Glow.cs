@@ -9,7 +9,9 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.Glow))]
 public class Glow : CardFX {
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/glow.tscn";
 }
 
 [HarmonyPatch]
@@ -26,7 +28,7 @@ public static class GlowPatch {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
             SimpleSfxUtil.Play("res://RegentFX/sfx/glow.mp3");
-            VFXUtil.PlaySimple("res://RegentFX/scenes/glow.tscn", ownerNode.VfxSpawnPosition, 2f);
+            VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             await Cmd.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(2.2f, .1f);
             await Cmd.Wait( .1f);

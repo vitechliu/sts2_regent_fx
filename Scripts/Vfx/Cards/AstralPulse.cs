@@ -14,6 +14,8 @@ namespace RegentFX.Scripts.Vfx.Cards;
 public class AstralPulse : CardFX {
     public override int StarCount => 3;
 
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/astral_pulse.tscn";
+    
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(0, -180f);
 
@@ -51,7 +53,7 @@ public class AstralPulse : CardFX {
         else {
             SimpleSfxUtil.Play("res://RegentFX/sfx/common_magic_1.mp3");
             VFXUtil.ShakeAfter(0.03f, ShakeStrength.Strong, ShakeDuration.Normal);
-            Node2D? node = VFXUtil.PlaySimple("res://RegentFX/scenes/astral_pulse.tscn", ownerNode.VfxSpawnPosition);
+            Node2D? node = VFXUtil.PlaySimple(VfxScenePath, ownerNode.VfxSpawnPosition);
             if (node != null) {
                 node.Scale *= 1.3f;
             }

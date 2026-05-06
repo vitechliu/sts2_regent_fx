@@ -18,6 +18,9 @@ namespace RegentFX.Scripts.Vfx.Cards;
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.CrescentSpear))]
 public class CrescentSpear: CardFX {
     public override int StarCount => 1;
+    
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/crescent_spear.tscn";
+    
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -350f);
     
@@ -38,9 +41,8 @@ public class CrescentSpear: CardFX {
     private const float ScaleFactor = 1.2f;
 
     private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
-    private const string ScenePath = "res://RegentFX/scenes/crescent_spear.tscn";
     
-    private static async Task PlayCrescentSpearVfx(Creature owner, Creature target) {
+    private async Task PlayCrescentSpearVfx(Creature owner, Creature target) {
         if (TestMode.IsOn) {
             return;
         }
@@ -52,8 +54,7 @@ public class CrescentSpear: CardFX {
             return;
         }
         try {
-            Node2D vfxNode = VFXUtil.GenVFXNode(ScenePath);
-            if (vfxNode == null) return;
+            Node2D vfxNode = VFXUtil.GenVFXNode(VfxScenePath);
 
             // 等比放大1.5倍
             vfxNode.Scale = Vector2.One * ScaleFactor;

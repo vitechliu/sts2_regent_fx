@@ -7,7 +7,7 @@ namespace RegentFX.Scripts.Vfx.Powers;
 /// 卡牌特效基类
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
-public abstract class PowerFX {
+public abstract class PowerFX: IWithFxLoad {
     private static readonly Dictionary<Type, Type> PowerFxRegistry = new();
     private static bool _registryInitialized;
 
@@ -38,6 +38,17 @@ public abstract class PowerFX {
             return fx;
         }
         return null;
+    }
+    
+    public virtual string? VfxScenePath => null;
+
+    public virtual List<string> AssetPaths {
+        get {
+            if (VfxScenePath != null) {
+                return [VfxScenePath];
+            }
+            return [];
+        }
     }
 
     public PowerModel? power;

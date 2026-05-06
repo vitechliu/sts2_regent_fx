@@ -9,7 +9,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// 卡牌特效基类
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
-public abstract class CardFX {
+public abstract class CardFX: IWithFxLoad {
     private static readonly Dictionary<Type, Type> CardFxRegistry = new();
     private static bool _registryInitialized;
 
@@ -88,6 +88,15 @@ public abstract class CardFX {
     /// VFX 场景路径
     /// </summary>
     public virtual string? VfxScenePath => null;
+
+    public virtual List<string> AssetPaths {
+        get {
+            if (VfxScenePath != null) {
+                return [VfxScenePath];
+            }
+            return [];
+        }
+    }
 
     /// <summary>
     /// 命中音效路径

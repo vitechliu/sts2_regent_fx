@@ -15,7 +15,7 @@ public class DyingStar : CardFX {
     // 更靠左上的位置
     public override Vector2 TargetOffset => new(-200f, -450f);
 
-    public override string VfxScenePath => "res://RegentFX/scenes/dying_star.tscn";
+    public override string VfxScenePath => "res://RegentFX/scenes/vfx/dying_star.tscn";
     public override string HitSfxPath => "res://RegentFX/sfx/common_hold_4.mp3";
     public override string SecondarySfxPath => "res://RegentFX/sfx/dying_star.mp3";
     public override float VfxClearDelay => 3f;

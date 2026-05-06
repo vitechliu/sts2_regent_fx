@@ -10,7 +10,9 @@ using RegentFx.Core.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
+[CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.ParticleWall))]
 public class ParticleWall: CardFX {
+    public override string? VfxScenePath => "res://RegentFX/scenes/vfx/particle_wall.tscn";
 }
 
 [HarmonyPatch]
@@ -31,7 +33,7 @@ public static class ParticleWallPatch {
             int xFac = VFXUtil.IsCharacterFacingRight(owner) ? 1 : -1;
             Vector2 pos = ownerNode.VfxSpawnPosition +
                           new Vector2(180f * xFac, 110f);
-            Node2D? d = VFXUtil.PlaySimple("res://RegentFX/scenes/particle_wall.tscn", pos, 3f);
+            Node2D? d = VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, pos, 3f);
             if (d != null) {
                 d.Scale *= new Vector2(xFac, 1);
                 d.Scale *= 0.7f;

@@ -31,4 +31,9 @@ public class Entry {
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
         Log.Debug("Regent Fx Mod initialized!");
     }
+
+
+    static void LoadScenes() {
+        
+    }
 }
