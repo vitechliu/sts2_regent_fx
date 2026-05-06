@@ -253,15 +253,16 @@ public partial class Blackhole : Node2D {
 
     #region 静态工厂方法
 
+    public const float DEFAULT_SIZE = 100f;
     /// <summary>
     /// 在指定位置创建黑洞
     /// </summary>
-    public static Blackhole? Create(Creature creature, float size = 100f) {
+    public static Blackhole? Create(Creature creature, float size = DEFAULT_SIZE) {
         if (TestMode.IsOn) return null;
         NCreature nCreature = NCombatRoom.Instance?.GetCreatureNode(creature);
         if (nCreature == null) return null;
         try {
-            var blackhole = VFXUtil.GenVFXNode<Blackhole>("res://RegentFX/scenes/vfx/Blackhole.tscn");
+            var blackhole = VFXUtil.GenVFXNode<Blackhole>(VfxScenePath);
 
             Node? backVfx = NCombatRoom.Instance?.BackCombatVfxContainer;
             if (backVfx == null) {
@@ -283,6 +284,8 @@ public partial class Blackhole : Node2D {
 
     #endregion
 
+	public static string VfxScenePath = "res://RegentFX/scenes/vfx/Blackhole.tscn";
+    
     public static Dictionary<Creature, Blackhole> Blackholes = new();
     
     

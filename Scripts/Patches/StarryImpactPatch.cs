@@ -35,7 +35,7 @@ public static class StarryImpactPatch {
             // Entry.Logger.Info("Name:" + p.Name);
             if (exceptNodes.Contains(p.Name)) {
                 // Entry.Logger.Info("Dispose:" + p.Name);
-                p.Dispose();
+                p.QueueFreeSafely();
             }
             else {
                 // Entry.Logger.Info("Restart:" + p.Name);

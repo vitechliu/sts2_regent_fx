@@ -76,4 +76,5 @@ material = SubResource("CanvasItemMaterial_yd761")
 amount = 60
 texture = ExtResource("5_yd761")
 lifetime = 2.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_yd761")

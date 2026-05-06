@@ -8,10 +8,10 @@ namespace RegentFX.Scripts.Vfx;
 /// </summary>
 public partial class Star : Node2D {
 
-
+	public static string VfxScenePath = "res://RegentFX/scenes/Star.tscn";
 
 	public static Star Create() {
-		return VFXUtil.GenVFXNode<Star>("res://RegentFX/scenes/Star.tscn");
+		return VFXUtil.GenVFXNode<Star>(VfxScenePath);
 	}
 	
 	public enum TintMode {

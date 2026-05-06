@@ -17,7 +17,7 @@ namespace RegentFX.Scripts.Patches;
 /// </summary>
 [HarmonyPatch]
 public static class FixedOpeningHandPatch {
-
+    private const bool DO_FIX = true;
     /// <summary>
     /// 拦截 CardPileCmd.Draw，在第一轮抽初始手牌时替换为生成特定牌
     /// </summary>
@@ -26,6 +26,7 @@ public static class FixedOpeningHandPatch {
         typeof(PlayerChoiceContext), typeof(decimal), typeof(Player), typeof(bool)
     })]
     public static bool DrawPrefix(PlayerChoiceContext choiceContext, decimal count, Player player, bool fromHandDraw, ref Task<IEnumerable<CardModel>> __result) {
+        if (!DO_FIX) return true;
         // 只拦截战斗开始时的初始手牌抽取（第一轮 + fromHandDraw）
         if (!fromHandDraw || player.Creature.CombatState?.RoundNumber != 1) {
             return true; // 执行默认逻辑

@@ -1,11 +1,11 @@
 
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
 
 namespace RegentFX.Scripts.Vfx.Powers;
 
 /// <summary>
-/// 卡牌特效基类
-/// 每张卡牌继承此类，实现各自的星星借用逻辑
+/// 能力特效基类
 /// </summary>
 public abstract class PowerFX: IWithFxLoad {
     private static readonly Dictionary<Type, Type> PowerFxRegistry = new();
@@ -53,4 +53,7 @@ public abstract class PowerFX: IWithFxLoad {
 
     public PowerModel? power;
 
+    public virtual void BeforeBeforeApplied(Creature target, Decimal amount) {}
+    public virtual void AfterAfterRemoved(Creature target) {}
+    public virtual void AfterSetAmount(Decimal amount) {}
 }
