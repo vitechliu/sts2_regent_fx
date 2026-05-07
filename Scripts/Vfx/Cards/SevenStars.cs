@@ -17,6 +17,8 @@ public class SevenStars : CardFX {
 
     // 更高的位置
     public override Vector2 TargetOffset => new(-100f, -450f);
+    
+    public override bool ShouldDisableRegentWeaponSFX => false;
 
     private readonly List<Vector2> starPos = new() {
         new Vector2(5f, 0f),      // 天枢
@@ -52,7 +54,7 @@ public class SevenStars : CardFX {
     private async Task PlayVfx(IReadOnlyList<Creature> enemies) {
         if (TestMode.IsOn) return;
         Entry.StarEffectController?.PopStar(this);
-        SfxCmd.Play("event:/sfx/characters/regent/regent_attack");
+        // SfxCmd.Play(DEFAULT_REGENT_ATTACK_SFX);
         foreach (Creature enemy in enemies) {
             NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(enemy);
             if (targetNode == null) {

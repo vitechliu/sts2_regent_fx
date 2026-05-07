@@ -50,6 +50,10 @@ public static class FixedOpeningHandPatch {
         var result = new List<CardModel>() {
             combatState.CreateCard<StrikeRegent>(player),
             combatState.CreateCard<MakeItSo>(player),
+            combatState.CreateCard<SevenStars>(player),
+            combatState.CreateCard<FallingStar>(player),
+            combatState.CreateCard<DyingStar>(player),
+            combatState.CreateCard<BlackHole>(player),
             combatState.CreateCard<Glow>(player),
         };
 

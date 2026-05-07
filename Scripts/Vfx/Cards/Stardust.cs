@@ -15,6 +15,7 @@ public class Stardust : CardFX {
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + VFXUtil.RandVec2(40f);
     }
+    public override bool ShouldDisableRegentWeaponAttack => false;
 }
 
 

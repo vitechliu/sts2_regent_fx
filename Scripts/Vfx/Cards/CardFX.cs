@@ -59,6 +59,9 @@ public abstract class CardFX: FX {
         None, //不借取
     }
 
+    public const string DEFAULT_REGENT_ATTACK_SFX = "event:/sfx/characters/regent/regent_attack";
+    
+    
     public virtual HoldingModes HoldingMode => HoldingModes.BorrowDefault;
     public virtual void HoldingCustom() {}
     
@@ -138,6 +141,8 @@ public abstract class CardFX: FX {
 
     //是否要阻止默认的储君武器动画
     public virtual bool ShouldDisableRegentWeaponAttack => true;
+    //是否要阻止默认的储君攻击音效
+    public virtual bool ShouldDisableRegentWeaponSFX => true;
     
     //AttackExecute执行前触发
     public virtual bool HasOnBeforeExecute => false;

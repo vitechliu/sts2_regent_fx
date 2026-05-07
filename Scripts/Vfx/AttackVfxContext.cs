@@ -9,4 +9,5 @@ public static class AttackVfxContext {
     public static CardModel? CurrentModelSource { get; set; }
 
     public static bool ShouldDisableRegentWeaponAttack = false;
+    public static bool ShouldDisableRegentWeaponSFX = false;
 }

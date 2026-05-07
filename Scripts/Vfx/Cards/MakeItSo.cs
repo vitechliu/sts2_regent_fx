@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
+using RegentFx.Core.Audio;
 
 #pragma warning disable CS4014
 
@@ -21,12 +22,12 @@ public class MakeItSo : CardFX {
     public override bool HasOnBeforeDamage => true;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/make_it_so.tscn";
+    public override string? HitSfxPath => "res://RegentFX/sfx/make_it_so.mp3";
     public override bool HasExposureEffect => false;
 
     public override bool RemoveHitFx => true;
 
     public override async Task OnBeforeDamage(AttackCommand command) {
-        SfxCmd.Play("event:/sfx/characters/regent/regent_attack"); //todo sfx
         Creature? target = command._singleTarget;
         if (target == null || command._singleTarget == null || card == null) return;
         await PlayVfx(card.Owner.Creature, target);
@@ -58,7 +59,7 @@ public class MakeItSo : CardFX {
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
             Entry.StarEffectController?.OnPlayCard();
-            // SimpleSfxUtil.Play(HitSfxPath); //todo sfx
+            SimpleSfxUtil.Play(HitSfxPath);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await Cmd.Wait(0.15f);
             NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);

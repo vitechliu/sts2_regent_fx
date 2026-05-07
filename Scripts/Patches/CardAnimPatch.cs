@@ -22,6 +22,7 @@ public static class CardAnimPatch {
         
         if (_isProcessing) return true; 
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
+        AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
         if (__instance.ModelSource == null) return true;
         try {
             var card = __instance.ModelSource as CardModel;
@@ -33,7 +34,11 @@ public static class CardAnimPatch {
 
 
             if (cardFX.ShouldDisableRegentWeaponAttack) {
+                Entry.Logger.Info("DisableAttack1");
                 AttackVfxContext.ShouldDisableRegentWeaponAttack = true;
+            }
+            if (cardFX.ShouldDisableRegentWeaponSFX) {
+                AttackVfxContext.ShouldDisableRegentWeaponSFX = true;
             }
 
             // if (cardFX.DisableAttackAnim) {
@@ -80,12 +85,13 @@ public static class CardAnimPatch {
     }
 
 
-    [HarmonyPatch(typeof(CardModel), "OnPlay")]
+    [HarmonyPatch(typeof(CardModel), nameof(CardModel.OnPlayWrapper))]
     [HarmonyPostfix]
     public static void PostOnPlayPatch(CardModel __instance) {
         //重置状态
-        Entry.Logger.Info("Disable");
+        Entry.Logger.Info("DisableAttack2——3");
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
+        AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
         AttackVfxContext.CurrentModelSource = null;
         
         // var cardFX = CardFX.FromCard(__instance);
@@ -93,11 +99,30 @@ public static class CardAnimPatch {
         // if (!cardFX.UseV2Patch) return;
     }
 
+    
+    
+    //阻止群星动画
     [HarmonyPrefix]
     [HarmonyPatch(typeof(NRegentVfx), nameof(NRegentVfx.Attack))]
     static bool PreventRegentAnimPatch() {
+        
         if (AttackVfxContext.ShouldDisableRegentWeaponAttack) {
+            Entry.Logger.Info("DisableAttack2——1");
             return false;
+        }
+        Entry.Logger.Info("DisableAttack2——2");
+        
+        return true;
+    }
+    
+    
+    //阻止默认动画音效
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(SfxCmd), nameof(SfxCmd.Play), [typeof(string), typeof(float)])]
+    static bool PreventRegentSfx(string sfx, float volume) {
+        if (AttackVfxContext.ShouldDisableRegentWeaponSFX) {
+            if (sfx == CardFX.DEFAULT_REGENT_ATTACK_SFX)
+                return false;
         }
         return true;
     }
