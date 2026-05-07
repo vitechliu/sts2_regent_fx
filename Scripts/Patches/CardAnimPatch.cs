@@ -34,7 +34,7 @@ public static class CardAnimPatch {
 
 
             if (cardFX.ShouldDisableRegentWeaponAttack) {
-                Entry.Logger.Info("DisableAttack1");
+                // Entry.Logger.Info("DisableAttack1");
                 AttackVfxContext.ShouldDisableRegentWeaponAttack = true;
             }
             if (cardFX.ShouldDisableRegentWeaponSFX) {
@@ -84,34 +84,29 @@ public static class CardAnimPatch {
         await cardFX.OnBeforeExecute();
     }
 
-
     [HarmonyPatch(typeof(CardModel), nameof(CardModel.OnPlayWrapper))]
     [HarmonyPostfix]
-    public static void PostOnPlayPatch(CardModel __instance) {
-        //重置状态
-        Entry.Logger.Info("DisableAttack2——3");
+    public static void PostOnPlayPatch(CardModel __instance, ref Task __result) {
+        __result = AsyncPostOnPlayPatch(__result);
+    }
+
+    static async Task AsyncPostOnPlayPatch(Task originalTask) {
+        await originalTask;
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
         AttackVfxContext.CurrentModelSource = null;
-        
-        // var cardFX = CardFX.FromCard(__instance);
-        // if (cardFX == null) return;
-        // if (!cardFX.UseV2Patch) return;
     }
-
-    
     
     //阻止群星动画
     [HarmonyPrefix]
     [HarmonyPatch(typeof(NRegentVfx), nameof(NRegentVfx.Attack))]
     static bool PreventRegentAnimPatch() {
-        
         if (AttackVfxContext.ShouldDisableRegentWeaponAttack) {
             Entry.Logger.Info("DisableAttack2——1");
+            // AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
             return false;
         }
-        Entry.Logger.Info("DisableAttack2——2");
-        
+        // Entry.Logger.Info("DisableAttack2——2");
         return true;
     }
     

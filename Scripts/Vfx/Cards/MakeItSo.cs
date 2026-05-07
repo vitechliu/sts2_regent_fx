@@ -22,7 +22,7 @@ public class MakeItSo : CardFX {
     public override bool HasOnBeforeDamage => true;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/make_it_so.tscn";
-    public override string? HitSfxPath => "res://RegentFX/sfx/make_it_so.mp3";
+    public override string? HitSfxPath => "res://RegentFX/sfx/make_it_so_2.mp3";
     public override bool HasExposureEffect => false;
 
     public override bool RemoveHitFx => true;
@@ -60,6 +60,8 @@ public class MakeItSo : CardFX {
 
             Entry.StarEffectController?.OnPlayCard();
             SimpleSfxUtil.Play(HitSfxPath);
+            SimpleSfxUtil.Play("res://RegentFX/sfx/post_magic.mp3");
+            WorldEnvironmentUtil.FullExposure(1.2f, 0.1f, 0.1f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await Cmd.Wait(0.15f);
             NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);

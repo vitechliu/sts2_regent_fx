@@ -53,7 +53,7 @@
     <Folder Include="RegentFX\scripts\" />
   </ItemGroup>
   <PropertyGroup>
-    <NoWarn>$(NoWarn);MSB3270;CS0162;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>
+    <NoWarn>$(NoWarn);MSB3270;CS0162;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>
   </PropertyGroup>
   <ItemGroup>
      <!-- Value = 全限定类名，该类必须在同一程序集、且 Ritsu 扫描时已被加载 -->
