@@ -24,6 +24,7 @@ public static class StardustPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.Stardust), "OnPlay")]
     public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.Stardust __instance) {
+        if (!CardFX.IsTypeEnabled<Stardust>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         Entry.StarEffectController?.OnPlayCard();
     }

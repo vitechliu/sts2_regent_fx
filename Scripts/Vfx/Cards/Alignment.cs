@@ -51,6 +51,7 @@ public static class AlignmentPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.Alignment), "OnPlay")]
     public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.Alignment __instance) {
+        if (!CardFX.IsTypeEnabled<Alignment>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         Creature owner = __instance.Owner.Creature;
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);

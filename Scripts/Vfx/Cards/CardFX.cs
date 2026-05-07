@@ -9,23 +9,28 @@ namespace RegentFX.Scripts.Vfx.Cards;
 /// 卡牌特效基类
 /// 每张卡牌继承此类，实现各自的星星借用逻辑
 /// </summary>
-public abstract class CardFX: IWithFxLoad {
-    private static readonly Dictionary<Type, Type> CardFxRegistry = new();
-    private static bool _registryInitialized;
+public abstract class CardFX: FX {
+    protected static bool _registryInitialized;
+    public static readonly Dictionary<Type, Type> Registry = new();
+    public static string GetToggleKey(Type type) => $"card_{type.Name}";
+    public static bool IsTypeEnabled<T>() where T : CardFX => Setting.ToggleEnabled(GetToggleKey(typeof(T)));
+    public bool Enabled => Setting.ToggleEnabled(GetToggleKey(GetType()));
 
-    private static void EnsureRegistry() {
+    public static IEnumerable<Type> GetTypes => typeof(CardFX).Assembly.GetTypes()
+        .Where(t => t.IsSubclassOf(typeof(CardFX)) && !t.IsAbstract);
+    
+    public static void EnsureRegistry() {
         if (_registryInitialized) return;
         _registryInitialized = true;
 
-        var fxTypes = typeof(CardFX).Assembly.GetTypes()
-            .Where(t => t.IsSubclassOf(typeof(CardFX)) && !t.IsAbstract);
+        var fxTypes = GetTypes;
 
         foreach (var fxType in fxTypes) {
             var attr = fxType.GetCustomAttributes(typeof(CardFxAttribute), false)
                 .Cast<CardFxAttribute>()
                 .FirstOrDefault();
             if (attr != null) {
-                CardFxRegistry[attr.CardType] = fxType;
+                Registry[attr.CardType] = fxType;
             }
         }
     }
@@ -34,10 +39,12 @@ public abstract class CardFX: IWithFxLoad {
         EnsureRegistry();
         if (card == null) return null;
         var cardType = card.GetType();
-        if (CardFxRegistry.TryGetValue(cardType, out var fxType)) {
+        if (Registry.TryGetValue(cardType, out var fxType)) {
             CardFX? fx = (CardFX?)Activator.CreateInstance(fxType);
-            if (fx != null) fx.card = card;
-            return fx;
+            if (fx != null && fx.Enabled) {
+                fx.card = card;
+                return fx;
+            }
         }
         return null;
     }
@@ -83,20 +90,6 @@ public abstract class CardFX: IWithFxLoad {
     /// 音效路径
     /// </summary>
     public virtual string HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
-
-    /// <summary>
-    /// VFX 场景路径
-    /// </summary>
-    public virtual string? VfxScenePath => null;
-
-    public virtual List<string> AssetPaths {
-        get {
-            if (VfxScenePath != null) {
-                return [VfxScenePath];
-            }
-            return [];
-        }
-    }
 
     /// <summary>
     /// 命中音效路径

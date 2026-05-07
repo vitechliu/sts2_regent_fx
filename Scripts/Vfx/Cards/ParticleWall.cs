@@ -20,6 +20,7 @@ public static class ParticleWallPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.ParticleWall), "OnPlay")]
     public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.ParticleWall __instance) {
+        if (!CardFX.IsTypeEnabled<ParticleWall>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         MyOnPlay(__instance);
     }

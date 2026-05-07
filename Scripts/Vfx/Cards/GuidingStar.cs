@@ -56,6 +56,7 @@ public static class GuidingStarPatch {
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay,
         ref Task __result) {
+        if (!CardFX.IsTypeEnabled<GuidingStar>()) return true;
         if (!LocalContext.IsMe(__instance.Owner)) return true;
         __result = MyOnPlay(__instance, choiceContext, cardPlay);
         return false;

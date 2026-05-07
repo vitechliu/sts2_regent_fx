@@ -1,5 +1,6 @@
 ﻿using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -46,6 +47,8 @@ public static class BlackHolePatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(BlackHolePower), nameof(BlackHolePower.DealDamageToAllEnemies))]
     static void BlackholeBurst(BlackHolePower __instance) {
+        if (!PowerFX.IsTypeEnabled<BlackHole>()) return;
+        if (!LocalContext.IsMe(__instance.Owner)) return;
         if (Blackhole.Blackholes.TryGetValue(__instance.Owner, out var blackhole)) {
             // Entry.Logger.Info("Blackhole Burst");
             blackhole.Burst();

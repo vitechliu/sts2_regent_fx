@@ -1,4 +1,7 @@
-﻿using RegentFX.Scripts;
+﻿using MegaCrit.Sts2.Core.Models;
+using RegentFX.Scripts;
+using RegentFX.Scripts.Vfx.Cards;
+using RegentFX.Scripts.Vfx.Powers;
 
 namespace RegentFX.ThirdParty;
 
@@ -27,53 +30,112 @@ public static class RitsuLibModConfig {
     /// <summary>Ritsu 调用：返回“schema”。返回文件路径时，Ritsu 会读文件内容解析 JSON。</summary>
     public static object CreateRitsuLibSettingsSchema() {
         Directory.CreateDirectory(DataDir);
-        Entry.Logger.Info("RitsuDir:" + DataDir);
-        if (!File.Exists(SchemaPath)) {
-            // 首次写默认 schema 文件，便于你手工编辑或版本控制
-            File.WriteAllText(SchemaPath, BuildDefaultSchemaJson());
-            SetRitsuLibSettingDouble("ExposureThreshold", 1);
-        }
-
+        SetDefaults();
+        File.WriteAllText(SchemaPath, BuildDefaultSchemaJson());
+        // if (!File.Exists(SchemaPath)) {
+        //     // 首次写默认 schema 文件，便于你手工编辑或版本控制
+        //     SetDefaults();
+        // }
         // 也支持直接 return BuildDefaultSchemaJson() 或 Dictionary，无需文件
         return SchemaPath;
     }
 
+    private static readonly Dictionary<string, object> Defaults = new(){
+        ["ExposureThreshold"] = 1,
+    };
+
+    static void SetDefaults() {
+        var cardFxTypes = CardFX.Registry.Values;
+        foreach (var VARIABLE in cardFxTypes) {
+            Defaults["card_" + VARIABLE.Name] = true;
+        }
+        var powerFxTypes = PowerFX.Registry.Values;
+        foreach (var VARIABLE in powerFxTypes) {
+            Defaults["power_" + VARIABLE.Name] = true;
+        }
+    }
+
     private static string BuildDefaultSchemaJson() {
         // 与 RuntimeInteropMirrorSource 解析器字段名一致；modId 必填
-        return """
-               {
-                 "modId": "RegentFX",
-                 "modDisplayName": "RegentFX 万象辉星",
-                 "modSidebarOrder": 50,
-                 "pages": [
-                   {
-                     "pageId": "main",
-                     "title": "主设置",
-                     "description": "RegentFX 主设置",
-                     "sortOrder": 1000,
-                     "sections": [
-                       {
-                         "id": "core",
-                         "title": "特效",
-                         "entries": [
-                           {
-                             "id": "master_vol",
-                             "type": "slider",
-                             "key": "ExposureThreshold",
-                             "label": "光效强度 Light Exposure Setting",
-                             "description": "设置为0将关闭光效",
-                             "min": 0,
-                             "max": 2,
-                             "step": 0.05,
-                             "scope": "global"
-                           }
-                         ]
-                       }
-                     ]
-                   }
-                 ]
-               }
-               """;
+        var Schema = new RitsuLibModConfigEntity {
+            modDisplayName = SimpleLocUtil.Simple("万象辉星", "RegentFX")
+        };
+
+        var MainPage = new RLMCPage();
+        MainPage.pageId = "main";
+        MainPage.title = SimpleLocUtil.Simple("主要设置", "Main");
+        MainPage.description = SimpleLocUtil.Simple("主要设置", "Main");
+
+        var MainSection = new RLMCSection();
+        MainSection.id = "core";
+        MainSection.title = SimpleLocUtil.Simple("基础", "Basics");
+
+        var ExposureEntry = new SliderEntry();
+        ExposureEntry.id = "master_vol";
+        ExposureEntry.key = "ExposureThreshold";
+        ExposureEntry.label = SimpleLocUtil.Simple("曝光光效强度", "Light Exposure");
+        ExposureEntry.description = SimpleLocUtil.Simple("设置为0将关闭光效", "Set 0 to disable exposure");
+        ExposureEntry.min = 0;
+        ExposureEntry.max = 2;
+        ExposureEntry.step = 0.05;
+        MainSection.entries.Add(ExposureEntry);
+        
+        var CardSection = new RLMCSection();
+        CardSection.id = "cards";
+        CardSection.title = SimpleLocUtil.Simple("卡牌", "Cards");
+        var PowerSection = new RLMCSection();
+        PowerSection.id = "powers";
+        PowerSection.title = SimpleLocUtil.Simple("能力", "Powers");
+        
+        
+        CardFX.EnsureRegistry();
+        foreach (Type cardModelType in CardFX.Registry.Keys) {
+            Type cardFxType = CardFX.Registry[cardModelType];
+            var CardEntry = new ToggleEntry();
+            CardModel card = null!;
+            try {
+                card = ModelDb.Get(cardModelType) as CardModel;
+                
+            }
+            catch (Exception) {
+                Entry.Logger.Warn("[RitsuConfig] Cannot find cardModel: " + cardModelType.Name);
+                continue;
+            }
+            CardEntry.id = CardFX.GetToggleKey(cardFxType);
+            CardEntry.key = CardEntry.id;
+            CardEntry.label = card.TitleLocString.GetFormattedText();
+            CardEntry.description = null;
+            CardSection.entries.Add(CardEntry);
+        }
+        
+        PowerFX.EnsureRegistry();
+        foreach (Type powerModelType in PowerFX.Registry.Keys) {
+            Type powerFxType = PowerFX.Registry[powerModelType];
+            var PowerEntry = new ToggleEntry();
+            PowerModel power = null!;
+            try {
+                power = ModelDb.Get(powerModelType) as PowerModel;
+            }
+            catch (Exception) {
+                Entry.Logger.Warn("[RitsuConfig] Cannot find powerModel: " + powerModelType.Name);
+                continue;
+            }
+            PowerEntry.id = PowerFX.GetToggleKey(powerFxType);
+            PowerEntry.key = PowerEntry.id;
+            PowerEntry.label = power.Title.GetFormattedText();
+            PowerEntry.description = null;
+            PowerSection.entries.Add(PowerEntry);
+        }
+        
+        MainPage.sections.Add(MainSection);
+        MainPage.sections.Add(CardSection);
+        MainPage.sections.Add(PowerSection);
+        
+        Schema.pages.Add(MainPage);
+        
+        var res = JsonSerializer.Serialize(Schema);
+        // Entry.Logger.Info("[RitsuConfigExport] " + res);
+        return res;
     }
 
     public static void SetRitsuLibSettingValue(string key, object? value) => SetCore(key, value);
@@ -125,7 +187,9 @@ public static class RitsuLibModConfig {
 
     private static object? GetCore(string key) {
         LoadIfNeeded();
-        if (!Hot.TryGetValue(key, out var n) || n is null) return null;
+        if (!Hot.TryGetValue(key, out var n) || n is null) {
+            return Defaults.GetValueOrDefault(key);
+        }
         if (n is JsonValue jv) return jv.GetValue<object>();
         return n;
     }

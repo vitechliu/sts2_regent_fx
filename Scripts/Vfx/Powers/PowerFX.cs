@@ -7,23 +7,28 @@ namespace RegentFX.Scripts.Vfx.Powers;
 /// <summary>
 /// 能力特效基类
 /// </summary>
-public abstract class PowerFX: IWithFxLoad {
-    private static readonly Dictionary<Type, Type> PowerFxRegistry = new();
-    private static bool _registryInitialized;
-
-    private static void EnsureRegistry() {
+public abstract class PowerFX: FX {
+    protected static bool _registryInitialized;
+    public static readonly Dictionary<Type, Type> Registry = new();
+    public static string GetToggleKey(Type type) => $"power_{type.Name}";
+    public static bool IsTypeEnabled<T>() where T : PowerFX => Setting.ToggleEnabled(GetToggleKey(typeof(T)));
+    public bool Enabled => Setting.ToggleEnabled(GetToggleKey(GetType()));
+    
+    public static IEnumerable<Type> GetTypes => typeof(PowerFX).Assembly.GetTypes()
+        .Where(t => t.IsSubclassOf(typeof(PowerFX)) && !t.IsAbstract);
+    
+    public static void EnsureRegistry() {
         if (_registryInitialized) return;
         _registryInitialized = true;
 
-        var fxTypes = typeof(PowerFX).Assembly.GetTypes()
-            .Where(t => t.IsSubclassOf(typeof(PowerFX)) && !t.IsAbstract);
+        var fxTypes = GetTypes;
 
         foreach (var fxType in fxTypes) {
             var attr = fxType.GetCustomAttributes(typeof(PowerFxAttribute), false)
                 .Cast<PowerFxAttribute>()
                 .FirstOrDefault();
             if (attr != null) {
-                PowerFxRegistry[attr.PowerType] = fxType;
+                Registry[attr.PowerType] = fxType;
             }
         }
     }
@@ -32,23 +37,14 @@ public abstract class PowerFX: IWithFxLoad {
         EnsureRegistry();
         if (power == null) return null;
         var powerType = power.GetType();
-        if (PowerFxRegistry.TryGetValue(powerType, out var fxType)) {
+        if (Registry.TryGetValue(powerType, out var fxType)) {
             PowerFX? fx = (PowerFX?)Activator.CreateInstance(fxType);
-            if (fx != null) fx.power = power;
-            return fx;
+            if (fx != null && fx.Enabled) {
+                fx.power = power;
+                return fx;
+            }
         }
         return null;
-    }
-    
-    public virtual string? VfxScenePath => null;
-
-    public virtual List<string> AssetPaths {
-        get {
-            if (VfxScenePath != null) {
-                return [VfxScenePath];
-            }
-            return [];
-        }
     }
 
     public PowerModel? power;

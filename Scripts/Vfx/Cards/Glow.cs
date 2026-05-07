@@ -19,6 +19,7 @@ public static class GlowPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.Glow), "OnPlay")]
     public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.Glow __instance) {
+        if (!CardFX.IsTypeEnabled<Glow>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         MyOnPlay(__instance);
     }

@@ -20,6 +20,7 @@ public static class BigBangPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.BigBang), "OnPlay")]
     public static void OnPlay(MegaCrit.Sts2.Core.Models.Cards.BigBang __instance) {
+        if (!CardFX.IsTypeEnabled<BigBang>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         MyOnPlay(__instance);
     }

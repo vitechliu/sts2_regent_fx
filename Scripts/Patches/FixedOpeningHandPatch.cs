@@ -53,6 +53,11 @@ public static class FixedOpeningHandPatch {
         // 示例：生成 3张打击 + 2张防御 + 1张铁斩波
         // 你可以根据需求修改为任意牌
 
+        var cards = new List<Type>() {
+            typeof(StrikeRegent),
+            typeof(DefendRegent)
+        };
+
         for (int i = 0; i < 3; i++) {
             var strike = combatState.CreateCard<StrikeIronclad>(player);
             await CardPileCmd.AddGeneratedCardToCombat(strike, PileType.Hand, addedByPlayer: true);
@@ -65,9 +70,12 @@ public static class FixedOpeningHandPatch {
             result.Add(defend);
         }
 
-        var ironWave = combatState.CreateCard<IronWave>(player);
+        var ironWave = combatState.CreateCard<StrikeRegent>(player);
         await CardPileCmd.AddGeneratedCardToCombat(ironWave, PileType.Hand, addedByPlayer: true);
         result.Add(ironWave);
+
+        await PlayerCmd.GainEnergy(100, player);
+        await PlayerCmd.GainStars(20, player);
 
         Entry.Logger.Info($"[FixedOpeningHand] 已为玩家 {player.NetId} 生成 {result.Count} 张固定手牌");
         return result;

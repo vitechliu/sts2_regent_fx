@@ -7,8 +7,12 @@ public static class Setting {
     public static float ExposureThreshold {
         get {
             var raw = RitsuLibModConfig.GetRitsuLibSettingDouble("ExposureThreshold");
-            if (raw == null) return 1f;
             return (float)raw;
         }
+    }
+
+    public static bool ToggleEnabled(string key) {
+        var raw = RitsuLibModConfig.GetRitsuLibSettingBool(key);
+        return (bool)raw;
     }
 }

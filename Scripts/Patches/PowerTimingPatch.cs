@@ -17,7 +17,6 @@ public static class PowerTimingPatch {
     public static void BeforeBeforeAppliedPatch(PowerModel __instance, Creature target, Decimal amount) {
         PowerFX? p = PowerFX.FromPower(__instance);
         if (p == null) return;
-        
         p.BeforeBeforeApplied(target, amount);
     }
     
