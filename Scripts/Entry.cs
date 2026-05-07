@@ -60,6 +60,8 @@ public class Entry {
             Blade.Blade1Path,
             Blade.Blade2Path,
             Blackhole.VfxScenePath,
+            Pillar.VfxScenePath,
+            Pillar.BurstPath,
             Star.VfxScenePath,
         };
         var assembly = typeof(Entry).Assembly;

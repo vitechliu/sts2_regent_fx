@@ -139,5 +139,6 @@ public static class RegentStarRingPatch {
         }
         
         Blackhole.Blackholes.Clear();
+        Pillar.Pillars.Clear();
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://covfj3w4v83kt"]
+[gd_scene load_steps=17 format=3 uid="uid://covfj3w4v83kt"]
 
 [ext_resource type="Texture2D" uid="uid://bdjb0owf10uon" path="res://RegentFX/images/pillar/pillar_top.png" id="1_qxrst"]
 [ext_resource type="Texture2D" uid="uid://by3hks7xalvup" path="res://RegentFX/images/pillar/spin_base/fn0001.png" id="2_1tanj"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dh4yl2veey1sc" path="res://RegentFX/images/pillar/spin_base/fn0005.png" id="6_rjd7x"]
 [ext_resource type="Texture2D" uid="uid://cyi8a5qrdnw8d" path="res://RegentFX/images/pillar/pillar_base.png" id="7_uyq8h"]
 [ext_resource type="Texture2D" uid="uid://cvtsq4ygp862f" path="res://RegentFX/images/pillar/pillar_active.png" id="8_rb7x4"]
+[ext_resource type="Script" path="res://Scripts/Vfx/Pillar.cs" id="9_pillar"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rjd7x"]
 animations = [{
@@ -61,26 +62,35 @@ animations = [{
 }]
 
 [node name="Pillar" type="Node2D"]
+script = ExtResource("9_pillar")
 
 [node name="Top" type="Sprite2D" parent="."]
-position = Vector2(0, -433)
+position = Vector2(0, -480.00003)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("1_qxrst")
 
 [node name="Spin" type="Node2D" parent="."]
+position = Vector2(0, -221)
+scale = Vector2(0.6, 0.6)
 
 [node name="Base" type="AnimatedSprite2D" parent="Spin"]
 position = Vector2(-8, -350)
 sprite_frames = SubResource("SpriteFrames_rjd7x")
+metadata/_edit_lock_ = true
 
 [node name="Active" type="AnimatedSprite2D" parent="Spin"]
 position = Vector2(-8, -350)
 sprite_frames = SubResource("SpriteFrames_jnsi0")
+metadata/_edit_lock_ = true
 
 [node name="Main" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
+position = Vector2(0, -221)
+scale = Vector2(0.6, 0.6)
 
 [node name="Base" type="Sprite2D" parent="Main"]
 texture = ExtResource("7_uyq8h")
+metadata/_edit_lock_ = true
 
 [node name="Active" type="Sprite2D" parent="Main"]
 texture = ExtResource("8_rb7x4")
+metadata/_edit_lock_ = true
