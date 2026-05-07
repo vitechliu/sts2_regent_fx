@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://covfj3w4v83kt"]
+[gd_scene load_steps=20 format=3 uid="uid://covfj3w4v83kt"]
 
 [ext_resource type="Texture2D" uid="uid://bdjb0owf10uon" path="res://RegentFX/images/pillar/pillar_top.png" id="1_qxrst"]
 [ext_resource type="Texture2D" uid="uid://by3hks7xalvup" path="res://RegentFX/images/pillar/spin_base/fn0001.png" id="2_1tanj"]
+[ext_resource type="Texture2D" uid="uid://bxvl58su246dw" path="res://RegentFX/images/pillar/pillar_light.png" id="2_jnsi0"]
 [ext_resource type="Texture2D" uid="uid://ctmr673ii5kxk" path="res://RegentFX/images/pillar/spin_active/fn0001.png" id="2_qxrst"]
 [ext_resource type="Texture2D" uid="uid://8q588hakgp40" path="res://RegentFX/images/pillar/spin_active/fn0002.png" id="3_1tanj"]
 [ext_resource type="Texture2D" uid="uid://c5b600t0v3nun" path="res://RegentFX/images/pillar/spin_base/fn0002.png" id="3_vi1sr"]
@@ -14,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cyi8a5qrdnw8d" path="res://RegentFX/images/pillar/pillar_base.png" id="7_uyq8h"]
 [ext_resource type="Texture2D" uid="uid://cvtsq4ygp862f" path="res://RegentFX/images/pillar/pillar_active.png" id="8_rb7x4"]
 [ext_resource type="Script" path="res://Scripts/Vfx/Pillar.cs" id="9_pillar"]
+[ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="15_6noyt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rjd7x"]
 animations = [{
@@ -61,8 +63,21 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6mah"]
+shader = ExtResource("15_6noyt")
+shader_parameter/glow_intensity = 0.0
+shader_parameter/glow_color = Color(1, 0.8, 0.4, 1)
+shader_parameter/blur_intensity = 0.0
+shader_parameter/blur_samples = 8
+
 [node name="Pillar" type="Node2D"]
 script = ExtResource("9_pillar")
+
+[node name="Light" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-3, 11)
+scale = Vector2(1.155, 1.155)
+texture = ExtResource("2_jnsi0")
 
 [node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 0.3372549)
@@ -95,9 +110,10 @@ position = Vector2(0, -221)
 scale = Vector2(0.6, 0.6)
 
 [node name="Base" type="Sprite2D" parent="Main"]
+material = SubResource("ShaderMaterial_d6mah")
 texture = ExtResource("7_uyq8h")
-metadata/_edit_lock_ = true
 
 [node name="Active" type="Sprite2D" parent="Main"]
+visible = false
 texture = ExtResource("8_rb7x4")
 metadata/_edit_lock_ = true

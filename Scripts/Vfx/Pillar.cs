@@ -26,6 +26,7 @@ public partial class Pillar : Node2D {
     [Export] public float ActivateFlashDuration { get; set; } = 0.8f;
     [Export] public float ActivatePeakTime { get; set; } = 0.12f;
     [Export] public float GlowMaxIntensity { get; set; } = 1.5f;
+    [Export] public float StartGlow { get; set; } = 0.1f;
 
     #endregion
 
@@ -36,6 +37,7 @@ public partial class Pillar : Node2D {
     private AnimatedSprite2D? _spinActive;
     private Sprite2D? _mainBase;
     private Sprite2D? _mainActive;
+    private Sprite2D? _lightSprite;
     private readonly List<ShaderMaterial> _glowMaterials = new();
 
     #endregion
@@ -62,6 +64,7 @@ public partial class Pillar : Node2D {
         _spinActive = GetNodeOrNull<AnimatedSprite2D>("Spin/Active");
         _mainBase = GetNodeOrNull<Sprite2D>("Main/Base");
         _mainActive = GetNodeOrNull<Sprite2D>("Main/Active");
+        _lightSprite = GetNodeOrNull<Sprite2D>("Light");
 
         // 同步启动两个旋转动画
         if (_spinBase != null) {
@@ -77,16 +80,21 @@ public partial class Pillar : Node2D {
             _mainActive.Modulate = new Color(1, 1, 1, 0);
         }
 
+        // 初始隐藏光晕
+        if (_lightSprite != null) {
+            _lightSprite.Modulate = new Color(1, 1, 1, 0);
+        }
+
         // 为各可见节点设置白色外发光材质
         SetupGlowMaterial(_topSprite);
         SetupGlowMaterial(_mainBase);
-        SetupGlowMaterial(_mainActive);
+        // SetupGlowMaterial(_mainActive);
         SetupGlowMaterial(_spinBase);
-        SetupGlowMaterial(_spinActive);
+        // SetupGlowMaterial(_spinActive);
     }
 
     /// <summary>
-    /// 为 Sprite 设置 base.gdshader 发光材质
+    /// 为 Sprite 设置 pillar 外发光材质
     /// </summary>
     private void SetupGlowMaterial(CanvasItem? sprite) {
         if (sprite == null) return;
@@ -100,7 +108,7 @@ public partial class Pillar : Node2D {
 
         // 如果没有，则新建
         if (material == null) {
-            var shader = GD.Load<Shader>("res://RegentFX/shaders/base.gdshader");
+            var shader = GD.Load<Shader>("res://RegentFX/shaders/vfx/pillar/pillar_glow.gdshader");
             if (shader != null) {
                 material = new ShaderMaterial { Shader = shader };
             }
@@ -108,8 +116,9 @@ public partial class Pillar : Node2D {
 
         if (material != null) {
             material.SetShaderParameter("glow_color", Colors.White);
-            material.SetShaderParameter("glow_intensity", 0f);
-            material.SetShaderParameter("blur_intensity", 0f);
+            material.SetShaderParameter("glow_intensity", StartGlow);
+            material.SetShaderParameter("glow_radius", 34.0f);
+            material.SetShaderParameter("inner_glow", 0.2f);
             sprite.Material = material;
             _glowMaterials.Add(material);
         }
@@ -163,11 +172,11 @@ public partial class Pillar : Node2D {
         _glowTween = CreateTween();
         _glowTween.SetTrans(Tween.TransitionType.Quad);
         _glowTween.SetEase(Tween.EaseType.Out);
-        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), 0f, GlowMaxIntensity, ActivatePeakTime);
+        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), StartGlow, GlowMaxIntensity, ActivatePeakTime);
         _glowTween.Chain();
         _glowTween.SetTrans(Tween.TransitionType.Quad);
         _glowTween.SetEase(Tween.EaseType.In);
-        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), GlowMaxIntensity, 0f, ActivateFlashDuration - ActivatePeakTime);
+        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), GlowMaxIntensity, StartGlow, ActivateFlashDuration - ActivatePeakTime);
     }
 
     /// <summary>
@@ -246,6 +255,14 @@ public partial class Pillar : Node2D {
         bounceTween.SetTrans(Tween.TransitionType.Elastic);
         bounceTween.SetEase(Tween.EaseType.Out);
         bounceTween.TweenProperty(this, "scale:y", 1f, 0.25f);
+
+        // Light 光晕快速显示
+        if (_lightSprite != null) {
+            var lightTween = CreateTween();
+            lightTween.SetTrans(Tween.TransitionType.Quad);
+            lightTween.SetEase(Tween.EaseType.Out);
+            lightTween.TweenProperty(_lightSprite, "modulate:a", 1f, 0.15f);
+        }
     }
 
     #endregion
