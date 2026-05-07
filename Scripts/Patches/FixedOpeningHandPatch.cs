@@ -47,32 +47,19 @@ public static class FixedOpeningHandPatch {
             return Enumerable.Empty<CardModel>();
         }
 
-        var result = new List<CardModel>();
+        var result = new List<CardModel>() {
+            combatState.CreateCard<StrikeRegent>(player),
+            combatState.CreateCard<MakeItSo>(player),
+            combatState.CreateCard<Glow>(player),
+        };
 
         // 在这里定义你想要的固定手牌
         // 示例：生成 3张打击 + 2张防御 + 1张铁斩波
         // 你可以根据需求修改为任意牌
 
-        var cards = new List<Type>() {
-            typeof(StrikeRegent),
-            typeof(DefendRegent)
-        };
-
-        for (int i = 0; i < 3; i++) {
-            var strike = combatState.CreateCard<StrikeIronclad>(player);
-            await CardPileCmd.AddGeneratedCardToCombat(strike, PileType.Hand, addedByPlayer: true);
-            result.Add(strike);
+        foreach (var t in result) {
+            await CardPileCmd.AddGeneratedCardToCombat(t, PileType.Hand, addedByPlayer: true);
         }
-
-        for (int i = 0; i < 2; i++) {
-            var defend = combatState.CreateCard<DefendIronclad>(player);
-            await CardPileCmd.AddGeneratedCardToCombat(defend, PileType.Hand, addedByPlayer: true);
-            result.Add(defend);
-        }
-
-        var ironWave = combatState.CreateCard<StrikeRegent>(player);
-        await CardPileCmd.AddGeneratedCardToCombat(ironWave, PileType.Hand, addedByPlayer: true);
-        result.Add(ironWave);
 
         await PlayerCmd.GainEnergy(100, player);
         await PlayerCmd.GainStars(20, player);

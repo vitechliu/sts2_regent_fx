@@ -11,6 +11,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.Glow))]
 public class Glow : CardFX {
+    public override HoldingModes HoldingMode => HoldingModes.None;
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/glow.tscn";
 }
 

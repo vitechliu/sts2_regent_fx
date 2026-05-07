@@ -47,6 +47,9 @@ public static class CardAnimPatch {
             if (cardFX.ChangeHitFx != null) {
                 __instance.WithHitFx(cardFX.ChangeHitFx);
             }
+            if (cardFX.RemoveHitFx) {
+                __instance.WithHitFx();
+            }
             if (cardFX.HasOnBeforeExecute) {
                 __result = RunCustomFlow(cardFX, card, __instance, choiceContext);
                 return false;

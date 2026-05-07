@@ -21,8 +21,7 @@ public class LunarBlast : CardFX {
     // 更高的位置
     public override Vector2 TargetOffset => new(100f, -450f);
     Vector2 GeneratePosAt() {
-        float baseRand = 100f;
-        return TargetOffset + new Vector2((float)GD.RandRange(-1f, 1f) * baseRand,  (float)GD.RandRange(-1f, 1f) * baseRand);
+        return TargetOffset + VFXUtil.RandVec2(100f);
     }
 
     private static List<string> LunarScenePaths = new() {
@@ -66,7 +65,9 @@ public class LunarBlast : CardFX {
         if (owner == null || target == null || command._singleTarget == null) return;
         Vector2? starPos = Entry.StarEffectController?.PopStar(this);
         if (!starPos.HasValue) {
-            starPos = GeneratePosAt();
+            NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+            Vector2 ownerPos = ownerNode?.VfxSpawnPosition ?? Vector2.Zero;
+            starPos = ownerPos + GeneratePosAt();
         }
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);

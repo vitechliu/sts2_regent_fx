@@ -13,8 +13,7 @@ public class Stardust : CardFX {
     public override int StarCount => -1;
     
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
-        Vector2 randVec = new Vector2((float)GD.RandRange(-40f, 40f), (float)GD.RandRange(-40f, 40f));
-        return basePosition + TargetOffset + randVec;
+        return basePosition + TargetOffset + VFXUtil.RandVec2(40f);
     }
 }
 

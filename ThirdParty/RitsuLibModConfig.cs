@@ -30,7 +30,6 @@ public static class RitsuLibModConfig {
     /// <summary>Ritsu 调用：返回“schema”。返回文件路径时，Ritsu 会读文件内容解析 JSON。</summary>
     public static object CreateRitsuLibSettingsSchema() {
         Directory.CreateDirectory(DataDir);
-        SetDefaults();
         File.WriteAllText(SchemaPath, BuildDefaultSchemaJson());
         // if (!File.Exists(SchemaPath)) {
         //     // 首次写默认 schema 文件，便于你手工编辑或版本控制
@@ -44,11 +43,13 @@ public static class RitsuLibModConfig {
         ["ExposureThreshold"] = 1,
     };
 
-    static void SetDefaults() {
+    public static void SetDefaults() {
+        CardFX.EnsureRegistry();
         var cardFxTypes = CardFX.Registry.Values;
         foreach (var VARIABLE in cardFxTypes) {
             Defaults["card_" + VARIABLE.Name] = true;
         }
+        PowerFX.EnsureRegistry();
         var powerFxTypes = PowerFX.Registry.Values;
         foreach (var VARIABLE in powerFxTypes) {
             Defaults["power_" + VARIABLE.Name] = true;

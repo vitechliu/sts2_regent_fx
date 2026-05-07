@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using RegentFX.Scripts.Vfx;
 using RegentFX.Scripts.Vfx.Cards;
 using RegentFX.Scripts.Vfx.Powers;
+using RegentFX.ThirdParty;
 
 namespace RegentFX.Scripts;
 
@@ -35,6 +36,7 @@ public class Entry {
         // 使得tscn可以加载自定义脚本
         ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
         LoadScenes();
+        RitsuLibModConfig.SetDefaults();
         Log.Debug("Regent Fx Mod initialized!");
     }
 

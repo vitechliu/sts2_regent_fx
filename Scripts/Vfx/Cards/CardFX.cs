@@ -151,6 +151,7 @@ public abstract class CardFX: FX {
     public virtual void AfterPlay() {}
 
     public virtual string? ChangeHitFx => null;
+    public virtual bool RemoveHitFx => false;
 
 
     /// <summary>

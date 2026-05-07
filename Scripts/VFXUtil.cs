@@ -16,6 +16,10 @@ using MegaCrit.Sts2.Core.TestSupport;
 namespace RegentFX.Scripts;
 
 public static class VFXUtil {
+
+    public static Vector2 RandVec2(float beta) {
+        return new Vector2((float)GD.RandRange(-1f, 1f) * beta,  (float)GD.RandRange(-1f, 1f) * beta);
+    }
     public static void FitVFX(
         this Node2D node, 
         Vector2 nodeStartPos, 

@@ -12,6 +12,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.BigBang))]
 public class BigBang : CardFX {
+    public override HoldingModes HoldingMode => HoldingModes.None;
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/big_bang.tscn";
 }
 
