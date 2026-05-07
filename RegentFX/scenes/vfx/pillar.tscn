@@ -1,0 +1,86 @@
+[gd_scene load_steps=16 format=3 uid="uid://covfj3w4v83kt"]
+
+[ext_resource type="Texture2D" uid="uid://bdjb0owf10uon" path="res://RegentFX/images/pillar/pillar_top.png" id="1_qxrst"]
+[ext_resource type="Texture2D" uid="uid://by3hks7xalvup" path="res://RegentFX/images/pillar/spin_base/fn0001.png" id="2_1tanj"]
+[ext_resource type="Texture2D" uid="uid://ctmr673ii5kxk" path="res://RegentFX/images/pillar/spin_active/fn0001.png" id="2_qxrst"]
+[ext_resource type="Texture2D" uid="uid://8q588hakgp40" path="res://RegentFX/images/pillar/spin_active/fn0002.png" id="3_1tanj"]
+[ext_resource type="Texture2D" uid="uid://c5b600t0v3nun" path="res://RegentFX/images/pillar/spin_base/fn0002.png" id="3_vi1sr"]
+[ext_resource type="Texture2D" uid="uid://qipcndtrp2cs" path="res://RegentFX/images/pillar/spin_active/fn0003.png" id="4_vi1sr"]
+[ext_resource type="Texture2D" uid="uid://cwqrvu55tdls3" path="res://RegentFX/images/pillar/spin_base/fn0003.png" id="4_xqvip"]
+[ext_resource type="Texture2D" uid="uid://u3vnfovlolwb" path="res://RegentFX/images/pillar/spin_base/fn0004.png" id="5_dnsp2"]
+[ext_resource type="Texture2D" uid="uid://cgtae0djgesxb" path="res://RegentFX/images/pillar/spin_active/fn0004.png" id="5_xqvip"]
+[ext_resource type="Texture2D" uid="uid://8otjtg871h70" path="res://RegentFX/images/pillar/spin_active/fn0005.png" id="6_dnsp2"]
+[ext_resource type="Texture2D" uid="uid://dh4yl2veey1sc" path="res://RegentFX/images/pillar/spin_base/fn0005.png" id="6_rjd7x"]
+[ext_resource type="Texture2D" uid="uid://cyi8a5qrdnw8d" path="res://RegentFX/images/pillar/pillar_base.png" id="7_uyq8h"]
+[ext_resource type="Texture2D" uid="uid://cvtsq4ygp862f" path="res://RegentFX/images/pillar/pillar_active.png" id="8_rb7x4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rjd7x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1tanj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vi1sr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xqvip")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dnsp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_rjd7x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jnsi0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qxrst")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1tanj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vi1sr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xqvip")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_dnsp2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Pillar" type="Node2D"]
+
+[node name="Top" type="Sprite2D" parent="."]
+position = Vector2(0, -433)
+texture = ExtResource("1_qxrst")
+
+[node name="Spin" type="Node2D" parent="."]
+
+[node name="Base" type="AnimatedSprite2D" parent="Spin"]
+position = Vector2(-8, -350)
+sprite_frames = SubResource("SpriteFrames_rjd7x")
+
+[node name="Active" type="AnimatedSprite2D" parent="Spin"]
+position = Vector2(-8, -350)
+sprite_frames = SubResource("SpriteFrames_jnsi0")
+
+[node name="Main" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Base" type="Sprite2D" parent="Main"]
+texture = ExtResource("7_uyq8h")
+
+[node name="Active" type="Sprite2D" parent="Main"]
+texture = ExtResource("8_rb7x4")
