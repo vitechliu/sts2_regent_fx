@@ -56,7 +56,7 @@ public static class PillarOfCreationPatch {
         if (!PowerFX.IsTypeEnabled<PillarOfCreation>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
         if (Pillar.Pillars.TryGetValue(__instance.Owner, out var PillarOfCreation)) {
-            Entry.Logger.Info("PillarOfCreation Activate");
+            // Entry.Logger.Info("PillarOfCreation Activate");
             PillarOfCreation.Activate();
             // NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
         }

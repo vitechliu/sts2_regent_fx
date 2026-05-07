@@ -64,6 +64,13 @@ animations = [{
 [node name="Pillar" type="Node2D"]
 script = ExtResource("9_pillar")
 
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.3372549)
+position = Vector2(-4.9999995, -194.00002)
+scale = Vector2(0.6, 0.577)
+skew = 0.0052359877
+texture = ExtResource("7_uyq8h")
+
 [node name="Top" type="Sprite2D" parent="."]
 position = Vector2(0, -480.00003)
 scale = Vector2(0.6, 0.6)

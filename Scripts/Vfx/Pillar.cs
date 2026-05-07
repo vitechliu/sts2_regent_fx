@@ -11,7 +11,7 @@ namespace RegentFX.Scripts.Vfx;
 
 /// <summary>
 /// 柱子特效节点
-/// 从高空砸落并震动，激活时Active节点同步闪烁
+/// 从高空砸落并震动，激活时Active节点同步闪烁并伴随白色外发光
 /// </summary>
 [GlobalClass]
 public partial class Pillar : Node2D {
@@ -25,6 +25,7 @@ public partial class Pillar : Node2D {
     [Export] public float ShakeSpeed { get; set; } = 40f;
     [Export] public float ActivateFlashDuration { get; set; } = 0.8f;
     [Export] public float ActivatePeakTime { get; set; } = 0.12f;
+    [Export] public float GlowMaxIntensity { get; set; } = 1.5f;
 
     #endregion
 
@@ -35,6 +36,7 @@ public partial class Pillar : Node2D {
     private AnimatedSprite2D? _spinActive;
     private Sprite2D? _mainBase;
     private Sprite2D? _mainActive;
+    private readonly List<ShaderMaterial> _glowMaterials = new();
 
     #endregion
 
@@ -48,6 +50,7 @@ public partial class Pillar : Node2D {
     private Tween? _fallTween;
     private Tween? _activateTween;
     private Tween? _scaleTween;
+    private Tween? _glowTween;
 
     #endregion
 
@@ -72,6 +75,43 @@ public partial class Pillar : Node2D {
         // 初始隐藏 Active
         if (_mainActive != null) {
             _mainActive.Modulate = new Color(1, 1, 1, 0);
+        }
+
+        // 为各可见节点设置白色外发光材质
+        SetupGlowMaterial(_topSprite);
+        SetupGlowMaterial(_mainBase);
+        SetupGlowMaterial(_mainActive);
+        SetupGlowMaterial(_spinBase);
+        SetupGlowMaterial(_spinActive);
+    }
+
+    /// <summary>
+    /// 为 Sprite 设置 base.gdshader 发光材质
+    /// </summary>
+    private void SetupGlowMaterial(CanvasItem? sprite) {
+        if (sprite == null) return;
+
+        ShaderMaterial? material = null;
+
+        // 尝试复用已有的 ShaderMaterial
+        if (sprite.Material is ShaderMaterial existingMat) {
+            material = existingMat.Duplicate() as ShaderMaterial;
+        }
+
+        // 如果没有，则新建
+        if (material == null) {
+            var shader = GD.Load<Shader>("res://RegentFX/shaders/base.gdshader");
+            if (shader != null) {
+                material = new ShaderMaterial { Shader = shader };
+            }
+        }
+
+        if (material != null) {
+            material.SetShaderParameter("glow_color", Colors.White);
+            material.SetShaderParameter("glow_intensity", 0f);
+            material.SetShaderParameter("blur_intensity", 0f);
+            sprite.Material = material;
+            _glowMaterials.Add(material);
         }
     }
 
@@ -98,7 +138,7 @@ public partial class Pillar : Node2D {
     #region 激活功能
 
     /// <summary>
-    /// 激活柱子：所有 Active 节点同步闪烁（透明度 0→1→0）
+    /// 激活柱子：所有 Active 节点同步闪烁（透明度 0→1→0），伴随白色外发光
     /// Spin 动画保持与 Base 同步
     /// </summary>
     public void Activate() {
@@ -107,18 +147,27 @@ public partial class Pillar : Node2D {
             _spinActive.Frame = _spinBase.Frame;
         }
 
+        SimpleSfxUtil.Play("res://RegentFX/sfx/seven_stars_hold.mp3");
+
+        // 透明度闪烁
         _activateTween = CreateTween();
         _activateTween.SetTrans(Tween.TransitionType.Quad);
         _activateTween.SetEase(Tween.EaseType.Out);
-
-        // 阶段1：快速淡入
         _activateTween.TweenMethod(Callable.From<float>(SetActiveAlpha), 0f, 0.5f, ActivatePeakTime);
-
-        // 阶段2：缓慢淡出
         _activateTween.Chain();
         _activateTween.SetTrans(Tween.TransitionType.Quad);
         _activateTween.SetEase(Tween.EaseType.In);
         _activateTween.TweenMethod(Callable.From<float>(SetActiveAlpha), 0.5f, 0f, ActivateFlashDuration - ActivatePeakTime);
+
+        // 白色外发光闪烁（与透明度同步）
+        _glowTween = CreateTween();
+        _glowTween.SetTrans(Tween.TransitionType.Quad);
+        _glowTween.SetEase(Tween.EaseType.Out);
+        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), 0f, GlowMaxIntensity, ActivatePeakTime);
+        _glowTween.Chain();
+        _glowTween.SetTrans(Tween.TransitionType.Quad);
+        _glowTween.SetEase(Tween.EaseType.In);
+        _glowTween.TweenMethod(Callable.From<float>(SetGlowIntensity), GlowMaxIntensity, 0f, ActivateFlashDuration - ActivatePeakTime);
     }
 
     /// <summary>
@@ -130,6 +179,15 @@ public partial class Pillar : Node2D {
         }
         if (_mainActive != null) {
             _mainActive.Modulate = new Color(1, 1, 1, alpha);
+        }
+    }
+
+    /// <summary>
+    /// 统一设置所有节点的发光强度
+    /// </summary>
+    private void SetGlowIntensity(float intensity) {
+        foreach (var material in _glowMaterials) {
+            material.SetShaderParameter("glow_intensity", intensity);
         }
     }
 
@@ -173,7 +231,8 @@ public partial class Pillar : Node2D {
         _shakeTimer = 0f;
         _shakePhase = 0f;
 
-        VFXUtil.PlaySimple(BurstPath, _targetPosition);
+        Node2D? n = VFXUtil.PlaySimple(BurstPath, _targetPosition);
+        if (n != null) n.Scale *= 3f;
         SimpleSfxUtil.Play("res://RegentFX/sfx/pillar_burst.mp3");
 
         NGame.Instance?.ScreenShake(ShakeStrength.Medium, MegaCrit.Sts2.Core.Nodes.Vfx.Utilities.ShakeDuration.Normal, 90f);
@@ -187,8 +246,6 @@ public partial class Pillar : Node2D {
         bounceTween.SetTrans(Tween.TransitionType.Elastic);
         bounceTween.SetEase(Tween.EaseType.Out);
         bounceTween.TweenProperty(this, "scale:y", 1f, 0.25f);
-
-        SimpleSfxUtil.Play("res://RegentFX/sfx/pillar_impact.mp3");
     }
 
     #endregion
@@ -235,6 +292,7 @@ public partial class Pillar : Node2D {
         _fallTween?.Kill();
         _activateTween?.Kill();
         _scaleTween?.Kill();
+        _glowTween?.Kill();
         base._ExitTree();
     }
 
