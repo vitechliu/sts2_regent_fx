@@ -84,7 +84,7 @@ public static class RegentStarRingPatch {
     [HarmonyPatch(typeof(NCombatRoom), "_ExitTree")]
     [HarmonyPrefix]
     public static void Prefix_ExitTree() {
-        Entry.Logger.Info("[RegentStarRing] NCombatRoom ExitTree");
+        // Entry.Logger.Info("[RegentStarRing] NCombatRoom ExitTree");
         ClearStarRing();
     }
 

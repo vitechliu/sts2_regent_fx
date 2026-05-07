@@ -183,7 +183,7 @@ public static class RitsuLibModConfig {
     private static void SetCore(string key, object? value) {
         LoadIfNeeded();
         Hot[key] = JsonSerializer.SerializeToNode(value);
-        Entry.Logger.Info("SetCore:" + key + "value:" + value);
+        // Entry.Logger.Info("SetCore:" + key + "value:" + value);
     }
 
     private static object? GetCore(string key) {

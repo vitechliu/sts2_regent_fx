@@ -28,7 +28,6 @@ public class StrikeRegent : CardFX {
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) {
-            Entry.Logger.Info("Could not get creature nodes for VFX");
             return;
         }
         Blade.PlayBlade(targetNode.VfxSpawnPosition);

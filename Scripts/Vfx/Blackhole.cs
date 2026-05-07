@@ -119,7 +119,7 @@ public partial class Blackhole : Node2D {
             _burstSprite.GlobalPosition = GlobalPosition;
         }
 
-        Entry.Logger.Info($"[Blackhole] Burst triggered at position {GlobalPosition}");
+        // Entry.Logger.Info($"[Blackhole] Burst triggered at position {GlobalPosition}");
     }
 
     /// <summary>

@@ -72,7 +72,7 @@ public partial class StarEffectController : Node2D {
     public Vector2? PopStar(CardFX fx) {
         if (_currentCardFX == null) return null;
         if (_currentCardFX.GetType() == fx.GetType()) {
-            Entry.Logger.Info("PopStarCount:" + _borrowedStars.Count);
+            // Entry.Logger.Info("PopStarCount:" + _borrowedStars.Count);
             if (_borrowedStars.Count > 0) {
                 Star? target = _borrowedStars.FindLast(IsInstanceValid);
                 if (target != null) {
@@ -88,7 +88,7 @@ public partial class StarEffectController : Node2D {
 
 
     public void GenerateStarAt(Vector2 position, Color? color = null) {
-        Entry.Logger.Info("GenerateStarAt " + position);
+        // Entry.Logger.Info("GenerateStarAt " + position);
         var star = Star.Create();
         AddChild(star);
         // 配置星星参数

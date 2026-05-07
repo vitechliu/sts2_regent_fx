@@ -21,6 +21,7 @@ public static class CardAnimPatch {
         // 记录当前攻击来源，供动画链路末端（如NRegentVfx.Attack）读取
         
         if (_isProcessing) return true; 
+        AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         if (__instance.ModelSource == null) return true;
         try {
             var card = __instance.ModelSource as CardModel;
@@ -83,12 +84,13 @@ public static class CardAnimPatch {
     [HarmonyPostfix]
     public static void PostOnPlayPatch(CardModel __instance) {
         //重置状态
+        Entry.Logger.Info("Disable");
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         AttackVfxContext.CurrentModelSource = null;
         
-        var cardFX = CardFX.FromCard(__instance);
-        if (cardFX == null) return;
-        if (!cardFX.UseV2Patch) return;
+        // var cardFX = CardFX.FromCard(__instance);
+        // if (cardFX == null) return;
+        // if (!cardFX.UseV2Patch) return;
     }
 
     [HarmonyPrefix]

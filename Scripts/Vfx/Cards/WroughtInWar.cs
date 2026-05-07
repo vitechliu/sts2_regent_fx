@@ -30,7 +30,6 @@ public class WroughtInWar : CardFX {
         if (TestMode.IsOn) return;
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) {
-            Entry.Logger.Info("Could not get creature nodes for VFX");
             return;
         }
         SimpleSfxUtil.Play("res://RegentFX/sfx/wiw1.mp3");

@@ -56,7 +56,6 @@ public class SevenStars : CardFX {
         foreach (Creature enemy in enemies) {
             NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(enemy);
             if (targetNode == null) {
-                Entry.Logger.Info("Could not get creature nodes for VFX");
                 continue;
             }
             Blade.PlayBlade(targetNode.VfxSpawnPosition);

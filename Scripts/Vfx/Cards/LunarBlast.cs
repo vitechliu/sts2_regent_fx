@@ -41,7 +41,7 @@ public class LunarBlast : CardFX {
     public override void HoldingCustom() {
         if (card is MegaCrit.Sts2.Core.Models.Cards.LunarBlast lb) {
             int starCount = (int)((CalculatedVar)lb.DynamicVars["CalculatedHits"]).Calculate(null);
-            Entry.Logger.Info("Lunar Blast Hits: " + starCount);
+            // Entry.Logger.Info("Lunar Blast Hits: " + starCount);
             Creature owner = card.Owner.Creature;
             NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
             if (Entry.StarEffectController == null) return;
