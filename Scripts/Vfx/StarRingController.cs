@@ -494,7 +494,7 @@ public partial class StarRingController : Node2D {
     /// </summary>
     public Star? TakeStarForProjectile() {
         var starData = _orbitStars
-            .FirstOrDefault(s => !s.IsRemoving && !s.IsSpawning);
+            .FirstOrDefault(s => !s.IsRemoving);
 
         if (starData == null) return null;
 

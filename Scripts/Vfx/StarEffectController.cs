@@ -127,6 +127,7 @@ public partial class StarEffectController : Node2D {
             star.GetParent()?.RemoveChild(star);
             AddChild(star);
             star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
+            star.Scale = Vector2.One;
             _borrowedStars.Add(star);
 
             // 计算目标位置（使用 CardFX 的配置）
