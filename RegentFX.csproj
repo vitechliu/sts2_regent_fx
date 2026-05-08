@@ -36,7 +36,6 @@
     <Publicize Include="sts2" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include=".gdignore" />
     <Content Include="CHANGELOG.md" />
     <Content Include="env.props" />
     <Content Include="env.props.example_mac" />
@@ -46,11 +45,10 @@
     <Content Include="opencode.json" />
     <Content Include="README.md" />
     <Content Include="RegentFX.json" />
-    <Content Include="Scripts\.gdignore" />
-    <Content Include="ThirdParty\.gdignore" />
+      
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="RegentFX\scripts\" />
+    <Content Remove="Scripts\**\*.uid" />
   </ItemGroup>
   <PropertyGroup>
     <NoWarn>$(NoWarn);MSB3270;CS0162;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8625;CS0436</NoWarn>

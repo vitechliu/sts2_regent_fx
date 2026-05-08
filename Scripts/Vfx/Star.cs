@@ -231,6 +231,9 @@ public partial class Star : Node2D {
 			UpdateTrailColor(c);
 		}), 0f, 1f, duration);
 	}
+	public void ChangeColorImmediate(Color color) {
+		ChangeColorTo(color, -1f);
+	}
 
 	/// <summary>
 	/// 设置色调混合模式

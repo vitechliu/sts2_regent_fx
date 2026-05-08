@@ -47,6 +47,7 @@ public class LunarBlast : CardFX {
             if (Entry.StarEffectController == null) return;
             if (ownerNode == null) return;
             if (starCount > 0) {
+                starCount = Mathf.Min(20, starCount);
                 for (var i = 0; i < starCount; i++) {
                     var starPos = GeneratePosAt();
                     Entry.StarEffectController.GenerateStarAt(starPos, new Color(8.4f, 8.9f, 9f));
