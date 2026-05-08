@@ -147,6 +147,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("36_wpkif")
+}, {
+"duration": 1.0,
+"texture": null
 }],
 "loop": false,
 "name": &"default",

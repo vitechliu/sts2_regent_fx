@@ -1,44 +1,9 @@
 ﻿using RegentFX.Scripts;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable CollectionNeverQueried.Global
 
 namespace RegentFX.ThirdParty;
 
-/**
- * return """
-               {
-                 "modId": "RegentFX",
-                 "modDisplayName": "RegentFX 万象辉星",
-                 "modSidebarOrder": 50,
-                 "pages": [
-                   {
-                     "pageId": "main",
-                     "title": "主要设置",
-                     "description": "RegentFX 主设置",
-                     "sortOrder": 1000,
-                     "sections": [
-                       {
-                         "id": "core",
-                         "title": "特效",
-                         "entries": [
-                           {
-                             "id": "master_vol",
-                             "type": "slider",
-                             "key": "ExposureThreshold",
-                             "label": "光效强度 Light Exposure Setting",
-                             "description": "设置为0将关闭光效",
-                             "min": 0,
-                             "max": 2,
-                             "step": 0.05,
-                             "scope": "global"
-                           }
-                         ]
-                       }
-                     ]
-                   }
-                 ]
-               }
-               """;
- */
 public struct RitsuLibModConfigEntity {
   public string modId { get; set; } = Entry.ModId;
   public string modDisplayName { get; set; }

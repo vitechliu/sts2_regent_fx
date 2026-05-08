@@ -51,6 +51,15 @@ public abstract class CardFX: FX {
 
     public CardModel? card;
 
+    public bool IsCharacterFacingRight {
+        get {
+            if (card?.Owner?.Creature != null) {
+                return VFXUtil.IsCharacterFacingRight(card.Owner.Creature);
+            }
+            return false;
+        }
+    }
+
     
     public enum HoldingModes {
         BorrowDefault,

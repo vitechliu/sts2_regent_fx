@@ -13,6 +13,18 @@ namespace RegentFX.Scripts.Vfx.Cards;
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.ParticleWall))]
 public class ParticleWall: CardFX {
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/particle_wall.tscn";
+    public override int StarCount => 2;
+
+    private List<Vector2> starPos = new() {
+        new Vector2(240f, -170f),
+        new Vector2(140f, -60f),
+    };
+
+    public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
+        Vector2 target = starPos[index];
+        if (!IsCharacterFacingRight) target.X *= -1;
+        return basePosition + target;
+    }
 }
 
 [HarmonyPatch]
@@ -40,5 +52,6 @@ public static class ParticleWallPatch {
                 d.Scale *= 0.7f;
             }
         }
+        Entry.StarEffectController?.OnPlayCard();
     }
 }

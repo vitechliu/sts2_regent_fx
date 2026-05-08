@@ -41,6 +41,7 @@ public static class RitsuLibModConfig {
 
     private static readonly Dictionary<string, object> Defaults = new(){
         ["ExposureThreshold"] = 1,
+        ["DevTestStartMode"] = false,
     };
 
     public static void SetDefaults() {
@@ -66,6 +67,7 @@ public static class RitsuLibModConfig {
         MainPage.pageId = "main";
         MainPage.title = SimpleLocUtil.Simple("主要设置", "Main");
         MainPage.description = SimpleLocUtil.Simple("主要设置", "Main");
+        MainPage.sortOrder = 1;
 
         var MainSection = new RLMCSection();
         MainSection.id = "core";
@@ -133,6 +135,26 @@ public static class RitsuLibModConfig {
         MainPage.sections.Add(PowerSection);
         
         Schema.pages.Add(MainPage);
+        
+        var DebugPage = new RLMCPage();
+        DebugPage.pageId = "debug";
+        DebugPage.title = SimpleLocUtil.Simple("调试设置", "Debug Settings");
+        DebugPage.description = SimpleLocUtil.Simple("测试Mod使用，会影响游戏性，请勿修改！", "Only for debugging. Do not change!");
+        DebugPage.sortOrder = 3;
+        var DebugSection = new RLMCSection();
+        DebugSection.id = "debug_core";
+        DebugSection.title = SimpleLocUtil.Simple("基础", "Basics");
+
+        var DebugModeEntry = new ToggleEntry();
+        DebugModeEntry.id = "DevTestStartMode";
+        DebugModeEntry.key = DebugModeEntry.id;
+        DebugModeEntry.label = SimpleLocUtil.Simple("测试模式", "Test Mode");
+        
+        DebugSection.entries.Add(DebugModeEntry);
+        DebugPage.sections.Add(DebugSection);
+        
+        Schema.pages.Add(DebugPage);
+        
         
         var res = JsonSerializer.Serialize(Schema);
         // Entry.Logger.Info("[RitsuConfigExport] " + res);
