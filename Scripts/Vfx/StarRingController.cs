@@ -37,6 +37,8 @@ public partial class StarRingController : Node2D {
 
     StarEffectController? StarEffectController => Entry.StarEffectController;
 
+    private bool childOfTheStarsMode = false;
+
     /// <summary>
     /// 星星数据类，存储每个星星的状态
     /// </summary>
@@ -102,7 +104,7 @@ public partial class StarRingController : Node2D {
 
         if (targetCount > activeCount) {
             // 需要增加星星
-            SpawnStarsFromBehind(targetCount - activeCount);
+            SpawnStars(targetCount - activeCount);
         }
         else if (targetCount < activeCount) {
             // 需要减少星星
@@ -116,7 +118,7 @@ public partial class StarRingController : Node2D {
     /// <summary>
     /// 从背后生成多个星星
     /// </summary>
-    private void SpawnStarsFromBehind(int count) {
+    private void SpawnStars(int count) {
         if (_playerNode == null || count <= 0) return;
 
         // 所有新星星的生成角度都在背后（PI）
@@ -491,11 +493,8 @@ public partial class StarRingController : Node2D {
     /// 返回星星并将其从环绕列表中移除
     /// </summary>
     public Star? TakeStarForProjectile() {
-        // 优先获取背后的星星（角度接近PI）
         var starData = _orbitStars
-            .Where(s => !s.IsRemoving && !s.IsSpawning)
-            .OrderBy(s => Mathf.Abs(NormalizeAngle(s.CurrentAngle - Mathf.Pi)))
-            .FirstOrDefault();
+            .FirstOrDefault(s => !s.IsRemoving && !s.IsSpawning);
 
         if (starData == null) return null;
 
