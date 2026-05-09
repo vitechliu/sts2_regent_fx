@@ -54,6 +54,7 @@ public static class FixedOpeningHandPatch {
             combatState.CreateCard<ParticleWall>(player),
             combatState.CreateCard<PillarOfCreation>(player),
             combatState.CreateCard<Glow>(player),
+            combatState.CreateCard<Genesis>(player),
         };
 
         // 在这里定义你想要的固定手牌
