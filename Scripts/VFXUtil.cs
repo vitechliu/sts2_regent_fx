@@ -81,9 +81,15 @@ public static class VFXUtil {
     }
     
     public static Node2D GenVFXNode(string scenePath) {
+        if (Entry.ModSceneCache.TryGetValue(scenePath, out var modScene)) {
+            return modScene.Instantiate<Node2D>();
+        }
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<Node2D>();
     }
     public static T GenVFXNode<T>(string scenePath) where T : Node2D {
+        if (Entry.ModSceneCache.TryGetValue(scenePath, out var modScene)) {
+            return modScene.Instantiate<T>();
+        }
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
 

@@ -1,4 +1,5 @@
 using System.Reflection;
+using Godot;
 using Godot.Bridge;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Assets;
@@ -29,6 +30,11 @@ public class Entry {
     /// </summary>
     public static StarEffectController? StarEffectController { get; set; }
 
+    /// <summary>
+    /// Mod 独立的场景缓存，避免被游戏 PreloadManager 的 UnloadAssets 清理
+    /// </summary>
+    public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
+
     // 初始化函数
     public static void Init() {
         var harmony = new Harmony("sts2.vitech.regentFx");
@@ -45,13 +51,29 @@ public class Entry {
         try {
             var paths = CollectAssetPathsSafely();
             if (paths.Count > 0) {
-                var session = PreloadManager.Cache.CreateSession("RegentFX", paths);
-                NAssetLoader.Instance.LoadInTheBackground(session);
-                Logger.Info($"Queued {paths.Count} assets for preloading");
+                Logger.Info($"Preloading {paths.Count} RegentFX assets synchronously");
+                int success = 0, fail = 0;
+                foreach (var path in paths) {
+                    try {
+                        if (ModSceneCache.ContainsKey(path)) continue;
+                        var scene = ResourceLoader.Load<PackedScene>(path, null, ResourceLoader.CacheMode.Reuse);
+                        if (scene != null) {
+                            ModSceneCache[path] = scene;
+                            success++;
+                        } else {
+                            fail++;
+                            Logger.Warn($"Failed to preload: {path}");
+                        }
+                    } catch (Exception ex) {
+                        fail++;
+                        Logger.Warn($"Error preloading {path}: {ex.Message}");
+                    }
+                }
+                Logger.Info($"Preloading complete: {success} succeeded, {fail} failed");
             }
         }
         catch (Exception ex) {
-            Logger.Warn($"Failed to queue RegentFX assets: {ex.Message}");
+            Logger.Warn($"Failed to preload RegentFX assets: {ex.Message}");
         }
     }
 
