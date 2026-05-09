@@ -34,7 +34,7 @@ public class Genesis : PowerFX {
         WorldEnvironmentUtil.TweenExposure(2.5f, 0.25f);
         await Cmd.Wait(0.25f);
         SimpleSfxUtil.Play("res://RegentFX/sfx/genesis_2.mp3");
-        Node2D ntest = VFXUtil.PlaySimple("res://RegentFX/scenes/vfx/distortions/vfx_outward_screen_distortion_ellipse.tscn", pos);
+        Node2D ntest = VFXUtil.PlaySimple(DISTORTION, pos);
         WorldEnvironmentUtil.TweenExposure(1f, 0.3f);
     }
 }

@@ -57,6 +57,7 @@ public class Entry {
 
     private static List<string> CollectAssetPathsSafely() {
         var paths = new HashSet<string>() {
+            FX.DISTORTION,
             Blade.Blade1Path,
             Blade.Blade2Path,
             Blackhole.VfxScenePath,

@@ -59,7 +59,7 @@ public class AstralPulse : CardFX {
             }
             WorldEnvironmentUtil.TweenExposure(2.8f, 0.05f);
             await Cmd.Wait(0.15f);
-            Node2D ntest = VFXUtil.PlaySimple("res://RegentFX/scenes/vfx/distortions/vfx_outward_screen_distortion_ellipse.tscn", ownerNode.VfxSpawnPosition);
+            Node2D ntest = VFXUtil.PlaySimple(DISTORTION, ownerNode.VfxSpawnPosition);
             VFXUtil.ReplayAllParticles(ntest);
             WorldEnvironmentUtil.TweenExposure(1f, 0.44f);
         }
