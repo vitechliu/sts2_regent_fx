@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -27,7 +25,10 @@ public static class FixedOpeningHandPatch {
     public static bool DrawPrefix(PlayerChoiceContext choiceContext, decimal count, Player player, bool fromHandDraw, ref Task<IEnumerable<CardModel>> __result) {
         if (!Setting.DevTestStartMode) return true;
         // 只拦截战斗开始时的初始手牌抽取（第一轮 + fromHandDraw）
-        if (!fromHandDraw || player.Creature.CombatState?.RoundNumber != 1) {
+        var combatState = Traverse.Create(player.Creature).Property("CombatState").GetValue();
+        if (combatState == null) return true;
+        int roundNumber = Traverse.Create(combatState).Property("RoundNumber").GetValue<int>();
+        if (!fromHandDraw || roundNumber != 1) {
             return true; // 执行默认逻辑
         }
 
@@ -61,8 +62,9 @@ public static class FixedOpeningHandPatch {
         // 示例：生成 3张打击 + 2张防御 + 1张铁斩波
         // 你可以根据需求修改为任意牌
 
+        
         foreach (var t in result) {
-            await CardPileCmd.AddGeneratedCardToCombat(t, PileType.Hand, addedByPlayer: true);
+            await AddGeneratedCardToCombatDynamic(t, PileType.Hand, player);
         }
 
         await PlayerCmd.GainEnergy(100, player);
@@ -70,5 +72,56 @@ public static class FixedOpeningHandPatch {
 
         Entry.Logger.Info($"[FixedOpeningHand] 已为玩家 {player.NetId} 生成 {result.Count} 张固定手牌");
         return result;
+    }
+    
+    
+  
+    /// <summary>
+    /// 动态调用 AddGeneratedCardToCombat，自动适配两个版本
+    /// </summary>
+    static async Task<CardPileAddResult> AddGeneratedCardToCombatDynamic(
+        CardModel card,               // CardModel
+        PileType pileType,           // PileType（可能是 enum / int）
+        Player player)
+    {
+        Type targetType = typeof(CardPileCmd); // 替换成实际的第三方类
+
+        // 查找名称匹配的方法
+        MethodInfo[] methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static);
+
+        foreach (var method in methods) {
+            if (method.Name != "AddGeneratedCardToCombat")
+                continue;
+
+            ParameterInfo[] parameters = method.GetParameters();
+
+            // 版本 A: (CardModel, PileType, Player?, CardPilePosition)
+            if (parameters.Length == 4 &&
+                parameters[0].ParameterType == typeof(CardModel) &&
+                parameters[2].ParameterType == typeof(Player))
+            {
+                return await (Task<CardPileAddResult>)method.Invoke(null, [
+                    card,
+                    pileType,
+                    player, // 这里传入 Player? 或 null
+                    CardPilePosition.Bottom
+                ]);
+            }
+
+            // 版本 B: (CardModel, PileType, bool, CardPilePosition)
+            if (parameters.Length == 4 &&
+                parameters[0].ParameterType == typeof(CardModel) &&
+                parameters[2].ParameterType == typeof(bool))
+            {
+                return await (Task<CardPileAddResult>)method.Invoke(null, [
+                    card,
+                    pileType,
+                    true,
+                    CardPilePosition.Bottom
+                ]);
+            }
+        }
+
+        throw new MissingMethodException("未找到匹配的 AddGeneratedCardToCombat 方法");
     }
 }
