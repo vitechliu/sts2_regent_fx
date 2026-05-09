@@ -20,7 +20,7 @@ public class FallingStar : CardFX {
     public override string HitSfxPath => "res://RegentFX/sfx/falling_star.mp3";
     public override bool HasExposureEffect => true;
     public override float ExposureInDuration => 0.1f;
-    public override float ExposurePeak => 1.5f;
+    public override float ExposurePeak => 1.3f;
     public override float ExposureOutDuration => 0.5f;
 
     private List<Vector2> starPos = new() {

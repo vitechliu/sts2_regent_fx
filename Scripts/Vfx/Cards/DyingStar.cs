@@ -20,7 +20,8 @@ public class DyingStar : CardFX {
     public override string SecondarySfxPath => "res://RegentFX/sfx/dying_star.mp3";
     public override float VfxClearDelay => 3f;
     public override bool HasExposureEffect => true;
-    public override float ExposureInDuration => 0.5f;
+    public override float ExposurePeak => 2.2f;
+    public override float ExposureInDuration => 0.6f;
     public override float ExposureOutDuration => 0.2f;
 
     private List<Vector2> starPos = new() {

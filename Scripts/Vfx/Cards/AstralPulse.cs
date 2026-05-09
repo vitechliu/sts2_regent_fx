@@ -21,6 +21,7 @@ public class AstralPulse : CardFX {
 
     public override float VfxClearDelay => 3f;
     public override bool HasExposureEffect => true;
+    public override float ExposurePeak => 2f;
     public override float ExposureInDuration => 0.2f;
     public override float ExposureOutDuration => 0.3f;
 

@@ -32,7 +32,7 @@ public static class GlowPatch {
             SimpleSfxUtil.Play("res://RegentFX/sfx/glow.mp3");
             VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             await Cmd.Wait( .1f);
-            WorldEnvironmentUtil.TweenExposure(2.2f, .1f);
+            WorldEnvironmentUtil.TweenExposure(2f, .1f);
             await Cmd.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(1f, .3f);
         }
