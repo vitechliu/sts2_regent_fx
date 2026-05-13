@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using STS2RitsuLib.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -40,7 +40,7 @@ public class CrescentSpear: CardFX {
     private const float SpearLength = 900f;
     private const float ScaleFactor = 1.2f;
 
-    private const string HitSFX = "res://RegentFX/sfx/crescent_spear.mp3";
+    private const string HitSFX = "event:/RegentFx/sfx/crescent_spear";
     
     private async Task PlayCrescentSpearVfx(Creature owner, Creature target) {
         if (TestMode.IsOn) {
@@ -80,7 +80,7 @@ public class CrescentSpear: CardFX {
             
 
             Entry.StarEffectController?.OnPlayCard();
-            SimpleSfxUtil.Play(HitSFX);
+            Sts2SfxAlignedFmod.PlayOneShot(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
             await Cmd.Wait(0.15f);
 

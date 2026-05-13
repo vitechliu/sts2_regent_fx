@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using RegentFx.Core.Audio;
+using STS2RitsuLib.Audio;
 
 #pragma warning disable CS4014
 
@@ -29,11 +29,11 @@ public class Genesis : PowerFX {
 
     async Task PlayAnim(Vector2 pos) {
         VFXUtil.PlaySimple(VfxScenePath,pos, 4f);
-        SimpleSfxUtil.Play("res://RegentFX/sfx/genesis_1.mp3");
+        Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/genesis_1");
         await Cmd.Wait(0.5f);
         WorldEnvironmentUtil.TweenExposure(2.5f, 0.25f);
         await Cmd.Wait(0.25f);
-        SimpleSfxUtil.Play("res://RegentFX/sfx/genesis_2.mp3");
+        Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/genesis_2");
         Node2D ntest = VFXUtil.PlaySimple(DISTORTION, pos);
         WorldEnvironmentUtil.TweenExposure(1f, 0.3f);
     }

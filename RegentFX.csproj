@@ -24,6 +24,7 @@
       <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
+      <PackageReference Include="STS2.RitsuLib" Version="0.2.29" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,9 @@
   <ItemGroup>
      <!-- Value = 全限定类名，该类必须在同一程序集、且 Ritsu 扫描时已被加载 -->
      <AssemblyMetadata Include="RitsuLib.ModSettingsInterop.ProviderType" Value="RegentFX.ThirdParty.RitsuLibModConfig"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Audio\" />
   </ItemGroup>
 
   <Target Name="Copy Mod" AfterTargets="PostBuildEvent">

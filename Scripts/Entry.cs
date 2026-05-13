@@ -10,6 +10,7 @@ using RegentFX.Scripts.Vfx;
 using RegentFX.Scripts.Vfx.Cards;
 using RegentFX.Scripts.Vfx.Powers;
 using RegentFX.ThirdParty;
+using STS2RitsuLib.Audio; 
 
 namespace RegentFX.Scripts;
 
@@ -37,13 +38,23 @@ public class Entry {
 
     // 初始化函数
     public static void Init() {
-        var harmony = new Harmony("sts2.vitech.regentFx");
-        harmony.PatchAll();
-        // 使得tscn可以加载自定义脚本
-        ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
-        LoadScenes();
-        RitsuLibModConfig.SetDefaults();
-        Log.Debug("Regent Fx Mod initialized!");
+        try {
+            // FMOD 资源注册
+            // 注册 Bank 和 GUIDs
+            FmodStudioDeferredBankRegistration.RegisterBank("res://mods/RegentFX/banks/RegentFx.bank");
+            FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://mods/RegentFX/banks/GUIDs.txt");
+            
+            var harmony = new Harmony("sts2.vitech.regentFx");
+            harmony.PatchAll();
+            // 使得tscn可以加载自定义脚本
+            ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
+            LoadScenes();
+            RitsuLibModConfig.SetDefaults();
+            Log.Debug("Regent Fx Mod initialized!");
+        }
+        catch (System.Exception ex) {
+            Logger.Error($"RegentFX initialized failed! 错误详情: {ex.Message}");
+        }
     }
 
 

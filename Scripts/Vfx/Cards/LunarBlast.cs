@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using STS2RitsuLib.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -35,8 +35,8 @@ public class LunarBlast : CardFX {
     public static string LunarScenePath => LunarScenePaths[GD.RandRange(0,  LunarScenePaths.Count - 1)];
 
     public override bool HasExposureEffect => false;
-    public override string HitSfxPath => "res://RegentFX/sfx/lunarTest1.mp3";
-    public string HitSfxPath2 => "res://RegentFX/sfx/lunarTest1.mp3";
+    public override string HitSfxPath => "event:/RegentFx/sfx/lunarTest1";
+    public string HitSfxPath2 => "event:/RegentFx/sfx/lunarTest1";
     
     public override void HoldingCustom() {
         if (card is MegaCrit.Sts2.Core.Models.Cards.LunarBlast lb) {
@@ -96,8 +96,8 @@ public class LunarBlast : CardFX {
 
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
-            SimpleSfxUtil.Play(HitSfxPath);
-            SimpleSfxUtil.Play(HitSfxPath2);
+            Sts2SfxAlignedFmod.PlayOneShot(HitSfxPath);
+            Sts2SfxAlignedFmod.PlayOneShot(HitSfxPath2);
 
             _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
             await Cmd.Wait(0.15f);

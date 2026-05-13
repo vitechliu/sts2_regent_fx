@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFx.Core.Audio;
+using STS2RitsuLib.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -59,7 +59,7 @@ public static class AlignmentPatch {
             Entry.Logger.Info("Could not get creature nodes for VFX");
         }
         else {
-            SimpleSfxUtil.Play("res://RegentFX/sfx/alignment.mp3");
+            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/alignment");
             VFXUtil.PlaySimple(CardFX.FromCard(__instance).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
         }
         Entry.StarEffectController?.OnPlayCard();

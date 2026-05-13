@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using STS2RitsuLib.Audio;
 
 #pragma warning disable CS4014
 
@@ -32,7 +32,7 @@ public class WroughtInWar : CardFX {
         if (targetNode == null) {
             return;
         }
-        SimpleSfxUtil.Play("res://RegentFX/sfx/wiw1.mp3");
+        Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/wiw1");
         VFXUtil.PlaySimple(VfxScenePath, targetNode.VfxSpawnPosition);
         await Cmd.Wait(0.1f);
         NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Normal);
