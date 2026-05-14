@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using STS2RitsuLib.Audio;
+using RegentFX.ThirdParty.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 

@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
-using STS2RitsuLib.Audio;
+using RegentFX.ThirdParty.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 

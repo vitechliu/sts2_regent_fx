@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using STS2RitsuLib.Audio;
+using RegentFX.ThirdParty.Audio;
 
 #pragma warning disable CS4014
 

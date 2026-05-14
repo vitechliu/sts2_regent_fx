@@ -24,7 +24,6 @@
       <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
       <Private>false</Private>
     </Reference>
-      <PackageReference Include="STS2.RitsuLib" Version="0.2.29" />
   </ItemGroup>
 
   <ItemGroup>
