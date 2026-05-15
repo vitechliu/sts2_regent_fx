@@ -52,8 +52,8 @@ public class Entry {
     }
     
     private static void InitModAudioSystem() {
-        string resBankPath = "res://mods/RegentFX/banks/RegentFx.bank";
-        string resGuidPath = "res://mods/RegentFX/banks/GUIDs.txt";
+        string resBankPath = "res://RegentFX/banks/RegentFx.bank";
+        string resGuidPath = "res://RegentFX/banks/GUIDs.txt";
 
         try {
             RegentFxGuidMap.LoadFromFile(resGuidPath);
