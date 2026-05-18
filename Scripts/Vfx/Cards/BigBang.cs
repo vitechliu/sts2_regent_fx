@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using RegentFX.ThirdParty.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -32,7 +32,7 @@ public static class BigBangPatch {
             VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             VFXUtil.ShakeAfter(0.3f, ShakeStrength.Strong, ShakeDuration.Normal);
             await Cmd.Wait( .25f);
-            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/big_bang_1");
+            FmodLite.Play("event:/RegentFx/sfx/big_bang_1");
             WorldEnvironmentUtil.TweenExposure(3f, .15f);
             await Cmd.Wait( .15f);
             WorldEnvironmentUtil.TweenExposure(1f, .4f);

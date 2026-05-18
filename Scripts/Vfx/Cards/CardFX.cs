@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
-using RegentFX.ThirdParty.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -188,7 +188,7 @@ public abstract class CardFX: FX {
 
     public void TryPlayHoldingSfx() {
         if (!string.IsNullOrEmpty(HoldSfxPath)) {
-            Sts2SfxAlignedFmod.PlayOneShot(HoldSfxPath);
+            FmodLite.Play(HoldSfxPath);
         }
     }
 }

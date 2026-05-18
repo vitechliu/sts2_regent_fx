@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFX.ThirdParty.Audio;
+using RitsuFmodLite;
 
 
 namespace RegentFX.Scripts.Vfx.Cards;
@@ -82,13 +82,13 @@ public static class CardVfxUtil {
 
             // 原音频播放模式代码：
             // if (!string.IsNullOrEmpty(config.HitSfxPath)) {
-            //     Sts2SfxAlignedFmod.PlayOneShot(config.HitSfxPath);
+            //     FmodLite.Play(config.HitSfxPath);
             // }
 
             // 修改为：
             if (!string.IsNullOrEmpty(config.HitSfxPath)) {
                 try {
-                    Sts2SfxAlignedFmod.PlayOneShot(config.HitSfxPath);
+                    FmodLite.Play(config.HitSfxPath);
                 } catch (Exception ex) {
                     Entry.Logger.Warn($"[CardVfxUtil] FMOD 播放失败: {config.HitSfxPath}. 错误: {ex.Message}");
                 }
@@ -109,7 +109,7 @@ public static class CardVfxUtil {
 
             if (!string.IsNullOrEmpty(config.SecondarySfxPath)) {
                 try {
-                    Sts2SfxAlignedFmod.PlayOneShot(config.SecondarySfxPath);
+                    FmodLite.Play(config.SecondarySfxPath);
                 } catch (Exception ex) {
                     Entry.Logger.Warn($"[CardVfxUtil] FMOD 播放失败: {config.SecondarySfxPath}. 错误: {ex.Message}");
                 }

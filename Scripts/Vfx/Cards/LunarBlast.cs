@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFX.ThirdParty.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -96,8 +96,8 @@ public class LunarBlast : CardFX {
 
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
-            Sts2SfxAlignedFmod.PlayOneShot(HitSfxPath);
-            Sts2SfxAlignedFmod.PlayOneShot(HitSfxPath2);
+            FmodLite.Play(HitSfxPath);
+            FmodLite.Play(HitSfxPath2);
 
             _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
             await Cmd.Wait(0.15f);

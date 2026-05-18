@@ -3,7 +3,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFX.ThirdParty.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -29,7 +29,7 @@ public static class GlowPatch {
         MegaCrit.Sts2.Core.Models.Cards.Glow card) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
-            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/glow");
+            FmodLite.Play("event:/RegentFx/sfx/glow");
             VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             await Cmd.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(2f, .1f);
