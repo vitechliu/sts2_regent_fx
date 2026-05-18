@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
-using STS2RitsuLib.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -59,8 +59,8 @@ public class MakeItSo : CardFX {
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
             Entry.StarEffectController?.OnPlayCard();
-            Sts2SfxAlignedFmod.PlayOneShot(HitSfxPath);
-            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/post_magic");
+            FmodLite.Play(HitSfxPath);
+            FmodLite.Play("event:/RegentFx/sfx/post_magic");
             WorldEnvironmentUtil.FullExposure(1.2f, 0.1f, 0.1f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await Cmd.Wait(0.15f);

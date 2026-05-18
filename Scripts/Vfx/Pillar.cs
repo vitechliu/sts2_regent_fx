@@ -5,7 +5,7 @@ using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
-using STS2RitsuLib.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -156,7 +156,7 @@ public partial class Pillar : Node2D {
             _spinActive.Frame = _spinBase.Frame;
         }
 
-        Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/seven_stars_hold");
+        FmodLite.Play("event:/RegentFx/sfx/seven_stars_hold");
 
         // 透明度闪烁
         _activateTween = CreateTween();
@@ -242,7 +242,7 @@ public partial class Pillar : Node2D {
 
         Node2D? n = VFXUtil.PlaySimple(BurstPath, _targetPosition);
         if (n != null) n.Scale *= 3f;
-        Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/pillar_burst");
+        FmodLite.Play("event:/RegentFx/sfx/pillar_burst");
 
         NGame.Instance?.ScreenShake(ShakeStrength.Medium, MegaCrit.Sts2.Core.Nodes.Vfx.Utilities.ShakeDuration.Normal, 90f);
         // 落地弹性：压扁后弹回
@@ -286,7 +286,7 @@ public partial class Pillar : Node2D {
                 pillar.QueueFree();
                 return null;
             }
-            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/pillar_create");
+            FmodLite.Play("event:/RegentFx/sfx/pillar_create");
             
             parent.AddChildSafely(pillar);
             pillar.Create(position);

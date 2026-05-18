@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
-using STS2RitsuLib.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -52,7 +52,7 @@ public class AstralPulse : CardFX {
             Entry.Logger.Info("Could not get creature nodes for VFX");
         }
         else {
-            Sts2SfxAlignedFmod.PlayOneShot("event:/RegentFx/sfx/common_magic_1");
+            FmodLite.Play("event:/RegentFx/sfx/common_magic_1");
             VFXUtil.ShakeAfter(0.03f, ShakeStrength.Strong, ShakeDuration.Normal);
             Node2D? node = VFXUtil.PlaySimple(VfxScenePath, ownerNode.VfxSpawnPosition);
             if (node != null) {

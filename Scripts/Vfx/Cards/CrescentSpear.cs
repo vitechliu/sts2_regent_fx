@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using STS2RitsuLib.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -80,7 +80,7 @@ public class CrescentSpear: CardFX {
             
 
             Entry.StarEffectController?.OnPlayCard();
-            Sts2SfxAlignedFmod.PlayOneShot(HitSFX);
+            FmodLite.Play(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
             await Cmd.Wait(0.15f);
 

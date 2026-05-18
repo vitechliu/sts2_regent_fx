@@ -10,7 +10,7 @@ using RegentFX.Scripts.Vfx;
 using RegentFX.Scripts.Vfx.Cards;
 using RegentFX.Scripts.Vfx.Powers;
 using RegentFX.ThirdParty;
-using STS2RitsuLib.Audio; 
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts;
 
@@ -41,9 +41,8 @@ public class Entry {
         try {
             // FMOD 资源注册
             // 注册 Bank 和 GUIDs
-            FmodStudioDeferredBankRegistration.RegisterBank("res://mods/RegentFX/banks/RegentFx.bank");
-            FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://mods/RegentFX/banks/GUIDs.txt");
-            
+            FmodLite.TryLoadBankAndGuidMappings("res://mods/RegentFX/banks/RegentFx.bank",
+                "res://mods/RegentFX/banks/GUIDs.txt");
             var harmony = new Harmony("sts2.vitech.regentFx");
             harmony.PatchAll();
             // 使得tscn可以加载自定义脚本
