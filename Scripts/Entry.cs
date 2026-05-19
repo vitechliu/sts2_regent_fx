@@ -41,8 +41,8 @@ public class Entry {
         try {
             // FMOD 资源注册
             // 注册 Bank 和 GUIDs
-            FmodLite.TryLoadBankAndGuidMappings("res://mods/RegentFX/banks/RegentFx.bank",
-                "res://mods/RegentFX/banks/GUIDs.txt");
+            FmodLite.TryLoadBankAndGuidMappings("res://RegentFX/banks/RegentFx.bank",
+                "res://RegentFX/banks/GUIDs.txt");
             var harmony = new Harmony("sts2.vitech.regentFx");
             harmony.PatchAll();
             // 使得tscn可以加载自定义脚本

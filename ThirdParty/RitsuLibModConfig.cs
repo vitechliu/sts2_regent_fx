@@ -5,18 +5,17 @@ using RegentFX.Scripts.Vfx.Powers;
 
 namespace RegentFX.ThirdParty;
 
-using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
 /// <summary>由 Ritsu 经 AssemblyMetadata: RitsuLib.ModSettingsInterop.ProviderType 发现；全部为 static，且无 STS2RitsuLib 引用。</summary>
 public static class RitsuLibModConfig {
-    // —— 与 mod_manifest 及游戏内 id 一致
+    // —— 与 mod_manifest 及游戏内 id 一致（与 BaseGameData / 持久化中使用的 mod id 相同字符串）
     private const string ModId = Entry.ModId;
 
+    // 仅为示例路径；真模组请与你在 ModConfig / 自带存档里使用的一致
+    // Windows 常见: %LocalAppData%\SlayTheSpire2\... 或 游戏 mod_data 目录
     private static string DataDir => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "SlayTheSpire2", ModId);
@@ -24,6 +23,7 @@ public static class RitsuLibModConfig {
     private static string SchemaPath => Path.Combine(DataDir, "ritsu_interop_schema.json");
     private static string StatePath => Path.Combine(DataDir, "ritsu_interop_state.json");
 
+    // —— 多线程下避免读写交错（Ritsu 可能在不同线程回调）
     private static readonly object FileLock = new();
     private static readonly ConcurrentDictionary<string, JsonNode?> Hot = new(StringComparer.Ordinal);
 
@@ -31,13 +31,17 @@ public static class RitsuLibModConfig {
     public static object CreateRitsuLibSettingsSchema() {
         Directory.CreateDirectory(DataDir);
         File.WriteAllText(SchemaPath, BuildDefaultSchemaJson());
+        // if (!File.Exists(SchemaPath)) {
+        //     // 首次写默认 schema 文件，便于你手工编辑或版本控制
+        //     SetDefaults();
+        // }
+        // 也支持直接 return BuildDefaultSchemaJson() 或 Dictionary，无需文件
         return SchemaPath;
     }
-    
+
     private static readonly Dictionary<string, object> Defaults = new(){
         ["ExposureThreshold"] = 1,
         ["DevTestStartMode"] = false,
-        ["SfxVolume"] = 1.0, 
     };
 
     public static void SetDefaults() {
@@ -54,6 +58,7 @@ public static class RitsuLibModConfig {
     }
 
     private static string BuildDefaultSchemaJson() {
+        // 与 RuntimeInteropMirrorSource 解析器字段名一致；modId 必填
         var Schema = new RitsuLibModConfigEntity {
             modDisplayName = SimpleLocUtil.Simple("万象辉星", "RegentFX")
         };
@@ -78,22 +83,13 @@ public static class RitsuLibModConfig {
         ExposureEntry.step = 0.05;
         MainSection.entries.Add(ExposureEntry);
         
-        var SfxVolumeEntry = new SliderEntry();
-        SfxVolumeEntry.id = "sfx_vol";
-        SfxVolumeEntry.key = "SfxVolume";
-        SfxVolumeEntry.label = SimpleLocUtil.Simple("专属特效音量", "RegentFX SFX Volume");
-        SfxVolumeEntry.description = SimpleLocUtil.Simple("调整 RegentFX 专属卡牌特效的播放音量。", "Adjust the SFX volume for RegentFX cards.");
-        SfxVolumeEntry.min = 0;
-        SfxVolumeEntry.max = 2;
-        SfxVolumeEntry.step = 0.1;
-        MainSection.entries.Add(SfxVolumeEntry);
-        
         var CardSection = new RLMCSection();
         CardSection.id = "cards";
         CardSection.title = SimpleLocUtil.Simple("卡牌", "Cards");
         var PowerSection = new RLMCSection();
         PowerSection.id = "powers";
         PowerSection.title = SimpleLocUtil.Simple("能力", "Powers");
+        
         
         CardFX.EnsureRegistry();
         foreach (Type cardModelType in CardFX.Registry.Keys) {
@@ -102,6 +98,7 @@ public static class RitsuLibModConfig {
             CardModel card = null!;
             try {
                 card = ModelDb.Get(cardModelType) as CardModel;
+                
             }
             catch (Exception) {
                 Entry.Logger.Warn("[RitsuConfig] Cannot find cardModel: " + cardModelType.Name);
@@ -158,12 +155,16 @@ public static class RitsuLibModConfig {
         
         Schema.pages.Add(DebugPage);
         
+        
         var res = JsonSerializer.Serialize(Schema);
+        // Entry.Logger.Info("[RitsuConfigExport] " + res);
         return res;
     }
 
     public static void SetRitsuLibSettingValue(string key, object? value) => SetCore(key, value);
+
     public static object? GetRitsuLibSettingValue(string key) => GetCore(key);
+
     public static void SaveRitsuLibSettings() {
         lock (FileLock) {
             var path = StatePath;
@@ -174,13 +175,18 @@ public static class RitsuLibModConfig {
         }
     }
 
+    // 可选强类型，解析器会优先用它们（见 RuntimeInteropMirrorSource.BuildAccessor）
     public static bool GetRitsuLibSettingBool(string key) => CoerceBool(GetCore(key));
     public static void SetRitsuLibSettingBool(string key, bool value) => SetCore(key, value);
+
     public static double GetRitsuLibSettingDouble(string key) => CoerceDouble(GetCore(key));
     public static void SetRitsuLibSettingDouble(string key, double value) => SetCore(key, value);
+
     public static int GetRitsuLibSettingInt(string key) => CoerceInt(GetCore(key));
     public static void SetRitsuLibSettingInt(string key, int value) => SetCore(key, value);
+
     public static string? GetRitsuLibSettingString(string key) => GetCore(key)?.ToString();
+
     public static void SetRitsuLibSettingString(string key, string value) => SetCore(key, value);
 
     public static void InvokeRitsuLibSettingAction(string key) {
@@ -189,8 +195,9 @@ public static class RitsuLibModConfig {
             try {
                 if (File.Exists(StatePath)) File.Delete(StatePath);
             }
-            catch { }
-            SyncToPureConfig();
+            catch {
+                // 忽略
+            }
         }
     }
 
@@ -198,10 +205,7 @@ public static class RitsuLibModConfig {
     private static void SetCore(string key, object? value) {
         LoadIfNeeded();
         Hot[key] = JsonSerializer.SerializeToNode(value);
-        
-        if (key == "SfxVolume") {
-            RegentFxConfig.SfxVolume = (float)CoerceDouble(value);
-        }
+        // Entry.Logger.Info("SetCore:" + key + "value:" + value);
     }
 
     private static object? GetCore(string key) {
@@ -217,27 +221,11 @@ public static class RitsuLibModConfig {
         if (Hot.Count > 0) return;
         lock (FileLock) {
             if (Hot.Count > 0) return;
-            if (!File.Exists(StatePath)) {
-                SyncToPureConfig(); 
-                return;
-            }
+            if (!File.Exists(StatePath)) return;
             var root = JsonNode.Parse(File.ReadAllText(StatePath))?.AsObject();
-            if (root is null) {
-                SyncToPureConfig();
-                return;
-            }
+            if (root is null) return;
             foreach (var p in root) Hot[p.Key] = p.Value;
-            
-            SyncToPureConfig();
         }
-    }
-
-    private static void SyncToPureConfig() {
-        var rawVol = Hot.TryGetValue("SfxVolume", out var n) && n != null 
-                     ? n 
-                     : Defaults.GetValueOrDefault("SfxVolume");
-                     
-        RegentFxConfig.SfxVolume = (float)CoerceDouble(rawVol);
     }
 
     private static bool CoerceBool(object? o) => o switch {
