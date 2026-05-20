@@ -8,7 +8,8 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using RitsuFmodLite;
+
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -79,8 +80,18 @@ public static class CardVfxUtil {
 
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
+            // 原音频播放模式代码：
+            // if (!string.IsNullOrEmpty(config.HitSfxPath)) {
+            //     FmodLite.Play(config.HitSfxPath);
+            // }
+
+            // 修改为：
             if (!string.IsNullOrEmpty(config.HitSfxPath)) {
-                _ = SimpleSfxUtil.Play(config.HitSfxPath);
+                try {
+                    FmodLite.Play(config.HitSfxPath);
+                } catch (Exception ex) {
+                    Entry.Logger.Warn($"[CardVfxUtil] FMOD 播放失败: {config.HitSfxPath}. 错误: {ex.Message}");
+                }
             }
 
             TaskHelper.RunSafely(ClearAfter(vfxNode, config.VfxClearDelay));
@@ -97,7 +108,11 @@ public static class CardVfxUtil {
             }
 
             if (!string.IsNullOrEmpty(config.SecondarySfxPath)) {
-                _ = SimpleSfxUtil.Play(config.SecondarySfxPath);
+                try {
+                    FmodLite.Play(config.SecondarySfxPath);
+                } catch (Exception ex) {
+                    Entry.Logger.Warn($"[CardVfxUtil] FMOD 播放失败: {config.SecondarySfxPath}. 错误: {ex.Message}");
+                }
             }
 
         } catch (Exception ex) {

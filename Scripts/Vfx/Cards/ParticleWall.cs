@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using RegentFx.Core.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -41,7 +41,7 @@ public static class ParticleWallPatch {
         MegaCrit.Sts2.Core.Models.Cards.ParticleWall card) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
-            SimpleSfxUtil.Play("res://RegentFX/sfx/particle_wall.mp3");
+            FmodLite.Play("event:/RegentFx/sfx/particle_wall");
             Creature owner = card.Owner.Creature;
             int xFac = VFXUtil.IsCharacterFacingRight(owner) ? 1 : -1;
             Vector2 pos = ownerNode.VfxSpawnPosition +

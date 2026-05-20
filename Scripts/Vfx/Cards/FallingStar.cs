@@ -17,7 +17,7 @@ public class FallingStar : CardFX {
     public override Vector2 TargetOffset => new(-200f, -450f);
 
     public override string VfxScenePath => "res://RegentFX/scenes/vfx/falling_star.tscn";
-    public override string HitSfxPath => "res://RegentFX/sfx/falling_star.mp3";
+    public override string HitSfxPath => "event:/RegentFx/sfx/falling_star";
     public override bool HasExposureEffect => true;
     public override float ExposureInDuration => 0.1f;
     public override float ExposurePeak => 1.3f;

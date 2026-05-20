@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using RitsuFmodLite;
 
 #pragma warning disable CS4014
 
@@ -22,7 +22,7 @@ public class MakeItSo : CardFX {
     public override bool HasOnBeforeDamage => true;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/make_it_so.tscn";
-    public override string? HitSfxPath => "res://RegentFX/sfx/make_it_so_2.mp3";
+    public override string? HitSfxPath => "event:/RegentFx/sfx/make_it_so_2";
     public override bool HasExposureEffect => false;
 
     public override bool RemoveHitFx => true;
@@ -59,8 +59,8 @@ public class MakeItSo : CardFX {
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
             Entry.StarEffectController?.OnPlayCard();
-            SimpleSfxUtil.Play(HitSfxPath);
-            SimpleSfxUtil.Play("res://RegentFX/sfx/post_magic.mp3");
+            FmodLite.Play(HitSfxPath);
+            FmodLite.Play("event:/RegentFx/sfx/post_magic");
             WorldEnvironmentUtil.FullExposure(1.2f, 0.1f, 0.1f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await Cmd.Wait(0.15f);

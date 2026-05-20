@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
-using RegentFx.Core.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -107,7 +107,7 @@ public partial class Blackhole : Node2D {
     public void Burst() {
         if (_isBursting) return;
 
-        SimpleSfxUtil.Play("res://RegentFX/sfx/black_hole_1.mp3");
+        FmodLite.Play("event:/RegentFx/sfx/black_hole_1");
 
         _isBursting = true;
         _burstTimer = 0f;

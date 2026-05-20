@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
-using RegentFx.Core.Audio;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -101,7 +101,7 @@ public abstract class CardFX: FX {
     /// <summary>
     /// 音效路径
     /// </summary>
-    public virtual string HoldSfxPath => "res://RegentFX/sfx/common_hold_1.mp3";
+    public virtual string HoldSfxPath => "event:/RegentFx/sfx/common_hold_1";
 
     /// <summary>
     /// 命中音效路径
@@ -188,7 +188,7 @@ public abstract class CardFX: FX {
 
     public void TryPlayHoldingSfx() {
         if (!string.IsNullOrEmpty(HoldSfxPath)) {
-            SimpleSfxUtil.Play(HoldSfxPath);
+            FmodLite.Play(HoldSfxPath);
         }
     }
 }
