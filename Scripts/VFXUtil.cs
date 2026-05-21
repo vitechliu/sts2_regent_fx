@@ -14,9 +14,6 @@ using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Settings;
 using MegaCrit.Sts2.Core.TestSupport;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RegentFX.Scripts;
 
@@ -48,6 +45,23 @@ public static class VFXUtil {
         if (!TestMode.IsOn && NCombatRoom.Instance != null) {
             Node2D node2D = GenVFXNode(scenePath);
             NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
+            node2D.GlobalPosition = position;
+            
+            SceneTreeTimer timer = node2D.GetTree().CreateTimer(lifetime);
+            timer.Timeout += () => {
+                if (GodotObject.IsInstanceValid(node2D)) {
+                    node2D.QueueFreeSafely();
+                }
+            };
+            return node2D;
+        }
+        return null;
+    }
+    
+    public static Node2D? PlaySimpleBack(string scenePath, Vector2 position, float lifetime = 2f) {
+        if (!TestMode.IsOn && NCombatRoom.Instance != null) {
+            Node2D node2D = GenVFXNode(scenePath);
+            NCombatRoom.Instance.BackCombatVfxContainer.AddChildSafely(node2D);
             node2D.GlobalPosition = position;
             
             SceneTreeTimer timer = node2D.GetTree().CreateTimer(lifetime);
