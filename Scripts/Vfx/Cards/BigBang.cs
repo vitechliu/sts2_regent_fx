@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -31,10 +30,10 @@ public static class BigBangPatch {
         if (ownerNode != null) {
             VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             VFXUtil.ShakeAfter(0.3f, ShakeStrength.Strong, ShakeDuration.Normal);
-            await Cmd.Wait( .25f);
+            await VFXUtil.Wait( .25f);
             FmodLite.Play("event:/RegentFx/sfx/big_bang_1");
             WorldEnvironmentUtil.TweenExposure(3f, .15f);
-            await Cmd.Wait( .15f);
+            await VFXUtil.Wait( .15f);
             WorldEnvironmentUtil.TweenExposure(1f, .4f);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -31,9 +30,9 @@ public static class GlowPatch {
         if (ownerNode != null) {
             FmodLite.Play("event:/RegentFx/sfx/glow");
             VFXUtil.PlaySimple(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
-            await Cmd.Wait( .1f);
+            await VFXUtil.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(2f, .1f);
-            await Cmd.Wait( .1f);
+            await VFXUtil.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(1f, .3f);
         }
     }

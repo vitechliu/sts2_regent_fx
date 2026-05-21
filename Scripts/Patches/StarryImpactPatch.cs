@@ -1,6 +1,6 @@
 using Godot;
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
+
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 
@@ -45,7 +45,7 @@ public static class StarryImpactPatch {
                 p.Restart();
             }
         }
-        await Cmd.Wait(2f, node._cts.Token);
+        await VFXUtil.Wait(2f, node._cts.Token);
         if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

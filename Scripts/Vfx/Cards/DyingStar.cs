@@ -1,5 +1,4 @@
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
@@ -48,6 +47,6 @@ public class DyingStar : CardFX {
         VFXUtil.ShakeAfter(0.35f, ShakeStrength.Strong, ShakeDuration.Normal);
         Entry.StarEffectController?.OnPlayCard();
         await CardVfxUtil.PlayAoeVfx(this, owner, card, nameof(DyingStar));
-        await Cmd.Wait(0.3f);
+        await VFXUtil.Wait(0.3f);
     }
 }

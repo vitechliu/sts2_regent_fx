@@ -1,5 +1,5 @@
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
+
 using MegaCrit.Sts2.Core.Nodes;
 
 namespace RegentFX.Scripts.Vfx;
@@ -96,9 +96,9 @@ public static class WorldEnvironmentUtil
 
     public static async Task FullExposure(float exposure, float waitTime, float inTime, float outTime) {
         if (!ENABLE_EXPOSURE) return;
-        await Cmd.Wait(waitTime);
+        await VFXUtil.Wait(waitTime);
         TweenExposure(exposure, inTime);
-        await Cmd.Wait(inTime);
+        await VFXUtil.Wait(inTime);
         TweenExposure(1f, outTime);
     }
     

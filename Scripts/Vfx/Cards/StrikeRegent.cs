@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
+﻿using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -31,6 +30,6 @@ public class StrikeRegent : CardFX {
             return;
         }
         Blade.PlayBlade(targetNode.VfxSpawnPosition);
-        await Cmd.Wait(0.05f);
+        await VFXUtil.Wait(0.05f);
     }
 }
