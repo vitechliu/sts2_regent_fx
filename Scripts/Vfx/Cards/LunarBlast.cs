@@ -1,5 +1,4 @@
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Extensions;
@@ -100,7 +99,7 @@ public class LunarBlast : CardFX {
             FmodLite.Play(HitSfxPath2);
 
             _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, VfxClearDelay));
-            await Cmd.Wait(0.15f);
+            await VFXUtil.Wait(0.15f);
 
         } catch (Exception ex) {
             Entry.Logger.Warn($"[Laser] Error playing VFX: {ex.Message}");
@@ -124,7 +123,7 @@ public class LunarBlast : CardFX {
             NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfxNode);
 
             _ = TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 2f));
-            await Cmd.Wait(0.15f);
+            await VFXUtil.Wait(0.15f);
 
         } catch (Exception ex) {
             Entry.Logger.Warn($"[CrescentSpear] Error playing VFX: {ex.Message}");

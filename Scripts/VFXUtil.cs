@@ -11,7 +11,12 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
+using MegaCrit.Sts2.Core.Saves;
+using MegaCrit.Sts2.Core.Settings;
 using MegaCrit.Sts2.Core.TestSupport;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RegentFX.Scripts;
 
@@ -57,8 +62,55 @@ public static class VFXUtil {
     }
 
     public static async void ShakeAfter(float time, ShakeStrength strength, ShakeDuration duration, float degAngle = -1f) {
-        await Cmd.Wait(time);
+        await VFXUtil.Wait(time);
         NGame.Instance?.ScreenShake(strength, duration, degAngle);
+    }
+
+    public static Task Wait(float seconds, bool ignoreCombatEnd = false)
+    {
+        return VFXUtil.Wait(seconds, new CancellationToken(), ignoreCombatEnd);
+    }
+
+    public static async Task Wait(float seconds, CancellationToken cancelToken, bool ignoreCombatEnd = false)
+    {
+        if (NonInteractiveMode.IsActive || (double)seconds <= 0.0 || NGame.Instance != null && (SaveManager.Instance.PrefsSave.FastMode == FastModeType.Instant || !ignoreCombatEnd && CombatManager.Instance.IsEnding))
+            return;
+        await VFXUtil.WaitInternal(((SceneTree)Engine.GetMainLoop()).CreateTimer((double)seconds), cancelToken);
+    }
+
+    public static Task WaitInternal(SceneTreeTimer timer, CancellationToken cancellationToken)
+    {
+        TaskCompletionSource tcs = new TaskCompletionSource();
+        timer.Timeout += () =>
+        {
+            tcs.TrySetResult();
+        };
+        if (cancellationToken.CanBeCanceled)
+            cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
+        return tcs.Task;
+    }
+
+    public static async Task CustomScaledWait(
+        float fastSeconds,
+        float standardSeconds,
+        bool ignoreCombatEnd = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (NonInteractiveMode.IsActive || SaveManager.Instance.PrefsSave.FastMode == FastModeType.Instant || !ignoreCombatEnd && CombatManager.Instance.IsEnding)
+            return;
+        switch (SaveManager.Instance.PrefsSave.FastMode)
+        {
+            case FastModeType.Normal:
+                await VFXUtil.Wait(standardSeconds, cancellationToken, ignoreCombatEnd);
+                break;
+            case FastModeType.Fast:
+                await VFXUtil.Wait(fastSeconds, cancellationToken, ignoreCombatEnd);
+                break;
+            case FastModeType.Instant:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
     public static readonly HashSet<ulong> StarryImpactNodes = new();
 

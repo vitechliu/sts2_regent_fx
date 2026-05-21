@@ -1,5 +1,4 @@
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -62,7 +61,7 @@ public class SevenStars : CardFX {
             }
             Blade.PlayBlade(targetNode.VfxSpawnPosition);
         }
-        await Cmd.Wait(0.05f);
+        await VFXUtil.Wait(0.05f);
     }
     
     public override bool UseV2Patch => true;

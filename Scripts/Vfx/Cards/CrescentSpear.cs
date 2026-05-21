@@ -1,5 +1,4 @@
 ﻿using Godot;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
@@ -82,7 +81,7 @@ public class CrescentSpear: CardFX {
             Entry.StarEffectController?.OnPlayCard();
             FmodLite.Play(HitSFX);
             TaskHelper.RunSafely(ClearAfter(vfxNode));
-            await Cmd.Wait(0.15f);
+            await VFXUtil.Wait(0.15f);
 
         } catch (Exception ex) {
             Entry.Logger.Warn($"[CrescentSpear] Error playing VFX: {ex.Message}");
@@ -90,7 +89,7 @@ public class CrescentSpear: CardFX {
     }
 
     public static async Task ClearAfter(Node2D? node) {
-        await Cmd.Wait(1f);
+        await VFXUtil.Wait(1f);
         if (node != null && GodotObject.IsInstanceValid(node)) node.QueueFreeSafely();
     }
 }

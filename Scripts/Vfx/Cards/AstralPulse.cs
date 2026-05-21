@@ -1,5 +1,5 @@
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
+
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -59,7 +59,7 @@ public class AstralPulse : CardFX {
                 node.Scale *= 1.3f;
             }
             WorldEnvironmentUtil.TweenExposure(2.8f, 0.05f);
-            await Cmd.Wait(0.15f);
+            await VFXUtil.Wait(0.15f);
             Node2D ntest = VFXUtil.PlaySimple(DISTORTION, ownerNode.VfxSpawnPosition);
             VFXUtil.ReplayAllParticles(ntest);
             WorldEnvironmentUtil.TweenExposure(1f, 0.44f);

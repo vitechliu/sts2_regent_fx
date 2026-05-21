@@ -1,7 +1,7 @@
 #pragma warning disable CS4014
 
 using Godot;
-using MegaCrit.Sts2.Core.Commands;
+
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
@@ -99,12 +99,12 @@ public static class CardVfxUtil {
             if (config.HasExposureEffect) {
                 try {
                     WorldEnvironmentUtil.TweenExposure(config.ExposurePeak, config.ExposureInDuration);
-                    await Cmd.Wait(config.ExposureInDuration + 0.05f);
+                    await VFXUtil.Wait(config.ExposureInDuration + 0.05f);
                 } finally {
                     WorldEnvironmentUtil.TweenExposure(1f, config.ExposureOutDuration);
                 }
             } else {
-                await Cmd.Wait(0.15f);
+                await VFXUtil.Wait(0.15f);
             }
 
             if (!string.IsNullOrEmpty(config.SecondarySfxPath)) {
@@ -124,7 +124,7 @@ public static class CardVfxUtil {
     /// 延迟清理 VFX 节点
     /// </summary>
     public static async Task ClearAfter(Node2D? node, float delay) {
-        await Cmd.Wait(delay);
+        await VFXUtil.Wait(delay);
         if (node != null && GodotObject.IsInstanceValid(node)) {
             node.QueueFreeSafely();
         }

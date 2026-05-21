@@ -1,5 +1,4 @@
 ﻿using Godot;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Helpers;
@@ -63,7 +62,7 @@ public class MakeItSo : CardFX {
             FmodLite.Play("event:/RegentFx/sfx/post_magic");
             WorldEnvironmentUtil.FullExposure(1.2f, 0.1f, 0.1f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
-            await Cmd.Wait(0.15f);
+            await VFXUtil.Wait(0.15f);
             NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
 
         } catch (Exception ex) {

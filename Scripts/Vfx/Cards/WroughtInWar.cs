@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
+﻿using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -34,8 +33,8 @@ public class WroughtInWar : CardFX {
         }
         FmodLite.Play("event:/RegentFx/sfx/wiw1");
         VFXUtil.PlaySimple(VfxScenePath, targetNode.VfxSpawnPosition);
-        await Cmd.Wait(0.1f);
+        await VFXUtil.Wait(0.1f);
         NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Normal);
-        await Cmd.Wait(0.15f);
+        await VFXUtil.Wait(0.15f);
     }
 }
