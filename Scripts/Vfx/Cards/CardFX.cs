@@ -167,6 +167,8 @@ public abstract class CardFX: FX {
     public virtual string? ChangeHitFx => null;
     public virtual bool RemoveHitFx => false;
 
+    public virtual void OnCancel() {}
+
 
     /// <summary>
     /// 计算第 index 颗星星的目标位置
