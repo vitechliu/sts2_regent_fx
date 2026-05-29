@@ -36,6 +36,8 @@ public class Entry {
     /// </summary>
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
+    public const string VERSION = "0.4.0";
+    
     // 初始化函数
     public static void Init() {
         try {
@@ -49,7 +51,7 @@ public class Entry {
             ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
             LoadScenes();
             RitsuLibModConfig.SetDefaults();
-            Log.Debug("Regent Fx Mod initialized!");
+            Log.Info($"RegentFX Omnistar {VERSION} Load Complete![万象辉星]加载成功!");
         }
         catch (System.Exception ex) {
             Logger.Error($"RegentFX initialized failed! 错误详情: {ex.Message}");
