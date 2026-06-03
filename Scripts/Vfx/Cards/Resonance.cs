@@ -87,8 +87,7 @@ public static class ResonancePatch {
         MegaCrit.Sts2.Core.Models.Cards.Resonance card) {
         NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
-            //todo 音效
-            // FmodLite.Play("event:/RegentFx/sfx/glow");
+            FmodLite.Play("event:/RegentFx/sfx/Resonance");
             await VFXUtil.Wait( .1f);
             VFXUtil.PlaySimpleBack(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             await VFXUtil.Wait( .1f);

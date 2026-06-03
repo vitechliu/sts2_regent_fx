@@ -60,7 +60,6 @@
      <AssemblyMetadata Include="RitsuLib.ModSettingsInterop.ProviderType" Value="RegentFX.ThirdParty.RitsuLibModConfig"/>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Audio\" />
     <Folder Include="RegentFX\" />
   </ItemGroup>
 
