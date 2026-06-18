@@ -19,11 +19,11 @@
   <ItemGroup>
     <Reference Include="sts2">
       <HintPath>$(Sts2DllDir)\sts2.dll</HintPath>
-<!--      <Private>false</Private>-->
+      <Private>true</Private>
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
-      <Private>false</Private>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
 
@@ -61,7 +61,6 @@
      <AssemblyMetadata Include="RitsuLib.ModSettingsInterop.ProviderType" Value="RegentFX.ThirdParty.RitsuLibModConfig"/>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Audio\" />
     <Folder Include="RegentFX\" />
   </ItemGroup>
 

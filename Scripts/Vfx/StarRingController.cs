@@ -10,15 +10,14 @@ namespace RegentFX.Scripts.Vfx;
 /// 支持星星数量变化时的平滑过渡
 /// </summary>
 public partial class StarRingController : Node2D {
-    //Default: 104f, Mesugaki Regent: 120f
-    [Export] public float OrbitRadius { get; set; } = 120f;
-    [Export] public float OrbitSpeed { get; set; } = 30f;
-    [Export] public float StarScaleMin { get; set; } = 0.6f;
-    [Export] public float StarScaleMax { get; set; } = 1.0f;
-    [Export] public int MaxStarCount { get; set; } = 20;
-    [Export] public float SpawnAnimationDuration { get; set; } = 0.3f;
-    [Export] public float VerticalOffset { get; set; } = -180f;
-    [Export] public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
+    public float OrbitRadius { get; set; } = 120f;
+    public float OrbitSpeed { get; set; } = 30f;
+    public float StarScaleMin { get; set; } = 0.6f;
+    public float StarScaleMax { get; set; } = 1.0f;
+    public int MaxStarCount { get; set; } = 20;
+    public float SpawnAnimationDuration { get; set; } = 0.3f;
+    public float VerticalOffset { get; set; } = -180f;
+    public float AngleLerpSpeed { get; set; } = 8f; // 角度插值速度，越大过渡越快
 
     // ====================== 功能1：缩放适配 新增字段 ======================
     // 星环基础参数（初始固定值，动态计算的基准）
@@ -34,6 +33,8 @@ public partial class StarRingController : Node2D {
     private float _orbitAngle;
     private bool _isActive;
     private Player _player;
+    
+    public List<StarData> OrbitStars => _orbitStars;
 
     StarEffectController? StarEffectController => Entry.StarEffectController;
 
@@ -42,7 +43,7 @@ public partial class StarRingController : Node2D {
     /// <summary>
     /// 星星数据类，存储每个星星的状态
     /// </summary>
-    private class StarData {
+    public class StarData {
         public Star Star { get; set; } = null!;
         public float CurrentAngle { get; set; } // 当前实际角度
         public float TargetAngle { get; set; } // 目标角度（均匀分布）
@@ -50,6 +51,8 @@ public partial class StarRingController : Node2D {
         public float SpawnProgress { get; set; } // 生成动画进度
         public bool IsRemoving { get; set; } // 是否正在移除
         public float RemoveProgress { get; set; } // 移除动画进度
+        public float RadiusMultiplier { get; set; } = 1f;  //半径修正
+        public Tween? RadiusTween { get; set; }  // 半径补间动画
     }
 
     public override void _Process(double delta) {
@@ -110,7 +113,6 @@ public partial class StarRingController : Node2D {
             // 需要减少星星
             RemoveStars(activeCount - targetCount);
         }
-
         // 重新计算所有星星的目标角度
         RecalculateTargetAngles();
     }
@@ -147,7 +149,8 @@ public partial class StarRingController : Node2D {
                 CurrentAngle = baseSpawnAngle,
                 TargetAngle = baseSpawnAngle, // 临时设置，稍后会被重新计算
                 IsSpawning = true,
-                SpawnProgress = 0f
+                SpawnProgress = 0f,
+                RadiusMultiplier = 1f,
             };
 
             _orbitStars.Add(starData);
@@ -414,7 +417,7 @@ public partial class StarRingController : Node2D {
         }
 
         // 计算位置
-        star.Position = CalculateOrbitPosition(renderAngle, 1.0f);
+        star.Position = CalculateOrbitPosition(renderAngle, starData.RadiusMultiplier);
 
         // 更新ZIndex
         star.ZIndex = sinAngle > 0 ? STAR_FRONT_ZINDEX : STAR_BACK_ZINDEX;

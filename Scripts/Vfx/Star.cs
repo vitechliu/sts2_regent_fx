@@ -202,6 +202,10 @@ public partial class Star : Node2D {
 		_actualPulseSpeed = speed;
 	}
 
+
+	public void ResetColor() {
+		ChangeColorImmediate(new Color(0f, 2.855f, 17.829f));
+	}
 	/// <summary>
 	/// 渐变色调到目标颜色
 	/// </summary>

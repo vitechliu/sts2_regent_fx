@@ -13,6 +13,7 @@
 {bfa231d3-c7a0-4395-bb21-4afdf4149043} bus:/master/sfx_ducking_big
 {b7551eba-e5b9-416c-b25a-32069ef3869d} event:/RegentFx/sfx/Banks0_99
 {5d72846b-5b7c-472e-ba44-157bfe4de7b9} event:/RegentFx/sfx/Banks2_670_Sword
+{bb479a4d-7a07-42b4-b252-622baaade019} event:/RegentFx/sfx/Resonance
 {96f33783-efbc-44b5-80c0-f4a060ec07bb} event:/RegentFx/sfx/alignment
 {d1d6b319-8f50-465c-a475-bb7bcb920f55} event:/RegentFx/sfx/big_bang_1
 {a19ec8cd-9f25-428c-a0a9-34f42819d27c} event:/RegentFx/sfx/black_hole_1
@@ -39,6 +40,7 @@
 {35ab8b60-ed2d-4cf2-826d-6fa42d4359a2} event:/RegentFx/sfx/seven_stars_hold
 {12aa7431-be34-4631-98c4-d46da2c155f2} event:/RegentFx/sfx/wiw1
 {1c5232de-e271-4587-afa9-b5fcfc597228} event:/RegentFx/sfx/wiw2
+{d39a2ab9-44c3-48f1-88ae-298ca3def939} parameter:/Blackhole_Intensity
 {06cefc2c-7055-44b5-af2e-7652cd2414d6} parameter:/Progress
 {a36ba432-c5b1-44ff-b5e4-12f654cfa067} parameter:/sfx_duck
 {9fd4e212-6c2e-4b45-8a4b-942284c71171} parameter:/sfx_duck_big
