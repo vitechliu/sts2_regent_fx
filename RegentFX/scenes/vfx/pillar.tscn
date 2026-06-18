@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dh4yl2veey1sc" path="res://RegentFX/images/pillar/spin_base/fn0005.png" id="6_rjd7x"]
 [ext_resource type="Texture2D" uid="uid://cyi8a5qrdnw8d" path="res://RegentFX/images/pillar/pillar_base.png" id="7_uyq8h"]
 [ext_resource type="Texture2D" uid="uid://cvtsq4ygp862f" path="res://RegentFX/images/pillar/pillar_active.png" id="8_rb7x4"]
-[ext_resource type="Script" path="res://Scripts/Vfx/Pillar.cs" id="9_pillar"]
+[ext_resource type="Script" uid="uid://uhg6iosbf03l" path="res://Scripts/Vfx/Pillar.cs" id="9_pillar"]
 [ext_resource type="Shader" uid="uid://c00apubwmq6od" path="res://RegentFX/shaders/base.gdshader" id="15_6noyt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rjd7x"]
