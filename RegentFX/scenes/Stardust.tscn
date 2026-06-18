@@ -2,9 +2,55 @@
 
 [ext_resource type="Texture2D" uid="uid://4tws4kuiyega" path="res://RegentFX/images/star_particles.png" id="1_x0krs"]
 [ext_resource type="Texture2D" uid="uid://c0kcm8ey8cmme" path="res://RegentFX/images/glow.png" id="3_n4okd"]
-[ext_resource type="Shader" uid="uid://dgjfjoxat2tq0" path="res://RegentFX/shaders/vfx/star/star_tint_shader.gdshader" id="3_x0krs"]
+[ext_resource type="Shader" uid="uid://c5d20bfpfdx5f" path="res://RegentFX/shaders/advanced.gdshader" id="4_qr0a0"]
 [ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="5_mph7f"]
 [ext_resource type="Script" uid="uid://c33sesu5be58g" path="res://Scripts/Vfx/StardustVfx.cs" id="6_s7v8a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qr0a0"]
+shader = ExtResource("4_qr0a0")
+shader_parameter/opacity = 1.0
+shader_parameter/enable_glow = true
+shader_parameter/glow_intensity = 1.0
+shader_parameter/glow_radius = 8.0
+shader_parameter/glow_color = Color(4.656814, 1.3421104, 0, 1)
+shader_parameter/glow_threshold = 0.2
+shader_parameter/glow_softness = 1.0
+shader_parameter/bloom_intensity = 0.0
+shader_parameter/bloom_radius = 4.0
+shader_parameter/enable_blur = true
+shader_parameter/blur_radius = 5.3030002518925
+shader_parameter/blur_direction = 0
+shader_parameter/motion_blur_angle = 0.0
+shader_parameter/motion_blur_distance = 0.0
+shader_parameter/enable_sharpen = false
+shader_parameter/sharpen_amount = 1.0
+shader_parameter/sharpen_radius = 1.0
+shader_parameter/enable_distortion = false
+shader_parameter/ripple_intensity = 0.0
+shader_parameter/ripple_frequency = 10.0
+shader_parameter/ripple_speed = 1.0
+shader_parameter/swirl_intensity = 0.12800000608
+shader_parameter/swirl_center = Vector2(0.5, 0.5)
+shader_parameter/lens_distort = 0.0
+shader_parameter/chromatic_aberration = 0.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/saturation = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/contrast = 1.0
+shader_parameter/enable_color_overlay = false
+shader_parameter/overlay_color = Color(1, 0, 0, 0.5)
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/enable_gradient_map = false
+shader_parameter/gradient_color1 = Color(0, 0, 0, 1)
+shader_parameter/gradient_color2 = Color(1, 1, 1, 1)
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/pixelate_size = 0.0
+shader_parameter/invert_colors = false
+shader_parameter/grayscale = false
+shader_parameter/sepia = false
+shader_parameter/threshold_level = 0.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_x0krs"]
 particles_animation = true
@@ -31,6 +77,8 @@ particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 4.01
 spread = 0.0
+angular_velocity_min = 120.79998
+angular_velocity_max = 244.76997
 gravity = Vector3(0, 420, 0)
 radial_accel_min = -59.63
 radial_accel_max = 65.439995
@@ -45,14 +93,19 @@ hue_variation_min = -0.08000002
 hue_variation_max = 0.24999997
 anim_offset_max = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qr0a0"]
-shader = ExtResource("3_x0krs")
-shader_parameter/tint_color = Color(5.241207, 2.6729906, 0, 1)
-shader_parameter/tint_intensity = 0.4
-shader_parameter/tint_mode = 0
-
 [node name="Stardust" type="Node2D"]
 script = ExtResource("6_s7v8a")
+
+[node name="Glow" type="Sprite2D" parent="."]
+modulate = Color(0.92116666, 1, 0.57, 1)
+scale = Vector2(2.22, 2.22)
+texture = ExtResource("3_n4okd")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_qr0a0")
+position = Vector2(2, 1)
+scale = Vector2(1.46, 1.46)
+texture = ExtResource("5_mph7f")
 
 [node name="TrailParticles" type="GPUParticles2D" parent="."]
 material = SubResource("CanvasItemMaterial_x0krs")
@@ -67,14 +120,3 @@ visibility_rect = Rect2(-100, -44.52, 200, 400)
 draw_order = 0
 trail_lifetime = 0.1
 process_material = SubResource("ParticleProcessMaterial_x0krs")
-
-[node name="Glow" type="Sprite2D" parent="."]
-modulate = Color(0.92116666, 1, 0.57, 1)
-scale = Vector2(2.22, 2.22)
-texture = ExtResource("3_n4okd")
-
-[node name="Sprite" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_qr0a0")
-position = Vector2(2, 1)
-scale = Vector2(1.46, 1.46)
-texture = ExtResource("5_mph7f")

@@ -28,6 +28,11 @@ public class Stardust : CardFX {
 
     public override bool UseV2Patch => true;
     public override bool HasOnBeforeDamageTargeted => true;
+    
+    public override void OnStartHolding(Star star, int index) {
+        star.ChangeColorTo(new Color(14.551f, 14.551f, 0.0f)); //yellow
+    }
+    
     public override async Task OnBeforeDamage(AttackCommand command, IReadOnlyList<Creature> targets) {
         // Entry.Logger.Info("StarDustDamage");
         Creature? owner = card?.Owner.Creature;
@@ -56,8 +61,8 @@ public class Stardust : CardFX {
 
     async Task OnHit(Vector2 targetPos, Creature target) {
         await VFXUtil.Wait(.35f);
-        // var node = VFXUtil.PlaySimple(VfxScenePath, targetPos);
-        // VFXUtil.ReplayAllParticles(node);
+        var node = VFXUtil.PlaySimple(VfxScenePath, targetPos);
+        VFXUtil.ReplayAllParticles(node);
         VfxCmd.PlayOnCreatureCenter(target, "vfx/vfx_starry_impact");
     }
     

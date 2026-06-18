@@ -112,12 +112,6 @@ public partial class StardustVfx : Node2D {
 		}
 	}
 
-	private void SetTint(Color color, float intensity) {
-		if (_tintMaterial == null) return;
-		_tintMaterial.SetShaderParameter("tint_color", color);
-		_tintMaterial.SetShaderParameter("tint_intensity", intensity);
-	}
-
 	/// <summary>
 	/// 静态便捷方法：加载场景并发射星尘
 	/// </summary>
