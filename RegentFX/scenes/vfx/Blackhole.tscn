@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://cqtyy2hmsseom"]
 
-[ext_resource type="Script" path="res://Scripts/Vfx/Blackhole.cs" id="1_blackhole"]
+[ext_resource type="Script" uid="uid://ditl8klocxo7n" path="res://Scripts/Vfx/Blackhole.cs" id="1_blackhole"]
 [ext_resource type="Texture2D" uid="uid://b6xx188ywmnur" path="res://RegentFX/images/blackhole_base.png" id="2_base"]
 [ext_resource type="Material" uid="uid://ct6om08k6bqmx" path="res://RegentFX/materials/vfx/blackhole/blackhole_core_material.tres" id="3_core_mat"]
 [ext_resource type="Material" uid="uid://c6n78cy5dgixq" path="res://RegentFX/materials/vfx/blackhole/blackhole_burst_material.tres" id="4_burst_mat"]

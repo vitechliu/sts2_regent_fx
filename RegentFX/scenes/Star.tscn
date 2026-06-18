@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="1_star"]
 [ext_resource type="Texture2D" uid="uid://cxfkirwge8ags" path="res://RegentFX/images/star_trail.png" id="2_5lk64"]
-[ext_resource type="Script" path="res://Scripts/Vfx/Star.cs" id="2_script"]
+[ext_resource type="Script" uid="uid://bdu3c20irouan" path="res://Scripts/Vfx/Star.cs" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://c0kcm8ey8cmme" path="res://RegentFX/images/glow.png" id="3_abjxf"]
 [ext_resource type="Material" uid="uid://kpfb54be7smi" path="res://RegentFX/materials/vfx/star/star_tint.tres" id="3_tint_mat"]
 

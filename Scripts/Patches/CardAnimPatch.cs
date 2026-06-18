@@ -23,6 +23,7 @@ public static class CardAnimPatch {
         if (_isProcessing) return true; 
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
+        AttackVfxContext.CurrentAttackCommand.Value = __instance;
         if (__instance.ModelSource == null) return true;
         try {
             var card = __instance.ModelSource as CardModel;
@@ -44,12 +45,7 @@ public static class CardAnimPatch {
             // if (cardFX.DisableAttackAnim) {
             //     __instance.WithNoAttackerAnim();
             // }
-            if (cardFX.HasOnBeforeDamage) {
-                __instance.BeforeDamage(async delegate {
-                    await cardFX.OnBeforeDamage(__instance);
-                });
-            }
-
+            // 旧版无参 BeforeDamage 通过 DamageTargetPatch 统一处理；这里不再重复注册
             if (cardFX.ChangeHitFx != null) {
                 __instance.WithHitFx(cardFX.ChangeHitFx);
             }
@@ -102,7 +98,7 @@ public static class CardAnimPatch {
     [HarmonyPatch(typeof(NRegentVfx), nameof(NRegentVfx.Attack))]
     static bool PreventRegentAnimPatch() {
         if (AttackVfxContext.ShouldDisableRegentWeaponAttack) {
-            Entry.Logger.Info("DisableAttack2——1");
+            // Entry.Logger.Info("DisableAttack2——1");
             // AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
             return false;
         }

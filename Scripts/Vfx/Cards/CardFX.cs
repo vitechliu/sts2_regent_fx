@@ -3,6 +3,8 @@ using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
 using RitsuFmodLite;
 
+using MegaCrit.Sts2.Core.Entities.Creatures;
+
 namespace RegentFX.Scripts.Vfx.Cards;
 
 /// <summary>
@@ -160,6 +162,10 @@ public abstract class CardFX: FX {
     //BeforeDamage植入
     public virtual bool HasOnBeforeDamage => false;
     public virtual async Task OnBeforeDamage(AttackCommand command) {}
+
+    //带目标的真实BeforeDamage（推荐新用法，可处理随机目标）
+    public virtual bool HasOnBeforeDamageTargeted => false;
+    public virtual async Task OnBeforeDamage(AttackCommand command, IReadOnlyList<Creature> targets) {}
 
     public virtual bool HasAfterPlay => false;
     public virtual void AfterPlay() {}

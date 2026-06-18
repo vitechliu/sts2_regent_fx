@@ -98,6 +98,7 @@ public class Entry {
             Pillar.VfxScenePath,
             Pillar.BurstPath,
             Star.VfxScenePath,
+            StardustVfx.ScenePath,
         };
         var assembly = typeof(Entry).Assembly;
 

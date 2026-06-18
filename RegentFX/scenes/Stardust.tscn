@@ -1,0 +1,80 @@
+[gd_scene load_steps=13 format=3 uid="uid://ckwwh2t52l6je"]
+
+[ext_resource type="Texture2D" uid="uid://4tws4kuiyega" path="res://RegentFX/images/star_particles.png" id="1_x0krs"]
+[ext_resource type="Texture2D" uid="uid://c0kcm8ey8cmme" path="res://RegentFX/images/glow.png" id="3_n4okd"]
+[ext_resource type="Shader" uid="uid://dgjfjoxat2tq0" path="res://RegentFX/shaders/vfx/star/star_tint_shader.gdshader" id="3_x0krs"]
+[ext_resource type="Texture2D" uid="uid://dooa0e0e6s2l1" path="res://RegentFX/images/star.png" id="5_mph7f"]
+[ext_resource type="Script" uid="uid://c33sesu5be58g" path="res://Scripts/Vfx/StardustVfx.cs" id="6_s7v8a"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_x0krs"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_trail_alpha"]
+_data = [Vector2(0, 0.9640467), 0.0, -0.51217866, 0, 0, Vector2(0.9844828, 0.0027657747), -2.0121274, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_alpha"]
+curve = SubResource("Curve_trail_alpha")
+
+[sub_resource type="Curve" id="Curve_trail_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.3520139), -1.614584, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_trail_scale"]
+curve = SubResource("Curve_trail_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x0krs"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 4.01
+spread = 0.0
+gravity = Vector3(0, 420, 0)
+radial_accel_min = -59.63
+radial_accel_max = 65.439995
+tangential_accel_min = -100.0
+tangential_accel_max = 99.99999
+scale_min = 0.79999995
+scale_max = 1.4
+scale_curve = SubResource("CurveTexture_trail_scale")
+color = Color(1, 0.8075, 0.66999996, 1)
+alpha_curve = SubResource("CurveTexture_trail_alpha")
+hue_variation_min = -0.08000002
+hue_variation_max = 0.24999997
+anim_offset_max = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qr0a0"]
+shader = ExtResource("3_x0krs")
+shader_parameter/tint_color = Color(5.241207, 2.6729906, 0, 1)
+shader_parameter/tint_intensity = 0.4
+shader_parameter/tint_mode = 0
+
+[node name="Stardust" type="Node2D"]
+script = ExtResource("6_s7v8a")
+
+[node name="TrailParticles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_x0krs")
+amount = 30
+texture = ExtResource("1_x0krs")
+lifetime = 1.5
+speed_scale = 1.4
+explosiveness = 0.2
+randomness = 1.0
+fixed_fps = 0
+visibility_rect = Rect2(-100, -44.52, 200, 400)
+draw_order = 0
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_x0krs")
+
+[node name="Glow" type="Sprite2D" parent="."]
+modulate = Color(0.92116666, 1, 0.57, 1)
+scale = Vector2(2.22, 2.22)
+texture = ExtResource("3_n4okd")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_qr0a0")
+position = Vector2(2, 1)
+scale = Vector2(1.46, 1.46)
+texture = ExtResource("5_mph7f")

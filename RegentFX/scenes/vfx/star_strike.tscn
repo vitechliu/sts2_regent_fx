@@ -1,0 +1,107 @@
+[gd_scene load_steps=18 format=3 uid="uid://brjdlp8j02mtp"]
+
+[ext_resource type="Texture2D" uid="uid://4tws4kuiyega" path="res://RegentFX/images/star_particles.png" id="1_7sf55"]
+[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://RegentFX/scenes/vfx/common/vfx_common_glow.tscn" id="2_e1bcj"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7sf55"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_7sf55"]
+offsets = PackedFloat32Array(0, 0.21863118, 0.49239543, 0.78326994, 0.99809885)
+colors = PackedColorArray(0.984, 1, 0.52, 1, 0.93, 0.924885, 0.9021, 1, 1.9087222, 1.7007442, 2.0380058, 1, 0.9, 0.9, 0.9, 1, 1.0214663, 0.8552004, 0.77815056, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e1bcj"]
+gradient = SubResource("Gradient_7sf55")
+
+[sub_resource type="Gradient" id="Gradient_e1bcj"]
+offsets = PackedFloat32Array(0, 0.7509506, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.8666667, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k72nm"]
+gradient = SubResource("Gradient_e1bcj")
+
+[sub_resource type="Curve" id="Curve_e1bcj"]
+_limits = [-2.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1.8713247), 0.0, -4.727802, 0, 0, Vector2(0.9810346, 0.25909758), -0.48778838, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_k72nm"]
+curve = SubResource("Curve_e1bcj")
+
+[sub_resource type="Curve" id="Curve_7sf55"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.25633198), -0.7031024, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_e1bcj"]
+curve = SubResource("Curve_7sf55")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_317g1"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 9.42
+angle_min = 1.0728835e-05
+angle_max = 361.1
+spread = 180.0
+initial_velocity_min = 51.98
+initial_velocity_max = 107.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = 77.05998
+orbit_velocity_min = -0.10999991
+orbit_velocity_max = 0.1350001
+orbit_velocity_curve = SubResource("CurveTexture_k72nm")
+gravity = Vector3(0, 2, 0)
+linear_accel_min = -81.340004
+linear_accel_max = -42.2
+radial_accel_min = -7.950002
+radial_accel_max = -4.590002
+tangential_accel_min = -58.11
+tangential_accel_max = 47.399998
+damping_min = 11.927001
+damping_max = 22.477001
+attractor_interaction_enabled = false
+scale_min = 0.29999998
+scale_max = 0.7
+scale_curve = SubResource("CurveTexture_e1bcj")
+color_ramp = SubResource("GradientTexture1D_k72nm")
+color_initial_ramp = SubResource("GradientTexture1D_e1bcj")
+anim_offset_max = 1.0
+
+[sub_resource type="Curve" id="Curve_l02co"]
+_data = [Vector2(0, 0.353316), 0.0, -0.753348, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ike7h"]
+curve = SubResource("Curve_l02co")
+
+[sub_resource type="Curve" id="Curve_2gmb7"]
+_data = [Vector2(0, 0), 0.0, 11.5422, 0, 0, Vector2(0.203175, 0.842474), 0.0, 0.210613, 0, 0, Vector2(1, 1), 0.197691, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_21kn2"]
+curve = SubResource("Curve_2gmb7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e1bcj"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_21kn2")
+alpha_curve = SubResource("CurveTexture_ike7h")
+
+[node name="StarStrike" type="Node2D"]
+
+[node name="Stars" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_7sf55")
+emitting = false
+amount = 17
+texture = ExtResource("1_7sf55")
+lifetime = 1.6500000000000001
+one_shot = true
+explosiveness = 0.99
+process_material = SubResource("ParticleProcessMaterial_317g1")
+
+[node name="vfx_common_glow" parent="." instance=ExtResource("2_e1bcj")]
+process_material = SubResource("ParticleProcessMaterial_e1bcj")
