@@ -49,8 +49,10 @@ public class Entry {
             harmony.PatchAll();
             // 使得tscn可以加载自定义脚本
             ScriptManagerBridge.LookupScriptsInAssembly(typeof(Entry).Assembly);
-            LoadScenes();
             RitsuLibModConfig.SetDefaults();
+            
+            if (Setting.PreloadEffects) LoadScenes();
+            else Log.Warn("[RegentFX]Skipping effect scene preloading, may cause lagging.");
             Log.Info($"RegentFX Omnistar {VERSION} Load Complete![万象辉星]加载成功!");
         }
         catch (System.Exception ex) {

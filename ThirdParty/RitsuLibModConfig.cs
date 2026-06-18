@@ -42,6 +42,7 @@ public static class RitsuLibModConfig {
     private static readonly Dictionary<string, object> Defaults = new(){
         ["ExposureThreshold"] = 1,
         ["DevTestStartMode"] = false,
+        ["PreloadEffects"] = true,
     };
 
     public static void SetDefaults() {
@@ -82,6 +83,14 @@ public static class RitsuLibModConfig {
         ExposureEntry.max = 2;
         ExposureEntry.step = 0.05;
         MainSection.entries.Add(ExposureEntry);
+        
+        var PreloadEntry = new ToggleEntry();
+        PreloadEntry.id = "PreloadEffects";
+        PreloadEntry.key = PreloadEntry.id;
+        PreloadEntry.description = SimpleLocUtil.Simple("需重启游戏生效，能解决第一次打出特效卡顿问题，但是内存占用会提升。(Mac系统如果卡顿建议关闭此选项)", "Require game restart. Can resolve the lag issue when playing effects for the first time, but will increase memory usage");
+        PreloadEntry.label = SimpleLocUtil.Simple("特效预加载", "Preload Cache");
+        
+        MainSection.entries.Add(PreloadEntry);
         
         var CardSection = new RLMCSection();
         CardSection.id = "cards";

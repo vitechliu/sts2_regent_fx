@@ -1,4 +1,5 @@
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -12,10 +13,19 @@ namespace RegentFX.Scripts.Patches;
 /// </summary>
 [HarmonyPatch]
 public static class PowerTimingPatch {
+
+    static PowerFX? checkPower(PowerModel powerModel, Creature? target = null) {
+        var p = PowerFX.FromPower(powerModel);
+        if (p == null) return null;
+        var owner = target ?? powerModel.Owner;
+        if (owner == null) return null;
+        return !LocalContext.IsMe(owner.Player) ? null : p;
+    }
+    
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.BeforeApplied))]
     public static void BeforeBeforeAppliedPatch(PowerModel __instance, Creature target, Decimal amount) {
-        PowerFX? p = PowerFX.FromPower(__instance);
+        PowerFX? p = checkPower(__instance, target);
         if (p == null) return;
         p.BeforeBeforeApplied(target, amount);
     }
@@ -23,7 +33,7 @@ public static class PowerTimingPatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.AfterRemoved))]
     public static void AfterAfterRemovedPatch(PowerModel __instance, Creature oldOwner) {
-        PowerFX? p = PowerFX.FromPower(__instance);
+        PowerFX? p = checkPower(__instance, oldOwner);
         if (p == null) return;
         p.AfterAfterRemoved(oldOwner);
     }
@@ -31,7 +41,7 @@ public static class PowerTimingPatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PowerModel), nameof(PowerModel.SetAmount))]
     public static void AfterSetAmountPatch(PowerModel __instance, int amount) {
-        PowerFX? p = PowerFX.FromPower(__instance);
+        PowerFX? p = checkPower(__instance);
         if (p == null) return;
         p.AfterSetAmount(amount);
     }
