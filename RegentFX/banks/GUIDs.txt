@@ -38,6 +38,8 @@
 {31f889d3-e297-41be-993b-37ba86a59d6a} event:/RegentFx/sfx/post_magic
 {85035ae7-0a04-4aa6-a057-600ce8276db6} event:/RegentFx/sfx/pre_electric
 {35ab8b60-ed2d-4cf2-826d-6fa42d4359a2} event:/RegentFx/sfx/seven_stars_hold
+{a98ea09a-34fc-4453-bf62-710a72fe1148} event:/RegentFx/sfx/spectrumshift
+{bc267ac0-0539-4f40-ad48-6813eea291b6} event:/RegentFx/sfx/stardust
 {12aa7431-be34-4631-98c4-d46da2c155f2} event:/RegentFx/sfx/wiw1
 {1c5232de-e271-4587-afa9-b5fcfc597228} event:/RegentFx/sfx/wiw2
 {d39a2ab9-44c3-48f1-88ae-298ca3def939} parameter:/Blackhole_Intensity

@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
+using RitsuFmodLite;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -23,7 +24,7 @@ public class Stardust : CardFX {
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + VFXUtil.RandVec2(40f);
     }
-    public override bool ShouldDisableRegentWeaponSFX => false;
+    public override bool ShouldDisableRegentWeaponSFX => true;
     public override bool RemoveHitFx => true;
 
     public override bool UseV2Patch => true;
@@ -51,6 +52,7 @@ public class Stardust : CardFX {
         }
         starPos += VFXUtil.RandVec2(200f);
         if (TestMode.IsOn) return;
+        FmodLite.Play("event:/RegentFx/sfx/stardust");
         NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
         if (targetNode == null) return;
         Vector2 targetPos = targetNode.VfxSpawnPosition;

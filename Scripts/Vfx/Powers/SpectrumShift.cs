@@ -28,9 +28,6 @@ public class SpectrumShift : PowerFX {
 
     async Task PlayAnim(Vector2 pos) {
         VFXUtil.PlaySimple(VfxScenePath,pos, 3f);
-        //todo 音效
-        FmodLite.Play("event:/RegentFx/sfx/genesis_1");
-        await VFXUtil.Wait(0.5f);
-        // FmodLite.Play("event:/RegentFx/sfx/genesis_2");
+        FmodLite.Play("event:/RegentFx/sfx/spectrumshift");
     }
 }
