@@ -10,7 +10,7 @@ using RegentFX.Scripts.Vfx;
 using RegentFX.Scripts.Vfx.Cards;
 using RegentFX.Scripts.Vfx.Powers;
 using RegentFX.ThirdParty;
-using RitsuFmodLite;
+using RegentFX.ThirdParty.Audio;
 
 namespace RegentFX.Scripts;
 
@@ -36,7 +36,7 @@ public class Entry {
     /// </summary>
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
-    public const string VERSION = "0.4.0";
+    public const string VERSION = "0.4.1";
     
     // 初始化函数
     public static void Init() {

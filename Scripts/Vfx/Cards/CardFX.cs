@@ -1,7 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Models;
-using RitsuFmodLite;
+using RegentFX.ThirdParty.Audio;
 
 using MegaCrit.Sts2.Core.Entities.Creatures;
 

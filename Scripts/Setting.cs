@@ -8,6 +8,8 @@ public static class Setting {
 	public static bool DevTestStartMode => RitsuLibModConfig.GetRitsuLibSettingBool("DevTestStartMode");
 	
 	public static bool PreloadEffects => RitsuLibModConfig.GetRitsuLibSettingBool("PreloadEffects");
+	
+	public static bool DisableModSounds => RitsuLibModConfig.GetRitsuLibSettingBool("DisableModSounds");
 
 	public static bool ToggleEnabled(string key) {
 		var raw = RitsuLibModConfig.GetRitsuLibSettingBool(key);

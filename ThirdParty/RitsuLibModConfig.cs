@@ -43,6 +43,7 @@ public static class RitsuLibModConfig {
         ["ExposureThreshold"] = 1,
         ["DevTestStartMode"] = false,
         ["PreloadEffects"] = true,
+        ["DisableModSounds"] = false,
     };
 
     public static void SetDefaults() {
@@ -91,6 +92,14 @@ public static class RitsuLibModConfig {
         PreloadEntry.label = SimpleLocUtil.Simple("特效预加载", "Preload Cache");
         
         MainSection.entries.Add(PreloadEntry);
+        
+        var SoundEntry = new ToggleEntry();
+        SoundEntry.id = "DisableModSounds";
+        SoundEntry.key = PreloadEntry.id;
+        SoundEntry.description = SimpleLocUtil.Simple("禁用后会恢复至原版游戏默认攻击音效", "Fallback to original attack sound effects.");
+        SoundEntry.label = SimpleLocUtil.Simple("禁用mod音效", "Disable Mod Sounds");
+        
+        MainSection.entries.Add(SoundEntry);
         
         var CardSection = new RLMCSection();
         CardSection.id = "cards";

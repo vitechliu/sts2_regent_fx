@@ -111,7 +111,7 @@ public static class CardAnimPatch {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(SfxCmd), nameof(SfxCmd.Play), [typeof(string), typeof(float)])]
     static bool PreventRegentSfx(string sfx, float volume) {
-        if (AttackVfxContext.ShouldDisableRegentWeaponSFX) {
+        if (AttackVfxContext.ShouldDisableRegentWeaponSFX && !Setting.DisableModSounds) {
             if (sfx == CardFX.DEFAULT_REGENT_ATTACK_SFX)
                 return false;
         }

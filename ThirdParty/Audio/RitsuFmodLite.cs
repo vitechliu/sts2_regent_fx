@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Godot;
+using RegentFX.Scripts;
 using GdFileAccess = Godot.FileAccess;
 
-namespace RitsuFmodLite;
+namespace RegentFX.ThirdParty.Audio;
 
 /// <summary>
 /// Minimal standalone FMOD Studio toolchain extracted from RitsuLib.
@@ -172,18 +173,20 @@ public static class FmodLite
     /// <summary>
     /// Fire-and-forget Studio event. Path-only events and GUID-mapped events go through the same instance path.
     /// </summary>
-    public static bool Play(string eventPath, float volume = 1f)
-    {
+    public static bool Play(string eventPath, float volume = 1f) {
+        if (Setting.DisableModSounds) return false;
         return Play(eventPath, EmptyParameters, volume);
     }
 
     public static bool Play(string eventPath, string parameterName, float parameterValue, float volume = 1f)
     {
+        if (Setting.DisableModSounds) return false;
         return Play(eventPath, new Dictionary<string, float> { [parameterName] = parameterValue }, volume);
     }
 
     public static bool Play(string eventPath, IReadOnlyDictionary<string, float> parameters, float volume = 1f)
     {
+        if (Setting.DisableModSounds) return false;
         var instance = TryCreateRaw(eventPath);
         if (instance is null)
             return false;
