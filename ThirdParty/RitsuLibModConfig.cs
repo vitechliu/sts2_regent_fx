@@ -95,7 +95,7 @@ public static class RitsuLibModConfig {
         
         var SoundEntry = new ToggleEntry();
         SoundEntry.id = "DisableModSounds";
-        SoundEntry.key = PreloadEntry.id;
+        SoundEntry.key = SoundEntry.id;
         SoundEntry.description = SimpleLocUtil.Simple("禁用后会恢复至原版游戏默认攻击音效", "Fallback to original attack sound effects.");
         SoundEntry.label = SimpleLocUtil.Simple("禁用mod音效", "Disable Mod Sounds");
         
