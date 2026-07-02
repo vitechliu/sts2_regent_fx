@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
@@ -15,11 +17,24 @@ namespace RegentFX.Scripts.Patches;
 [HarmonyPatch]
 public static class DamageTargetPatch {
     private static int _depth;
+    
+    
+    
 
-    [HarmonyPatch(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
-        typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
-        typeof(ValueProp), typeof(Creature), typeof(CardModel)
-    })]
+    public static MethodBase TargetMethod() {
+        
+        var m108 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
+            typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
+            typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay)
+        });
+        if (m108 != null) return m108;
+        
+        return AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
+            typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
+            typeof(ValueProp), typeof(Creature), typeof(CardModel)
+        });
+    }
+
     [HarmonyPrefix]
     public static bool DamagePrefix(
         PlayerChoiceContext choiceContext,
