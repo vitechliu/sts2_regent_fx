@@ -17,22 +17,19 @@ namespace RegentFX.Scripts.Patches;
 [HarmonyPatch]
 public static class DamageTargetPatch {
     private static int _depth;
-    
-    
-    
+    private static readonly MethodInfo? Damage108 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
+        typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
+        typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay)
+    });
+    private static readonly MethodInfo? Damage107 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
+        typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
+        typeof(ValueProp), typeof(Creature), typeof(CardModel)
+    });
 
     public static MethodBase TargetMethod() {
-        
-        var m108 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
-            typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
-            typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay)
-        });
-        if (m108 != null) return m108;
-        
-        return AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
-            typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
-            typeof(ValueProp), typeof(Creature), typeof(CardModel)
-        });
+        return Damage108 ?? Damage107 ?? throw new MissingMethodException(
+            typeof(CreatureCmd).FullName,
+            nameof(CreatureCmd.Damage));
     }
 
     [HarmonyPrefix]
@@ -43,6 +40,7 @@ public static class DamageTargetPatch {
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource,
+        object?[] __args,
         ref Task<IEnumerable<DamageResult>> __result) {
 
         if (cardSource == null) return true;
@@ -58,8 +56,9 @@ public static class DamageTargetPatch {
         }
 
         var command = AttackVfxContext.CurrentAttackCommand.Value;
+        CardPlay? cardPlay = __args.Length > 6 ? __args[6] as CardPlay : null;
 
-        __result = RunBeforeAndDamage(cardFX, command, targets, choiceContext, amount, props, dealer, cardSource);
+        __result = RunBeforeAndDamage(cardFX, command, targets, choiceContext, amount, props, dealer, cardSource, cardPlay);
         return false;
     }
 
@@ -71,7 +70,8 @@ public static class DamageTargetPatch {
         decimal amount,
         ValueProp props,
         Creature? dealer,
-        CardModel cardSource) {
+        CardModel cardSource,
+        CardPlay? cardPlay) {
 
         try {
             List<Creature> targetList = targets.ToList();
@@ -83,10 +83,32 @@ public static class DamageTargetPatch {
                 await cardFX.OnBeforeDamage(command);
             }
 
-            return await CreatureCmd.Damage(choiceContext, targetList, amount, props, dealer, cardSource);
+            return await InvokeDamage(choiceContext, targetList, amount, props, dealer, cardSource, cardPlay);
         }
         finally {
             Interlocked.Decrement(ref _depth);
         }
+    }
+
+    private static Task<IEnumerable<DamageResult>> InvokeDamage(
+        PlayerChoiceContext choiceContext,
+        IEnumerable<Creature> targets,
+        decimal amount,
+        ValueProp props,
+        Creature? dealer,
+        CardModel cardSource,
+        CardPlay? cardPlay) {
+
+        MethodInfo method = Damage108 ?? Damage107 ?? throw new MissingMethodException(
+            typeof(CreatureCmd).FullName,
+            nameof(CreatureCmd.Damage));
+
+        object?[] args = method.GetParameters().Length == 7
+            ? new object?[] { choiceContext, targets, amount, props, dealer, cardSource, cardPlay }
+            : new object?[] { choiceContext, targets, amount, props, dealer, cardSource };
+
+        object? result = method.Invoke(null, args);
+        return result as Task<IEnumerable<DamageResult>>
+               ?? throw new InvalidOperationException("CreatureCmd.Damage returned an unexpected result type.");
     }
 }

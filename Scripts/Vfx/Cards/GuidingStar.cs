@@ -1,5 +1,6 @@
 using Godot;
 using HarmonyLib;
+using System.Reflection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Context;
@@ -48,6 +49,14 @@ public class GuidingStar : CardFX {
 
 [HarmonyPatch]
 public static class GuidingStarPatch {
+    private static readonly MethodInfo? FromCard108 = AccessTools.Method(
+        typeof(AttackCommand),
+        nameof(AttackCommand.FromCard),
+        new[] { typeof(CardModel), typeof(CardPlay) });
+    private static readonly MethodInfo? FromCard107 = AccessTools.Method(
+        typeof(AttackCommand),
+        nameof(AttackCommand.FromCard),
+        new[] { typeof(CardModel) });
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(MegaCrit.Sts2.Core.Models.Cards.GuidingStar), "OnPlay")]
@@ -68,11 +77,24 @@ public static class GuidingStarPatch {
         CardPlay cardPlay) {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        await DamageCmd.Attack(card.DynamicVars.Damage.BaseValue)
-            .FromCard(card)
+        await FromCardCompat(DamageCmd.Attack(card.DynamicVars.Damage.BaseValue), card, cardPlay)
             .Targeting(cardPlay.Target)
             .WithNoAttackerAnim()
             .Execute(choiceContext);
         await CardPileCmd.Draw(choiceContext, card.DynamicVars.Cards.BaseValue, card.Owner);
+    }
+
+    private static AttackCommand FromCardCompat(AttackCommand command, CardModel card, CardPlay? cardPlay) {
+        MethodInfo method = FromCard108 ?? FromCard107 ?? throw new MissingMethodException(
+            typeof(AttackCommand).FullName,
+            nameof(AttackCommand.FromCard));
+
+        object?[] args = method.GetParameters().Length == 2
+            ? new object?[] { card, cardPlay }
+            : new object?[] { card };
+
+        object? result = method.Invoke(command, args);
+        return result as AttackCommand
+               ?? throw new InvalidOperationException("AttackCommand.FromCard returned an unexpected result type.");
     }
 }
