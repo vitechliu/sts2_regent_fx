@@ -1,0 +1,188 @@
+[gd_scene load_steps=44 format=3 uid="uid://bn20aklgnditk"]
+
+[ext_resource type="Texture2D" uid="uid://c2i4f11dgmqtl" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0001.png" id="1_6gekx"]
+[ext_resource type="Texture2D" uid="uid://dfervminnlqo5" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0002.png" id="2_0ieo2"]
+[ext_resource type="Texture2D" uid="uid://cpxetirt65215" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0003.png" id="3_a6gju"]
+[ext_resource type="Texture2D" uid="uid://bkex10g1qw5dj" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0004.png" id="4_jnke2"]
+[ext_resource type="Texture2D" uid="uid://35qe7f6dltlm" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0005.png" id="5_ub0i4"]
+[ext_resource type="Texture2D" uid="uid://b4c7rpw08imle" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0006.png" id="6_vg7n6"]
+[ext_resource type="Texture2D" uid="uid://m47kpm0sms6" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0007.png" id="7_5fp36"]
+[ext_resource type="Texture2D" uid="uid://wg34hif8ll2q" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0008.png" id="8_ujqvx"]
+[ext_resource type="Texture2D" uid="uid://bc76tepawb73n" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0009.png" id="9_kyqeb"]
+[ext_resource type="Texture2D" uid="uid://dfbq1ygqp87s5" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0010.png" id="10_2ggin"]
+[ext_resource type="Texture2D" uid="uid://cxkq3salvyjow" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0011.png" id="11_ngbvf"]
+[ext_resource type="Texture2D" uid="uid://djcj07jqf07sf" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0012.png" id="12_pjqtn"]
+[ext_resource type="Texture2D" uid="uid://inbpdhs0g15t" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0013.png" id="13_d6tle"]
+[ext_resource type="Texture2D" uid="uid://b4c4kxulocaoi" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0014.png" id="14_2y5d3"]
+[ext_resource type="Texture2D" uid="uid://c8ejm3mert6vc" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0015.png" id="15_bj06b"]
+[ext_resource type="Texture2D" uid="uid://d3xtuphg65gkt" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0016.png" id="16_qsbu7"]
+[ext_resource type="Texture2D" uid="uid://c6kp8sqhlms57" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0017.png" id="17_yu8tr"]
+[ext_resource type="Texture2D" uid="uid://beuco04ae2j1s" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0018.png" id="18_j6v6u"]
+[ext_resource type="Texture2D" uid="uid://snf3pad3qkhy" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0019.png" id="19_0kaq4"]
+[ext_resource type="Texture2D" uid="uid://ci7826dlme63o" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0020.png" id="20_22dby"]
+[ext_resource type="Texture2D" uid="uid://m3riixqle5p5" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0021.png" id="21_sp4p0"]
+[ext_resource type="Texture2D" uid="uid://dye01ox3qlgq" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0022.png" id="22_wbaqb"]
+[ext_resource type="Texture2D" uid="uid://dtukb4pujewqo" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0023.png" id="23_ephci"]
+[ext_resource type="Texture2D" uid="uid://7m8xmt7rugos" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0024.png" id="24_d8mad"]
+[ext_resource type="Texture2D" uid="uid://qwq0xftq5p5t" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0025.png" id="25_2xw5i"]
+[ext_resource type="Texture2D" uid="uid://c5nah5jojffxp" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0026.png" id="26_pfqsx"]
+[ext_resource type="Texture2D" uid="uid://c1oguocg63538" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0027.png" id="27_lqyhu"]
+[ext_resource type="Texture2D" uid="uid://c6ys4kpuug7rb" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0028.png" id="28_hibbs"]
+[ext_resource type="Texture2D" uid="uid://dxo5hv28k07uf" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0029.png" id="29_ck6xp"]
+[ext_resource type="Texture2D" uid="uid://b6e872r8syht5" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0030.png" id="30_6y7ew"]
+[ext_resource type="Texture2D" uid="uid://dgoytnlqqptbw" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0031.png" id="31_k62ki"]
+[ext_resource type="Texture2D" uid="uid://dex71c74v5o4" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0032.png" id="32_cknmt"]
+[ext_resource type="Texture2D" uid="uid://dor4pidx7eew2" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0033.png" id="33_362g5"]
+[ext_resource type="Texture2D" uid="uid://dpmdc5cxkgc7p" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0034.png" id="34_2650k"]
+[ext_resource type="Texture2D" uid="uid://cv0al5r1xoxua" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0035.png" id="35_jbeha"]
+[ext_resource type="Texture2D" uid="uid://du1k6fsjaosdn" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0036.png" id="36_uqasw"]
+[ext_resource type="Texture2D" uid="uid://dm6wtaii3sshq" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0037.png" id="37_0detq"]
+[ext_resource type="Texture2D" uid="uid://buye835cuy02b" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0038.png" id="38_nuel0"]
+[ext_resource type="Texture2D" uid="uid://fn8get6w3xv4" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0039.png" id="39_7imsw"]
+[ext_resource type="Texture2D" uid="uid://cpnpkp47uhi0u" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0040.png" id="40_qkyir"]
+[ext_resource type="Texture2D" uid="uid://2yad7b8k7ogk" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0041.png" id="41_pl0hv"]
+[ext_resource type="Texture2D" uid="uid://b32jp6it27qfe" path="res://RegentFX/frames/solar_strike/WXHX_solarStrike_sheet_0042.png" id="42_k40v4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g6ioe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_6gekx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0ieo2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a6gju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jnke2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ub0i4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vg7n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_5fp36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ujqvx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_kyqeb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2ggin")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ngbvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_pjqtn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_d6tle")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_2y5d3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_bj06b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_qsbu7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_yu8tr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_j6v6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_0kaq4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_22dby")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_sp4p0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_wbaqb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_ephci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_d8mad")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_2xw5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_pfqsx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_lqyhu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_hibbs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_ck6xp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_6y7ew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_k62ki")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_cknmt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_362g5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_2650k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_jbeha")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_uqasw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_0detq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_nuel0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_7imsw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_qkyir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_pl0hv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_k40v4")
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="SolarStrike" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-300, -19)
+sprite_frames = SubResource("SpriteFrames_g6ioe")
+autoplay = "default"
+
+[node name="StartPos" type="Node2D" parent="."]
+position = Vector2(-588, -23)
