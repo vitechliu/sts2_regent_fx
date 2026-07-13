@@ -1,6 +1,6 @@
 {5d95f0d5-57ba-451e-8d05-a41c9bc3813e} bank:/Master
 {c588d001-26c1-095c-0b4c-2ee26a3087a6} bank:/Master.strings
-{16e8b89c-a2ee-49fd-bd4b-17c3db46c654} bank:/RegentFx
+{16e8b89c-a2ee-49fd-bd4b-17c3db46c654} bank:/RegentFX
 {0684fe4d-66d7-41be-a5f0-466da530675d} bus:/
 {ca1c5ac8-b064-4ed2-9c80-2757ff201df2} bus:/Reverb
 {a080420e-7210-41ab-936a-d9a56e426f39} bus:/master
@@ -13,7 +13,9 @@
 {bfa231d3-c7a0-4395-bb21-4afdf4149043} bus:/master/sfx_ducking_big
 {b7551eba-e5b9-416c-b25a-32069ef3869d} event:/RegentFx/sfx/Banks0_99
 {5d72846b-5b7c-472e-ba44-157bfe4de7b9} event:/RegentFx/sfx/Banks2_670_Sword
+{48ada2fd-e816-4ad2-b65b-c7d5b2dd567b} event:/RegentFx/sfx/Comet
 {bb479a4d-7a07-42b4-b252-622baaade019} event:/RegentFx/sfx/Resonance
+{14338129-6229-419e-9a48-dc957f6ff975} event:/RegentFx/sfx/Solar_Strike
 {96f33783-efbc-44b5-80c0-f4a060ec07bb} event:/RegentFx/sfx/alignment
 {d1d6b319-8f50-465c-a475-bb7bcb920f55} event:/RegentFx/sfx/big_bang_1
 {a19ec8cd-9f25-428c-a0a9-34f42819d27c} event:/RegentFx/sfx/black_hole_1
@@ -38,6 +40,9 @@
 {31f889d3-e297-41be-993b-37ba86a59d6a} event:/RegentFx/sfx/post_magic
 {85035ae7-0a04-4aa6-a057-600ce8276db6} event:/RegentFx/sfx/pre_electric
 {35ab8b60-ed2d-4cf2-826d-6fa42d4359a2} event:/RegentFx/sfx/seven_stars_hold
+{310d526e-ceaa-445a-ae71-f803b244cac6} event:/RegentFx/sfx/shining_strike
+{a98ea09a-34fc-4453-bf62-710a72fe1148} event:/RegentFx/sfx/spectrumshift
+{bc267ac0-0539-4f40-ad48-6813eea291b6} event:/RegentFx/sfx/stardust
 {12aa7431-be34-4631-98c4-d46da2c155f2} event:/RegentFx/sfx/wiw1
 {1c5232de-e271-4587-afa9-b5fcfc597228} event:/RegentFx/sfx/wiw2
 {d39a2ab9-44c3-48f1-88ae-298ca3def939} parameter:/Blackhole_Intensity

@@ -62,3 +62,9 @@ regent-fx.code-workspace
 AGENTS.md
 opencode.json
 env.props
+
+# FMOD project ignores
+Fmod/Build/
+Fmod/.user/
+Fmod/.unsaved/
+Fmod/Assets/peaks/

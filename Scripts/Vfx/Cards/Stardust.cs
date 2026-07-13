@@ -19,6 +19,7 @@ public class Stardust : CardFX {
     public override HoldingModes HoldingMode => HoldingModes.BorrowAll;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/star_strike.tscn";
+    public override string? HitSfxPath => "event:/RegentFx/sfx/stardust"; 
 
     public override Vector2 CalculateTargetPosition(Vector2 basePosition, int index, int totalCount) {
         return basePosition + TargetOffset + VFXUtil.RandVec2(40f);

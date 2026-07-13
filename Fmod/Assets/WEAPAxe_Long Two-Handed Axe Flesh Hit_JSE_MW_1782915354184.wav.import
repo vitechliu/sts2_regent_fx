@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bb71ij7uc2o4w"
+path="res://.godot/imported/WEAPAxe_Long Two-Handed Axe Flesh Hit_JSE_MW_1782915354184.wav-14f97ee3ecbaa17fe542bd5457ffaca7.sample"
+
+[deps]
+
+source_file="res://Fmod/Assets/WEAPAxe_Long Two-Handed Axe Flesh Hit_JSE_MW_1782915354184.wav"
+dest_files=["res://.godot/imported/WEAPAxe_Long Two-Handed Axe Flesh Hit_JSE_MW_1782915354184.wav-14f97ee3ecbaa17fe542bd5457ffaca7.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

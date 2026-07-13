@@ -21,7 +21,7 @@ public class ShiningStrike : CardFX {
     public override bool HasOnBeforeDamage => true;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/shining_strike.tscn";
-    public override string? HitSfxPath => "event:/RegentFx/sfx/make_it_so_2"; //todo
+    public override string? HitSfxPath => "event:/RegentFx/sfx/shining_strike";
     public override bool HasExposureEffect => false;
     // public override bool RemoveHitFx => true;
 
@@ -59,7 +59,6 @@ public class ShiningStrike : CardFX {
 
             Entry.StarEffectController?.OnPlayCard();
             FmodLite.Play(HitSfxPath);
-            FmodLite.Play("event:/RegentFx/sfx/post_magic"); //todo
             WorldEnvironmentUtil.FullExposure(1.5f, 0.1f, 0.2f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await VFXUtil.Wait(0.15f);

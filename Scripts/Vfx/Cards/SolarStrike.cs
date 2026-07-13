@@ -22,7 +22,7 @@ public class SolarStrike : CardFX {
     public override bool HasOnBeforeDamage => true;
 
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/solar_strike.tscn";
-    public override string? HitSfxPath => "event:/RegentFx/sfx/make_it_so_2"; //todo
+    public override string? HitSfxPath => "event:/RegentFx/sfx/Solar_Strike";
     public override bool HasExposureEffect => false;
     // public override bool RemoveHitFx => true;
 
@@ -65,7 +65,6 @@ public class SolarStrike : CardFX {
             WorldEnvironmentUtil.FullExposure(1.3f, 0.1f, 0.2f, 0.1f);
             TaskHelper.RunSafely(CardVfxUtil.ClearAfter(vfxNode, 3f));
             await VFXUtil.Wait(0.27f);
-            FmodLite.Play("event:/RegentFx/sfx/post_magic"); //todo
             var onode2 = VFXUtil.PlaySimple("res://scenes/vfx/energy/regent/regent_energy_vfx_front.tscn", targetPos, 3f);
             VFXUtil.ReplayAllParticles(onode2);
             NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
