@@ -48,7 +48,6 @@
     <Content Include="opencode.json" />
     <Content Include="README.md" />
     <Content Include="RegentFX.json" />
-    <Content Include="RegentFx.pck" />
     <Content Include="RegentFX\banks\GUIDs.txt" />
     <Content Include="RegentFX\banks\RegentFx.bank" />
       
