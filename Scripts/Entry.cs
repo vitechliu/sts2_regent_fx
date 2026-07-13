@@ -36,7 +36,7 @@ public class Entry {
     /// </summary>
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
-    public const string VERSION = "0.4.3";
+    public const string VERSION = "0.5.0";
     
     // 初始化函数
     public static void Init() {
