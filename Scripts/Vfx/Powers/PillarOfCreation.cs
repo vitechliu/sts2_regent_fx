@@ -2,6 +2,7 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes;
@@ -52,9 +53,11 @@ public class PillarOfCreation : PowerFX {
 public static class PillarOfCreationPatch {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PillarOfCreationPower), nameof(PillarOfCreationPower.AfterCardGeneratedForCombat))]
-    static void PillarOfCreationActivate(PillarOfCreationPower __instance) {
+    static void PillarOfCreationActivate(PillarOfCreationPower __instance, Player? creator) {
         if (!PowerFX.IsTypeEnabled<PillarOfCreation>()) return;
         if (!LocalContext.IsMe(__instance.Owner)) return;
+        if (creator == null || creator.Creature != __instance.Owner)
+            return;
         if (Pillar.Pillars.TryGetValue(__instance.Owner, out var PillarOfCreation)) {
             // Entry.Logger.Info("PillarOfCreation Activate");
             PillarOfCreation.Activate();
