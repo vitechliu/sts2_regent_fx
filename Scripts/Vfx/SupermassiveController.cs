@@ -23,7 +23,7 @@ public partial class SupermassiveController : Node2D {
     private const float SpawnDuration = 0.25f;
     private const float GrowScaleDuration = 0.2f;
     private const float DismissDuration = 0.2f;
-    private const float FlightDuration = 0.45f;
+    private const float FlightDuration = 0.15f;
     private const float WanderRadius = 55f;
     private const float WanderLerpSpeed = 0.85f;
     private const float WanderRetargetMin = 2f;
@@ -308,6 +308,7 @@ public partial class SupermassiveController : Node2D {
             ZIndex = 2,
             ZAsRelative = true,
         };
+        explosion.Scale *= 3f;
         attackOrb.AddChildSafely(explosion);
         explosion.AnimationFinished += () => FinishAttack(attackOrb, version);
         explosion.Play("explode");
