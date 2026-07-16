@@ -19,7 +19,7 @@ public class DyingStar : CardFX {
     public override string SecondarySfxPath => "event:/RegentFx/sfx/dying_star";
     public override float VfxClearDelay => 3f;
     public override bool HasExposureEffect => true;
-    public override float ExposurePeak => 2.2f;
+    public override float ExposurePeak => 1.7f;
     public override float ExposureInDuration => 0.6f;
     public override float ExposureOutDuration => 0.2f;
 

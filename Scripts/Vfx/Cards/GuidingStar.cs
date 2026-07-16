@@ -75,7 +75,7 @@ public static class GuidingStarPatch {
         MegaCrit.Sts2.Core.Models.Cards.GuidingStar card,
         PlayerChoiceContext choiceContext,
         CardPlay cardPlay) {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
         await FromCardCompat(DamageCmd.Attack(card.DynamicVars.Damage.BaseValue), card, cardPlay)
             .Targeting(cardPlay.Target)
@@ -90,8 +90,8 @@ public static class GuidingStarPatch {
             nameof(AttackCommand.FromCard));
 
         object?[] args = method.GetParameters().Length == 2
-            ? new object?[] { card, cardPlay }
-            : new object?[] { card };
+            ? [card, cardPlay]
+            : [card];
 
         object? result = method.Invoke(command, args);
         return result as AttackCommand

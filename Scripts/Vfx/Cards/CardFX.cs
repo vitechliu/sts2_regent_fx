@@ -128,7 +128,7 @@ public abstract class CardFX: FX {
     /// <summary>
     /// 曝光峰值
     /// </summary>
-    public virtual float ExposurePeak => 3f;
+    public virtual float ExposurePeak => 1.2f;
 
     /// <summary>
     /// 曝光进入时长
