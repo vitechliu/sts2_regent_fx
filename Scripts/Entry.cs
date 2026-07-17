@@ -37,14 +37,18 @@ public class Entry {
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
     public const string VERSION = "0.5.0";
-    
+
+    public static bool FmodLoaded = false;
     // 初始化函数
     public static void Init() {
         try {
             // FMOD 资源注册
             // 注册 Bank 和 GUIDs
-            FmodLite.TryLoadBankAndGuidMappings("res://RegentFX/banks/RegentFx.bank",
+            FmodLoaded = FmodLite.TryLoadBankAndGuidMappings("res://RegentFX/banks/RegentFx.bank",
                 "res://RegentFX/banks/GUIDs.txt");
+            if (!FmodLoaded) {
+                Logger.Warn("Fmod加载失败，可能是移动端，回退到默认音效");
+            }
             var harmony = new Harmony("sts2.vitech.regentFx");
             harmony.PatchAll();
             // 使得tscn可以加载自定义脚本

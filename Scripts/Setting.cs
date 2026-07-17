@@ -9,7 +9,7 @@ public static class Setting {
 	
 	public static bool PreloadEffects => RitsuLibModConfig.GetRitsuLibSettingBool("PreloadEffects");
 	
-	public static bool DisableModSounds => RitsuLibModConfig.GetRitsuLibSettingBool("DisableModSounds");
+	public static bool DisableModSounds => RitsuLibModConfig.GetRitsuLibSettingBool("DisableModSounds") || !Entry.FmodLoaded;
 
 	public static bool ToggleEnabled(string key) {
 		var raw = RitsuLibModConfig.GetRitsuLibSettingBool(key);
