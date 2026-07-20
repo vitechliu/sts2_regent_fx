@@ -95,7 +95,7 @@ public partial class SupermassiveController : Node2D {
         }
 
         TweenOrbToLatestScale(GrowScaleDuration, ensureVisible: true);
-        PlayOneShotAnimation(_orb!, "grow", 1);
+        PlayOneShotAnimation(_orb!, "grow", -1);
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public partial class SupermassiveController : Node2D {
             ball.Play("ball");
             TweenOrbToLatestScale(SpawnDuration, ensureVisible: true);
 
-            if (playGrow) PlayOneShotAnimation(orb, "grow", 1);
+            if (playGrow) PlayOneShotAnimation(orb, "grow", -1);
         }
         catch (Exception ex) {
             Entry.Logger.Warn($"[Supermassive] 创建黑洞失败: {ex.Message}");
