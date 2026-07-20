@@ -14,7 +14,7 @@ public sealed class Supermassive : CardFX {
     public override bool HasOnBeforeDamageTargeted => true;
     public override bool RemoveHitFx => Entry.SupermassiveController?.HasReadyOrb == true;
     public override bool ShouldDisableRegentWeaponAttack => Entry.SupermassiveController?.HasReadyOrb == true;
-    public override bool ShouldDisableRegentWeaponSFX => false;
+    public override bool ShouldDisableRegentWeaponSFX => true;
 
     public override Task OnBeforeDamage(AttackCommand command, IReadOnlyList<Creature> targets) {
         Creature? target = targets.FirstOrDefault();

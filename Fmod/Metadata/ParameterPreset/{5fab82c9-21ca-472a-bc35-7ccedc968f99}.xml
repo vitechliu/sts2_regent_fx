@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{5fab82c9-21ca-472a-bc35-7ccedc968f99}">
+		<property name="name">
+			<value>sizegrow</value>
+		</property>
+		<relationship name="folder">
+			<destination>{fed40e97-f270-42bf-a8de-5d27f53b97ec}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{97a708be-2fed-4632-88d3-daf48c12132e}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{97a708be-2fed-4632-88d3-daf48c12132e}">
+		<property name="minimum">
+			<value>0.20000000000000001</value>
+		</property>
+		<property name="maximum">
+			<value>0.80000000000000004</value>
+		</property>
+		<property name="initialValue">
+			<value>0.20000000000000001</value>
+		</property>
+	</object>
+</objects>
