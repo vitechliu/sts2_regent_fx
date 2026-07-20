@@ -43,9 +43,12 @@
 {310d526e-ceaa-445a-ae71-f803b244cac6} event:/RegentFx/sfx/shining_strike
 {a98ea09a-34fc-4453-bf62-710a72fe1148} event:/RegentFx/sfx/spectrumshift
 {bc267ac0-0539-4f40-ad48-6813eea291b6} event:/RegentFx/sfx/stardust
+{45aa3d85-8a36-4bea-b187-eb45ec69e06f} event:/RegentFx/sfx/supermassive_create
+{b3a8e279-2503-487b-81f8-2cfb0e6e1d17} event:/RegentFx/sfx/supermassive_grow
+{7ec740dd-d9ae-4cd5-a895-f2093a1194fc} event:/RegentFx/sfx/supermassive_launch
 {12aa7431-be34-4631-98c4-d46da2c155f2} event:/RegentFx/sfx/wiw1
 {1c5232de-e271-4587-afa9-b5fcfc597228} event:/RegentFx/sfx/wiw2
-{d39a2ab9-44c3-48f1-88ae-298ca3def939} parameter:/Blackhole_Intensity
 {06cefc2c-7055-44b5-af2e-7652cd2414d6} parameter:/Progress
 {a36ba432-c5b1-44ff-b5e4-12f654cfa067} parameter:/sfx_duck
 {9fd4e212-6c2e-4b45-8a4b-942284c71171} parameter:/sfx_duck_big
+{215f2898-3f63-49d5-b410-48f4ac14239c} parameter:/size

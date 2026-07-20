@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using RegentFX.Scripts.Vfx.Cards;
+using RegentFX.ThirdParty.Audio;
 
 namespace RegentFX.Scripts.Vfx;
 
@@ -127,7 +128,7 @@ public partial class SupermassiveController : Node2D {
         attackOrb.GlobalTransform = globalTransform;
 
         //todo 超质量体攻击音效
-        
+        FmodLite.Play("event:/RegentFx/sfx/supermassive_launch", "size", _latestScale);
         _flightTween?.Kill();
         _flightTween = attackOrb.CreateTween();
         _flightTween.SetTrans(Tween.TransitionType.Quad);
@@ -237,6 +238,7 @@ public partial class SupermassiveController : Node2D {
             }
 
             //todo 超质量体产生音效
+            FmodLite.Play("event:/RegentFx/sfx/supermassive_create", "size", _latestScale);
             _lifecycleVersion++;
             _orb = orb;
             orb.Position = GetAnchorPosition();
@@ -282,7 +284,7 @@ public partial class SupermassiveController : Node2D {
         };
         parent.AddChildSafely(sprite);
         sprite.AnimationFinished += () => QueueFreeIfValid(sprite);
-        //todo 超质量体触发音效
+        FmodLite.Play("event:/RegentFx/sfx/supermassive_grow", "size", _latestScale);
         sprite.Play(animation);
     }
 
