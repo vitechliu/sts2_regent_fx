@@ -1,0 +1,639 @@
+[gd_scene load_steps=155 format=3 uid="uid://c8tuum3vrxcd6"]
+
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0001.png" id="1_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0002.png" id="2_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0003.png" id="3_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0004.png" id="4_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0005.png" id="5_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0006.png" id="6_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0007.png" id="7_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0008.png" id="8_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0009.png" id="9_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0010.png" id="10_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0011.png" id="11_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0012.png" id="12_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0013.png" id="13_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0014.png" id="14_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0015.png" id="15_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0016.png" id="16_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0017.png" id="17_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0018.png" id="18_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0019.png" id="19_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0020.png" id="20_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0021.png" id="21_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0022.png" id="22_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0023.png" id="23_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0024.png" id="24_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0025.png" id="25_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0026.png" id="26_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0027.png" id="27_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0028.png" id="28_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0029.png" id="29_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0030.png" id="30_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0031.png" id="31_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0032.png" id="32_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0033.png" id="33_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0034.png" id="34_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0035.png" id="35_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0036.png" id="36_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0037.png" id="37_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0038.png" id="38_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0039.png" id="39_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0040.png" id="40_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0041.png" id="41_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0042.png" id="42_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0043.png" id="43_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0044.png" id="44_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0045.png" id="45_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0046.png" id="46_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0047.png" id="47_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0048.png" id="48_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0049.png" id="49_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0050.png" id="50_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0051.png" id="51_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0052.png" id="52_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0053.png" id="53_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0054.png" id="54_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0055.png" id="55_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0056.png" id="56_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0057.png" id="57_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0058.png" id="58_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0059.png" id="59_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0060.png" id="60_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0061.png" id="61_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0062.png" id="62_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0063.png" id="63_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0064.png" id="64_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0065.png" id="65_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0066.png" id="66_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0067.png" id="67_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0068.png" id="68_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0069.png" id="69_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0070.png" id="70_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0071.png" id="71_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0072.png" id="72_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0073.png" id="73_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0074.png" id="74_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0075.png" id="75_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0076.png" id="76_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0077.png" id="77_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0078.png" id="78_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0079.png" id="79_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0080.png" id="80_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0081.png" id="81_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0082.png" id="82_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0083.png" id="83_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0084.png" id="84_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0085.png" id="85_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0086.png" id="86_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0087.png" id="87_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0088.png" id="88_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0089.png" id="89_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0090.png" id="90_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0091.png" id="91_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0092.png" id="92_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/ball/WXHX_massive_ball_0093.png" id="93_ball"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0001.png" id="94_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0002.png" id="95_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0003.png" id="96_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0004.png" id="97_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0005.png" id="98_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0006.png" id="99_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0007.png" id="100_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0008.png" id="101_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0009.png" id="102_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0010.png" id="103_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0011.png" id="104_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/grow/WXHX_massive_grow_0012.png" id="105_grow"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0001.png" id="106_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0002.png" id="107_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0003.png" id="108_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0004.png" id="109_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0005.png" id="110_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0006.png" id="111_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0007.png" id="112_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0008.png" id="113_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0009.png" id="114_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0010.png" id="115_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0011.png" id="116_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0012.png" id="117_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0013.png" id="118_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0014.png" id="119_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0015.png" id="120_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0016.png" id="121_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0017.png" id="122_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0018.png" id="123_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0019.png" id="124_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0020.png" id="125_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0021.png" id="126_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0022.png" id="127_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0023.png" id="128_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0024.png" id="129_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0025.png" id="130_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0026.png" id="131_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0027.png" id="132_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0028.png" id="133_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0029.png" id="134_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0030.png" id="135_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0031.png" id="136_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0032.png" id="137_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0033.png" id="138_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0034.png" id="139_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0035.png" id="140_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0036.png" id="141_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0037.png" id="142_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0038.png" id="143_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0039.png" id="144_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0040.png" id="145_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0041.png" id="146_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0042.png" id="147_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0043.png" id="148_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0044.png" id="149_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0045.png" id="150_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0046.png" id="151_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0047.png" id="152_explode"]
+[ext_resource type="Texture2D" path="res://RegentFX/frames/massive_compress/explode/WXHX_massive_explode_0048.png" id="153_explode"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_supermassive"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_ball")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_ball")
+}],
+"loop": true,
+"name": &"ball",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("94_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_grow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_grow")
+}],
+"loop": false,
+"name": &"grow",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("106_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("113_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("129_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("137_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("145_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_explode")
+}, {
+"duration": 1.0,
+"texture": ExtResource("153_explode")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 30.0
+}]
+
+[node name="SuperMassive" type="Node2D"]
+
+[node name="Ball" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_supermassive")
+animation = &"ball"
+autoplay = "ball"

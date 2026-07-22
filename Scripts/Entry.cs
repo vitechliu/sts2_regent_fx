@@ -32,6 +32,11 @@ public class Entry {
     public static StarEffectController? StarEffectController { get; set; }
 
     /// <summary>
+    /// 超质量体黑洞控制器单例（仅本地玩家、仅当前战斗）
+    /// </summary>
+    public static SupermassiveController? SupermassiveController { get; set; }
+
+    /// <summary>
     /// Mod 独立的场景缓存，避免被游戏 PreloadManager 的 UnloadAssets 清理
     /// </summary>
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();

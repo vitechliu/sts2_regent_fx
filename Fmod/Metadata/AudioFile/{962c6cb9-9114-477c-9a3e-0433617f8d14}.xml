@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{962c6cb9-9114-477c-9a3e-0433617f8d14}">
+		<property name="assetPath">
+			<value>supermassive create.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.7727291666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{aa864338-a582-4286-9df3-132b1c18f066}</destination>
+		</relationship>
+	</object>
+</objects>
