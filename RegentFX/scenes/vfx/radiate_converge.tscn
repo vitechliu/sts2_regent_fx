@@ -1,0 +1,297 @@
+[gd_scene load_steps=29 format=3]
+
+[ext_resource type="Texture2D" path="res://RegentFX/images/vfx/radiate_streak.png" id="1_streak"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_streak"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Curve" id="Curve_long_alpha"]
+_data = [Vector2(0, 0), 0.0, 12.5, 0, 0, Vector2(0.08, 1), 12.5, 0.0, 0, 0, Vector2(0.75, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_long_alpha"]
+curve = SubResource("Curve_long_alpha")
+
+[sub_resource type="Curve" id="Curve_long_scale_x"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.68), 0.0, 0.0, 0, 0, Vector2(1, 0.68), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_long_scale_y"]
+_limits = [0.0, 1.5, 0.0, 1.0]
+_data = [Vector2(0, 0.75), 0.0, 2.5, 0, 0, Vector2(0.2, 1.05), 0.0, 0.0, 0, 0, Vector2(0.75, 1.05), 0.0, -4.0, 0, 0, Vector2(1, 0.05), -4.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_long_scale_z"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_long_scale"]
+curve_x = SubResource("Curve_long_scale_x")
+curve_y = SubResource("Curve_long_scale_y")
+curve_z = SubResource("Curve_long_scale_z")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_long"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.15, 0.78, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 760.0
+emission_ring_inner_radius = 700.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+radial_velocity_min = -3620.0
+radial_velocity_max = -3330.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.75
+scale_max = 1.25
+scale_curve = SubResource("CurveXYZTexture_long_scale")
+color = Color(1, 0.988235, 0.956863, 1)
+alpha_curve = SubResource("CurveTexture_long_alpha")
+
+[sub_resource type="Curve" id="Curve_fine_alpha"]
+_data = [Vector2(0, 0), 0.0, 12.5, 0, 0, Vector2(0.08, 1), 12.5, 0.0, 0, 0, Vector2(0.75, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_fine_alpha"]
+curve = SubResource("Curve_fine_alpha")
+
+[sub_resource type="Curve" id="Curve_fine_scale_x"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.45), 0.0, 0.0, 0, 0, Vector2(1, 0.45), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_fine_scale_y"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 1), 0.0, -4.0, 0, 0, Vector2(1, 0.05), -4.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_fine_scale_z"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_fine_scale"]
+curve_x = SubResource("Curve_fine_scale_x")
+curve_y = SubResource("Curve_fine_scale_y")
+curve_z = SubResource("Curve_fine_scale_z")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fine"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.15, 0.78, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 500.0
+emission_ring_inner_radius = 450.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+radial_velocity_min = -2650.0
+radial_velocity_max = -2380.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.35
+scale_max = 0.75
+scale_curve = SubResource("CurveXYZTexture_fine_scale")
+color = Color(1, 0.988235, 0.956863, 0.8)
+alpha_curve = SubResource("CurveTexture_fine_alpha")
+
+[sub_resource type="Gradient" id="Gradient_spectral_initial"]
+offsets = PackedFloat32Array(0, 0.43, 0.57, 1)
+colors = PackedColorArray(1.8, 0.05, 0.02, 0.58, 1.15, 0.08, 0.03, 0.5, 0.02, 0.42, 1.55, 0.5, 0.08, 0.75, 2, 0.58)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_spectral_initial"]
+gradient = SubResource("Gradient_spectral_initial")
+
+[sub_resource type="Curve" id="Curve_spectral_alpha"]
+_data = [Vector2(0, 0), 0.0, 11.0, 0, 0, Vector2(0.06, 0.58), 7.0, 0.0, 0, 0, Vector2(0.58, 0.42), -0.25, -0.25, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_spectral_alpha"]
+curve = SubResource("Curve_spectral_alpha")
+
+[sub_resource type="Curve" id="Curve_spectral_scale_x"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.55), 0.0, 0.0, 0, 0, Vector2(1, 0.55), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_spectral_scale_y"]
+_limits = [0.0, 1.4, 0.0, 1.0]
+_data = [Vector2(0, 1.25), 0.0, -0.5, 0, 0, Vector2(0.62, 0.92), -0.3, -0.3, 0, 0, Vector2(1, 0.04), -4.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_spectral_scale_z"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_spectral_scale"]
+curve_x = SubResource("Curve_spectral_scale_x")
+curve_y = SubResource("Curve_spectral_scale_y")
+curve_z = SubResource("Curve_spectral_scale_z")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spectral"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.15, 0.78, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 720.0
+emission_ring_inner_radius = 610.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+radial_velocity_min = -2950.0
+radial_velocity_max = -2650.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.55
+scale_max = 0.95
+scale_curve = SubResource("CurveXYZTexture_spectral_scale")
+color_initial_ramp = SubResource("GradientTexture_spectral_initial")
+alpha_curve = SubResource("CurveTexture_spectral_alpha")
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FineStreaks:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LongStreaks:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpectralEchoes:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_converge"]
+resource_name = "converge"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FineStreaks:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LongStreaks:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.01),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpectralEchoes:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_radiate"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"converge": SubResource("Animation_converge")
+}
+
+[node name="RadiateConverge" type="Node2D"]
+
+[node name="SpectralEchoes" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_streak")
+emitting = false
+amount = 12
+texture = ExtResource("1_streak")
+lifetime = 0.24
+one_shot = true
+explosiveness = 0.72
+randomness = 0.15
+fixed_fps = 60
+visibility_rect = Rect2(-1000, -650, 2000, 1300)
+local_coords = true
+trail_enabled = true
+trail_lifetime = 0.055
+trail_sections = 3
+trail_section_subdivisions = 2
+process_material = SubResource("ParticleProcessMaterial_spectral")
+
+[node name="FineStreaks" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_streak")
+emitting = false
+amount = 14
+texture = ExtResource("1_streak")
+lifetime = 0.19
+one_shot = true
+explosiveness = 0.7
+randomness = 0.12
+fixed_fps = 60
+visibility_rect = Rect2(-1000, -650, 2000, 1300)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_fine")
+
+[node name="LongStreaks" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_streak")
+emitting = false
+amount = 14
+texture = ExtResource("1_streak")
+lifetime = 0.21
+one_shot = true
+explosiveness = 0.86
+randomness = 0.08
+fixed_fps = 60
+visibility_rect = Rect2(-1000, -650, 2000, 1300)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_long")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_radiate")
+}
+autoplay = "converge"
