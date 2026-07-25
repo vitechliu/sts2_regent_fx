@@ -12,32 +12,15 @@ namespace RegentFX.Scripts.Patches;
 
 [HarmonyPatch]
 public static class CardAnimPatch {
-    private static readonly AsyncLocal<AttackCommand?> _processingCommand = new();
-
-    private sealed record AttackVfxState(
-        CardModel? ModelSource,
-        bool DisableWeaponAttack,
-        bool DisableWeaponSfx,
-        AttackCommand? AttackCommand);
+    private static bool _isProcessing = false;
     
     
     [HarmonyPatch(typeof(AttackCommand), nameof(AttackCommand.Execute))]
     [HarmonyPrefix]
-    public static bool ExecutePatch(
-        AttackCommand __instance,
-        PlayerChoiceContext? choiceContext,
-        ref Task<AttackCommand> __result,
-        out object? __state) {
+    public static bool ExecutePatch(AttackCommand __instance, PlayerChoiceContext? choiceContext, ref Task<AttackCommand> __result) {
         // 记录当前攻击来源，供动画链路末端（如NRegentVfx.Attack）读取
-
-        __state = null;
-        if (ReferenceEquals(_processingCommand.Value, __instance)) return true;
-
-        __state = new AttackVfxState(
-            AttackVfxContext.CurrentModelSource,
-            AttackVfxContext.ShouldDisableRegentWeaponAttack,
-            AttackVfxContext.ShouldDisableRegentWeaponSFX,
-            AttackVfxContext.CurrentAttackCommand.Value);
+        
+        if (_isProcessing) return true; 
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
         AttackVfxContext.CurrentAttackCommand.Value = __instance;
@@ -79,25 +62,13 @@ public static class CardAnimPatch {
         return true;
     }
 
-    [HarmonyPatch(typeof(AttackCommand), nameof(AttackCommand.Execute))]
-    [HarmonyPostfix]
-    public static void ExecutePostfix(object? __state) {
-        if (__state is not AttackVfxState state) return;
-
-        AttackVfxContext.CurrentModelSource = state.ModelSource;
-        AttackVfxContext.ShouldDisableRegentWeaponAttack = state.DisableWeaponAttack;
-        AttackVfxContext.ShouldDisableRegentWeaponSFX = state.DisableWeaponSfx;
-        AttackVfxContext.CurrentAttackCommand.Value = state.AttackCommand;
-    }
-
     static async Task<AttackCommand> RunCustomFlow(CardFX cardFX, CardModel card, AttackCommand instance, PlayerChoiceContext? choiceContext) {
-        AttackCommand? previousCommand = _processingCommand.Value;
-        _processingCommand.Value = instance;
+        _isProcessing = true;
         try {
             await BeforeExecute(cardFX, card, instance);
             return await instance.Execute(choiceContext);
         } finally {
-            _processingCommand.Value = previousCommand;
+            _isProcessing = false;
         }
     }
     
