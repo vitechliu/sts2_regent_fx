@@ -41,9 +41,16 @@ public class Radiate : CardFX {
         FmodLite.Play("event:/RegentFx/sfx/common_hold_3");
         VFXUtil.PlaySimple(ConvergeScenePath, ownerNode.VfxSpawnPosition, 0.34f);
         await VFXUtil.Wait(ConvergeDuration);
-        var onode1 = VFXUtil.PlaySimple("res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn", ownerNode.VfxSpawnPosition, 3f);
-        VFXUtil.ActivateScaleAllParticles(onode1, 3f);
-        VFXUtil.ReplayAllParticles(onode1);
+        if (NCombatRoom.Instance == null || !GodotObject.IsInstanceValid(ownerNode)) return;
+
+        Node2D? energyVfx = VFXUtil.PlaySimple(
+            "res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn",
+            ownerNode.VfxSpawnPosition,
+            3f);
+        if (energyVfx == null) return;
+
+        VFXUtil.ActivateScaleAllParticles(energyVfx, 3f);
+        VFXUtil.ReplayAllParticles(energyVfx);
     }
 
     public override Task OnBeforeDamage(AttackCommand command, IReadOnlyList<Creature> targets) {
@@ -70,9 +77,12 @@ public class Radiate : CardFX {
             RandomizePulseShader(pulse);
             VFXUtil.ReplayAllParticles(pulse);
         }
-        var onode1 = VFXUtil.PlaySimple("res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn", ownerNode.VfxSpawnPosition, 3f);
-        VFXUtil.ActivateScaleAllParticles(onode1, 2f);
-        VFXUtil.ReplayAllParticles(onode1);
+        Node2D? energyVfx = VFXUtil.PlaySimple(
+            "res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn",
+            ownerNode.VfxSpawnPosition,
+            3f);
+        VFXUtil.ActivateScaleAllParticles(energyVfx, 2f);
+        VFXUtil.ReplayAllParticles(energyVfx);
         NGame.Instance?.ScreenShakeTrauma(ShakeStrength.VeryWeak);
         return Task.CompletedTask;
     }

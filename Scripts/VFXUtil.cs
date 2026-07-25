@@ -162,7 +162,8 @@ public static class VFXUtil {
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
 
-    public static void ActivateScaleAllParticles(Node2D node, float scale) {
+    public static void ActivateScaleAllParticles(Node2D? node, float scale) {
+        if (node == null || !GodotObject.IsInstanceValid(node)) return;
         if (node is GpuParticles2D particles) {
             particles.LocalCoords = true;
             particles.Scale *= scale;
@@ -173,7 +174,8 @@ public static class VFXUtil {
             }
         }
     }
-    public static void ReplayAllParticles(Node2D node) {
+    public static void ReplayAllParticles(Node2D? node) {
+        if (node == null || !GodotObject.IsInstanceValid(node)) return;
         if (node is GpuParticles2D particles) {
             particles.Restart();
         }
