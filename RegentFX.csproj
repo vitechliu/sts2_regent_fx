@@ -39,6 +39,7 @@
   <ItemGroup>
     <Content Include=".gitattributes" />
     <Content Include="CHANGELOG.md" />
+    <Content Include="CHANGELOG_EN.md" />
     <Content Include="env.props" />
     <Content Include="env.props.example_mac" />
     <Content Include="env.props.example_windows" />
