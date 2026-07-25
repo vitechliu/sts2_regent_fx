@@ -83,14 +83,19 @@ public static class CardAnimPatch {
     [HarmonyPatch(typeof(CardModel), nameof(CardModel.OnPlayWrapper))]
     [HarmonyPostfix]
     public static void PostOnPlayPatch(CardModel __instance, ref Task __result) {
-        __result = AsyncPostOnPlayPatch(__result);
+        __result = AsyncPostOnPlayPatch(__result, __instance);
     }
 
-    static async Task AsyncPostOnPlayPatch(Task originalTask) {
-        await originalTask;
-        AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
-        AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
-        AttackVfxContext.CurrentModelSource = null;
+    static async Task AsyncPostOnPlayPatch(Task originalTask, CardModel card) {
+        try {
+            await originalTask;
+        }
+        finally {
+            Entry.StarEffectController?.OnCardPlayed(card);
+            AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
+            AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
+            AttackVfxContext.CurrentModelSource = null;
+        }
     }
     
     //阻止群星动画

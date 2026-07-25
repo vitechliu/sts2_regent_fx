@@ -209,6 +209,12 @@ public partial class StarEffectController : Node2D {
         }
         StarRingController?.ResetStarCount();
     }
+
+    public void OnCardPlayed(CardModel card) {
+        if (!ReferenceEquals(_currentCardFX?.card, card)) return;
+        OnPlayCard();
+    }
+
     public void OnCancelCard() {
         if (_currentCardFX != null) {
             _currentCardFX.OnCancel();
