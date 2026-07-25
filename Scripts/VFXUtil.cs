@@ -162,6 +162,17 @@ public static class VFXUtil {
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
 
+    public static void ActivateScaleAllParticles(Node2D node, float scale) {
+        if (node is GpuParticles2D particles) {
+            particles.LocalCoords = true;
+            particles.Scale *= scale;
+        }
+        foreach (Node child in node.GetChildren()) {
+            if (child is Node2D childNode) {
+                ActivateScaleAllParticles(childNode, scale);
+            }
+        }
+    }
     public static void ReplayAllParticles(Node2D node) {
         if (node is GpuParticles2D particles) {
             particles.Restart();

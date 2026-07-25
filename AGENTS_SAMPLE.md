@@ -25,5 +25,5 @@ dotnet build --no-restore  # 验证编译
 
 ## 技术栈
 - Harmony 2.x (Lib.Harmony) - 代码注入
-- 游戏源码: `D:\Github\sts2\decompiled`
-- 游戏资源: `D:\Github\sts2\game`
+- 游戏源码: `D:\Github\raw109\src`
+- 游戏资源: `D:\Github\raw109`

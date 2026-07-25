@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 using MegaCrit.Sts2.Core.TestSupport;
+using RegentFX.ThirdParty.Audio;
 
 namespace RegentFX.Scripts.Vfx.Cards;
 
@@ -37,9 +38,12 @@ public class Radiate : CardFX {
             Entry.Logger.Warn("[Radiate] Could not get owner creature node for converge VFX");
             return;
         }
-
+        FmodLite.Play("event:/RegentFx/sfx/common_hold_3");
         VFXUtil.PlaySimple(ConvergeScenePath, ownerNode.VfxSpawnPosition, 0.34f);
         await VFXUtil.Wait(ConvergeDuration);
+        var onode1 = VFXUtil.PlaySimple("res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn", ownerNode.VfxSpawnPosition, 3f);
+        VFXUtil.ActivateScaleAllParticles(onode1, 3f);
+        VFXUtil.ReplayAllParticles(onode1);
     }
 
     public override Task OnBeforeDamage(AttackCommand command, IReadOnlyList<Creature> targets) {
@@ -57,6 +61,7 @@ public class Radiate : CardFX {
         }
 
         Vector2 pulsePosition = ownerNode.VfxSpawnPosition + VFXUtil.RandVec2(PulsePositionJitter);
+        FmodLite.Play("event:/RegentFx/sfx/genesis_2");
         Node2D? pulse = VFXUtil.PlaySimple(PulseScenePath, pulsePosition, PulseLifetime);
         if (pulse != null) {
             pulse.RotationDegrees = (float)GD.RandRange(
@@ -65,7 +70,9 @@ public class Radiate : CardFX {
             RandomizePulseShader(pulse);
             VFXUtil.ReplayAllParticles(pulse);
         }
-
+        var onode1 = VFXUtil.PlaySimple("res://scenes/vfx/energy/regent/regent_energy_vfx_back.tscn", ownerNode.VfxSpawnPosition, 3f);
+        VFXUtil.ActivateScaleAllParticles(onode1, 2f);
+        VFXUtil.ReplayAllParticles(onode1);
         NGame.Instance?.ScreenShakeTrauma(ShakeStrength.VeryWeak);
         return Task.CompletedTask;
     }
