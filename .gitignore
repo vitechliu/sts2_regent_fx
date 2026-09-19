@@ -63,6 +63,9 @@ AGENTS.md
 opencode.json
 env.props
 
+# Local Adobe Animate source files
+/Animate/
+
 # FMOD project ignores
 Fmod/Build/
 Fmod/.user/
