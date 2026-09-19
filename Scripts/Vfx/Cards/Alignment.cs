@@ -2,6 +2,7 @@ using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using RegentFX.ThirdParty.Audio;
@@ -12,7 +13,7 @@ namespace RegentFX.Scripts.Vfx.Cards;
 [CardFx(typeof(MegaCrit.Sts2.Core.Models.Cards.Alignment))]
 public class Alignment : CardFX {
     // -1 表示使用所有星星
-    public override int StarCount => 3;
+    public override int StarCount => ModelDb.Card<MegaCrit.Sts2.Core.Models.Cards.Alignment>().CanonicalStarCost;
     
     public override string? VfxScenePath => "res://RegentFX/scenes/vfx/alignment.tscn";
 
