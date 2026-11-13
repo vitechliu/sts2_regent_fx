@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using System.Reflection;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
@@ -17,32 +17,43 @@ namespace RegentFX.Scripts.Patches;
 [HarmonyPatch]
 public static class DamageTargetPatch {
     private static int _depth;
-    private static readonly MethodInfo? Damage108 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
-        typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
-        typeof(ValueProp), typeof(Creature), typeof(CardModel), typeof(CardPlay)
-    });
-    private static readonly MethodInfo? Damage107 = AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), new[] {
-        typeof(PlayerChoiceContext), typeof(IEnumerable<Creature>), typeof(decimal),
-        typeof(ValueProp), typeof(Creature), typeof(CardModel)
-    });
+
+    // v0.113 的攻击直接使用 DamageTargetData，旧版只有 Creature 目标。
+    private static readonly Type? DamageTargetDataType = typeof(Creature).Assembly.GetType(
+        "MegaCrit.Sts2.Core.Entities.Creatures.DamageTargetData");
+    private static readonly FieldInfo? DamageTargetField = DamageTargetDataType == null
+        ? null
+        : AccessTools.Field(DamageTargetDataType, "target");
 
     public static MethodBase TargetMethod() {
-        return Damage108 ?? Damage107 ?? throw new MissingMethodException(
-            typeof(CreatureCmd).FullName,
-            nameof(CreatureCmd.Damage));
+        Type? hookType = typeof(CreatureCmd).Assembly.GetType("MegaCrit.Sts2.Core.Hooks.ModifyDamageHookType");
+        MethodInfo? damageWithTargetData = DamageTargetField != null && hookType != null
+            ? FindDamageMethod(DamageTargetField.DeclaringType!, typeof(CardPlay), hookType)
+            : null;
+        return damageWithTargetData
+            ?? FindDamageMethod(typeof(Creature), typeof(CardPlay))
+            ?? FindDamageMethod(typeof(Creature))
+            ?? throw new MissingMethodException(
+                typeof(CreatureCmd).FullName,
+                nameof(CreatureCmd.Damage));
+    }
+
+    private static MethodInfo? FindDamageMethod(Type targetType, params Type[] extraParameters) {
+        return AccessTools.Method(typeof(CreatureCmd), nameof(CreatureCmd.Damage), [
+            typeof(PlayerChoiceContext), typeof(IEnumerable<>).MakeGenericType(targetType), typeof(decimal),
+            typeof(ValueProp), typeof(Creature), typeof(CardModel),
+            .. extraParameters
+        ]);
     }
 
     [HarmonyPrefix]
     public static bool DamagePrefix(
-        PlayerChoiceContext choiceContext,
-        IEnumerable<Creature> targets,
-        decimal amount,
-        ValueProp props,
-        Creature? dealer,
-        CardModel? cardSource,
+        CardModel? __5,
         object?[] __args,
+        MethodBase __originalMethod,
         ref Task<IEnumerable<DamageResult>> __result) {
 
+        CardModel? cardSource = __5;
         if (cardSource == null) return true;
 
         var cardFX = CardFX.FromCard(cardSource);
@@ -50,65 +61,57 @@ public static class DamageTargetPatch {
         if (!LocalContext.IsMe(cardSource.Owner)) return true;
         if (!cardFX.HasOnBeforeDamage && !cardFX.HasOnBeforeDamageTargeted) return true;
 
+        var command = AttackVfxContext.CurrentAttackCommand.Value;
+        if (command == null) return true;
+
         if (Interlocked.Increment(ref _depth) > 1) {
             Interlocked.Decrement(ref _depth);
             return true;
         }
 
-        var command = AttackVfxContext.CurrentAttackCommand.Value;
-        CardPlay? cardPlay = __args.Length > 6 ? __args[6] as CardPlay : null;
-
-        __result = RunBeforeAndDamage(cardFX, command, targets, choiceContext, amount, props, dealer, cardSource, cardPlay);
+        __result = RunBeforeAndDamage(cardFX, command, __originalMethod, (object?[])__args.Clone());
         return false;
     }
 
     private static async Task<IEnumerable<DamageResult>> RunBeforeAndDamage(
         CardFX cardFX,
-        AttackCommand? command,
-        IEnumerable<Creature> targets,
-        PlayerChoiceContext choiceContext,
-        decimal amount,
-        ValueProp props,
-        Creature? dealer,
-        CardModel cardSource,
-        CardPlay? cardPlay) {
+        AttackCommand command,
+        MethodBase damageMethod,
+        object?[] args) {
 
         try {
-            List<Creature> targetList = targets.ToList();
+            List<Creature> targets = SnapshotTargets(args);
 
-            if (cardFX.HasOnBeforeDamageTargeted && command != null) {
-                await cardFX.OnBeforeDamage(command, targetList);
-            }
-            else if (cardFX.HasOnBeforeDamage && command != null) {
+            if (cardFX.HasOnBeforeDamageTargeted) {
+                await cardFX.OnBeforeDamage(command, targets);
+            } else {
                 await cardFX.OnBeforeDamage(command);
             }
 
-            return await InvokeDamage(choiceContext, targetList, amount, props, dealer, cardSource, cardPlay);
+            return await (Task<IEnumerable<DamageResult>>)damageMethod.Invoke(null, args)!;
         }
         finally {
             Interlocked.Decrement(ref _depth);
         }
     }
 
-    private static Task<IEnumerable<DamageResult>> InvokeDamage(
-        PlayerChoiceContext choiceContext,
-        IEnumerable<Creature> targets,
-        decimal amount,
-        ValueProp props,
-        Creature? dealer,
-        CardModel cardSource,
-        CardPlay? cardPlay) {
+    private static List<Creature> SnapshotTargets(object?[] args) {
+        const int targetIndex = 1;
+        if (args[targetIndex] is IEnumerable<Creature> targets) {
+            var snapshot = targets.ToList();
+            args[targetIndex] = snapshot;
+            return snapshot;
+        }
 
-        MethodInfo method = Damage108 ?? Damage107 ?? throw new MissingMethodException(
-            typeof(CreatureCmd).FullName,
-            nameof(CreatureCmd.Damage));
-
-        object?[] args = method.GetParameters().Length == 7
-            ? new object?[] { choiceContext, targets, amount, props, dealer, cardSource, cardPlay }
-            : new object?[] { choiceContext, targets, amount, props, dealer, cardSource };
-
-        object? result = method.Invoke(null, args);
-        return result as Task<IEnumerable<DamageResult>>
-               ?? throw new InvalidOperationException("CreatureCmd.Damage returned an unexpected result type.");
+        // 将目标提取给特效，同时保留传给原方法的每个目标的命中特效数据。
+        FieldInfo targetField = DamageTargetField!;
+        var targetData = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(targetField.DeclaringType!))!;
+        var creatures = new List<Creature>();
+        foreach (object entry in (IEnumerable)args[targetIndex]!) {
+            targetData.Add(entry);
+            creatures.Add((Creature)targetField.GetValue(entry)!);
+        }
+        args[targetIndex] = targetData;
+        return creatures;
     }
 }

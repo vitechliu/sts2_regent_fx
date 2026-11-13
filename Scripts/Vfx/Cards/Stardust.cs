@@ -66,7 +66,7 @@ public class Stardust : CardFX {
         await VFXUtil.Wait(.35f);
         var node = VFXUtil.PlaySimple(VfxScenePath, targetPos);
         VFXUtil.ReplayAllParticles(node);
-        VfxCmd.PlayOnCreatureCenter(target, "vfx/vfx_starry_impact");
+        VfxCmd.PlayOnCreatureCenters([target], "vfx/vfx_starry_impact");
     }
     
 }
