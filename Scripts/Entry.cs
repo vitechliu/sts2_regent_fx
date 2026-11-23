@@ -61,7 +61,7 @@ public class Entry {
             RitsuLibModConfig.SetDefaults();
             
             if (Setting.PreloadEffects) LoadScenes();
-            else Log.Warn("[RegentFX]Skipping effect scene preloading, may cause lagging.");
+            else Logger.Info("Effect scene preloading is disabled. Effects will load on demand.");
             Log.Info($"RegentFX Omnistar {VERSION} Load Complete![万象辉星]加载成功!");
         }
         catch (System.Exception ex) {

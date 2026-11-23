@@ -42,7 +42,7 @@ public static class RitsuLibModConfig {
     private static readonly Dictionary<string, object> Defaults = new(){
         ["ExposureThreshold"] = 1,
         ["DevTestStartMode"] = false,
-        ["PreloadEffects"] = true,
+        ["PreloadEffects"] = false,
         ["DisableModSounds"] = false,
     };
 
@@ -88,7 +88,7 @@ public static class RitsuLibModConfig {
         var PreloadEntry = new ToggleEntry();
         PreloadEntry.id = "PreloadEffects";
         PreloadEntry.key = PreloadEntry.id;
-        PreloadEntry.description = SimpleLocUtil.Simple("需重启游戏生效，能解决第一次打出特效卡顿问题，但是内存占用会提升。(Mac系统如果卡顿建议关闭此选项)", "Require game restart. Can resolve the lag issue when playing effects for the first time, but will increase memory usage");
+        PreloadEntry.description = SimpleLocUtil.Simple("默认按需加载。开启后，游戏启动时会预加载特效以减少首次播放卡顿，但会增加显存占用。需重启游戏生效。", "Effects load on demand by default. Enable to preload them at startup and reduce first-use stutter at the cost of higher VRAM usage. Requires a game restart.");
         PreloadEntry.label = SimpleLocUtil.Simple("特效预加载", "Preload Cache");
         
         MainSection.entries.Add(PreloadEntry);

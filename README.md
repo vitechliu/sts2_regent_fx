@@ -25,7 +25,7 @@ With RitsuLib installed, open its mod settings interface and select **RegentFX /
 | Setting | Default | Behavior |
 | --- | --- | --- |
 | Light Exposure | `1.0` | Adjusts effect exposure from `0` to `2`; `0` disables the exposure effect. |
-| Preload Cache | On | Loads effect scenes during startup to reduce first-use stutter, at the cost of startup time and memory. Requires a game restart. |
+| Preload Cache | Off | Effects load on demand by default. Enable to preload effects at startup and reduce first-use stutter at the cost of startup time and VRAM. Requires a game restart. |
 | Disable Mod Sounds | Off | When enabled, falls back to the game's original attack sounds. |
 | Cards / Powers | All on | Enables or disables each registered card or power effect individually. |
 | Test Mode | Off | A developer setting; leave it off for normal play. |
@@ -56,7 +56,7 @@ Known issues:
 - Startup preloading can cause stutter; low-VRAM systems and integrated GPUs may crash while loading effects.
 - Background pillars can disappear during the **Vantom** encounter.
 
-For startup or memory issues, try disabling **Preload Cache** and restarting the game; this may reintroduce stutter when an effect is first used. For audio issues, enable **Disable Mod Sounds**. If FMOD bank loading fails, RegentFX also falls back to the default attack sounds automatically.
+If the first use of an effect stutters and you have VRAM to spare, enable **Preload Cache** and restart the game. A previously saved setting still takes precedence. For audio issues, enable **Disable Mod Sounds**. If FMOD bank loading fails, RegentFX also falls back to the default attack sounds automatically.
 
 If your progress appears missing after enabling mods, check whether the game has switched to its separate modded save profile. This does not by itself mean your original save was deleted.
 
