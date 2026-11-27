@@ -90,12 +90,7 @@ public partial class StardustVfx : Node2D {
 			_fadeTween.Parallel().TweenProperty(_glow, "modulate:a", 0f, FadeOutDuration);
 		}
 		_fadeTween.Parallel().TweenProperty(this, "scale", Vector2.Zero, FadeOutDuration);
-		_fadeTween.Finished += Finished;
-	}
-
-	async void Finished() {
-		await VFXUtil.Wait(1f);
-		QueueFree();
+		_fadeTween.TweenCallback(Callable.From(QueueFree)).SetDelay(1f);
 	}
 
 	private void SetVisualActive(bool active) {

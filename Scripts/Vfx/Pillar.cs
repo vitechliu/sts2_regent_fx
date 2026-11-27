@@ -276,7 +276,7 @@ public partial class Pillar : Node2D {
     /// 在指定位置创建柱子特效
     /// </summary>
     public static Pillar? Spawn(Creature creature, Vector2 position) {
-        if (TestMode.IsOn) return null;
+        if (TestMode.IsOn || creature.IsDead) return null;
 
         try {
             var pillar = VFXUtil.GenVFXNode<Pillar>(VfxScenePath);
@@ -291,6 +291,9 @@ public partial class Pillar : Node2D {
             parent.AddChildSafely(pillar);
             pillar.Create(position);
             Pillars[creature] = pillar;
+            pillar.TreeExiting += () => {
+                if (Pillars.GetValueOrDefault(creature) == pillar) Pillars.Remove(creature);
+            };
             return pillar;
         }
         catch (Exception ex) {

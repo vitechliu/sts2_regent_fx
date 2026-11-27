@@ -1,6 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Helpers;
 using RegentFX.Scripts.Vfx.Cards;
 
 namespace RegentFX.Scripts.Vfx;
@@ -11,33 +11,28 @@ namespace RegentFX.Scripts.Vfx;
 /// </summary>
 public partial class StarEffectController : Node2D {
     private StarRingController? _starRingController;
-    private NCreature? _playerNode;
-
-    StarRingController? StarRingController => Entry.StarRingController;
+    public int BorrowedOrbitCount => _currentCardFX?.HoldingMode is CardFX.HoldingModes.BorrowDefault
+        or CardFX.HoldingModes.BorrowAll ? _borrowedStars.Count : 0;
 
     // 借取的星星列表
     private readonly List<Star> _borrowedStars = new();
 
     // 内部状态
     private bool _isShaking = false;
-    // private readonly Dictionary<Star, Vector2> _starOriginalPositions = new();
     private readonly Dictionary<Star, float> _starShakePhases = new();
     private readonly Dictionary<Star, Vector2> _starTargetPositions = new();
 
     // 当前卡牌特效配置
     private CardFX? _currentCardFX;
 
-    private Vector2 PlayerCenterPos => _playerNode.VfxSpawnPosition;
-
+    internal CardFX? HeldCard => _currentCardFX;
     public List<Star> Stars => _borrowedStars;
 
     /// <summary>
     /// 初始化控制器
     /// </summary>
-    public void Initialize(NCreature playerNode, StarRingController? starRingController = null) {
-        _playerNode = playerNode;
+    public void Initialize(StarRingController starRingController) {
         _starRingController = starRingController;
-        GlobalPosition = playerNode.GlobalPosition;
     }
 
     /// <summary>
@@ -45,9 +40,7 @@ public partial class StarEffectController : Node2D {
     /// </summary>
     public void OnCardHolding(CardModel card, CardFX cardFX) {
         // 如果已经有借取的星星，先清理
-        if (_borrowedStars.Count > 0) {
-            ReturnAllStars();
-        }
+        if (_currentCardFX != null) OnCancelCard();
 
         _currentCardFX = cardFX;
 
@@ -89,7 +82,7 @@ public partial class StarEffectController : Node2D {
     public void GenerateStarAt(Vector2 position, Color? color = null) {
         // Entry.Logger.Info("GenerateStarAt " + position);
         var star = Star.Create();
-        AddChild(star);
+        this.AddChildSafely(star);
         // 配置星星参数
         star.EnablePulse = true;
         star.PulseSpeed = 2f + GD.Randf() * 1f;
@@ -97,22 +90,21 @@ public partial class StarEffectController : Node2D {
         star.ZAsRelative = true;
         star.Scale = Vector2.One;
         star.EnableTrail = false;
-        star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
         star.Position = position;
         if (color.HasValue) star.ChangeColorTo(color.Value);
         _borrowedStars.Add(star);
         VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
-        _starTargetPositions[star] = star.GlobalPosition;
+        _starTargetPositions[star] = star.Position;
     }
     
     private void BorrowStars() {
-        if (StarRingController == null || _currentCardFX == null) return;
+        if (_starRingController == null || _currentCardFX == null) return;
         // -1 表示借用所有星星
-        int targetCount = _currentCardFX.HoldingMode == CardFX.HoldingModes.BorrowAll ? StarRingController.GetCurrentStarCount() : _currentCardFX.StarCount;
-        if (targetCount <= 0) return;
+        int targetCount = _currentCardFX.HoldingMode == CardFX.HoldingModes.BorrowAll ? _starRingController.GetCurrentStarCount() : _currentCardFX.StarCount;
+        targetCount = Math.Min(targetCount, _starRingController.GetCurrentStarCount());
 
         for (int i = 0; i < targetCount; i++) {
-            var star = StarRingController.TakeStarForProjectile();
+            var star = _starRingController.TakeStarForProjectile();
             if (star == null) {
                 Entry.Logger.Warn($"[StarEffectController] Failed to borrow star {i + 1}/{targetCount}");
                 break;
@@ -120,17 +112,13 @@ public partial class StarEffectController : Node2D {
 
             star.ToggleTrail(true);
 
-            // _starOriginalPositions[star] = star.GlobalPosition;
-
-            // 先从原父节点移除，再添加到当前控制器
-            star.GetParent()?.RemoveChild(star);
-            AddChild(star);
-            star.ZIndex = StarRingController.STAR_FRONT_ZINDEX;
-            star.Scale = Vector2.One;
+            // 在最终挂点上建立连线。换父节点会触发 Star._ExitTree。
+            star.Reparent(this, keepGlobalTransform: true);
+            star.ZIndex = 0;
             _borrowedStars.Add(star);
 
             // 计算目标位置（使用 CardFX 的配置）
-            Vector2 targetPosition = _currentCardFX.CalculateTargetPosition(GlobalPosition, i, targetCount);
+            Vector2 targetPosition = _currentCardFX.CalculateTargetPosition(Vector2.Zero, i, targetCount);
             _currentCardFX.OnStartHolding(star, i);
             _starTargetPositions[star] = targetPosition;
 
@@ -143,7 +131,7 @@ public partial class StarEffectController : Node2D {
     private void AnimateStarMove(Star star, Vector2 targetPosition, Action? onComplete = null) {
         if (_currentCardFX == null) return;
 
-        var tween = CreateTween();
+        var tween = star.CreateTween();
 
         // 使用 Expo 缓动：前期极快，后期极慢
         tween.SetTrans(Tween.TransitionType.Expo);
@@ -155,10 +143,13 @@ public partial class StarEffectController : Node2D {
         float randomDuration = _currentCardFX.MoveDuration * (min + rng.Randf() * (max - min));
 
         // 快速移动到目标位置
-        tween.TweenProperty(star, "global_position", targetPosition, randomDuration);
+        tween.TweenProperty(star, "position", targetPosition, randomDuration);
+        tween.Parallel().TweenProperty(star, "scale", Vector2.One, randomDuration);
 
         if (onComplete != null) {
-            tween.Finished += onComplete;
+            tween.Finished += () => {
+                if (_borrowedStars.Contains(star)) onComplete();
+            };
         }
         // Entry.Logger.Debug($"[StarEffectController] Animating star move to {targetPosition}, duration: {randomDuration:F3}s");
     }
@@ -198,16 +189,14 @@ public partial class StarEffectController : Node2D {
             float offsetX = Mathf.Sin(phase) * shakeIntensity;
             float offsetY = Mathf.Cos(phase * 1.3f) * shakeIntensity;
 
-            // 直接设置 GlobalPosition = 目标位置 + 震颤偏移
-            star.GlobalPosition = targetPos + new Vector2(offsetX, offsetY);
+            // 使用预览节点的局部坐标，镜头移动时仍跟随角色。
+            star.Position = targetPos + new Vector2(offsetX, offsetY);
         }
     }
 
     public void OnPlayCard() {
-        if (_borrowedStars.Count > 0) {
-            ReturnAllStars();
-        }
-        StarRingController?.ResetStarCount();
+        ReturnAllStars();
+        _starRingController?.ResetStarCount();
     }
 
     public void OnCardPlayed(CardModel card) {
@@ -219,10 +208,8 @@ public partial class StarEffectController : Node2D {
         if (_currentCardFX != null) {
             _currentCardFX.OnCancel();
         }
-        if (_borrowedStars.Count > 0) {
-            ReturnAllStars();
-        }
-        StarRingController?.ResetStarCount();
+        ReturnAllStars();
+        _starRingController?.ResetStarCount();
     }
 
 
@@ -232,7 +219,7 @@ public partial class StarEffectController : Node2D {
         VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
     
         // 闪烁效果
-        var tween = CreateTween();
+        var tween = star.CreateTween();
         tween.SetTrans(Tween.TransitionType.Quad);
         tween.SetEase(Tween.EaseType.Out);
 
@@ -253,7 +240,6 @@ public partial class StarEffectController : Node2D {
 
         // 清空列表
         _borrowedStars.Clear();
-        // _starOriginalPositions.Clear();
         _starShakePhases.Clear();
         _starTargetPositions.Clear();
         _currentCardFX = null;
@@ -266,11 +252,10 @@ public partial class StarEffectController : Node2D {
         _isShaking = false;
 
         foreach (var star in _borrowedStars) {
-            star?.QueueFree();
+            if (IsInstanceValid(star)) star.QueueFree();
         }
 
         _borrowedStars.Clear();
-        // _starOriginalPositions.Clear();
         _starShakePhases.Clear();
         _starTargetPositions.Clear();
         _currentCardFX = null;

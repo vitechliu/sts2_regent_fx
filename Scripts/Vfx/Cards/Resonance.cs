@@ -14,7 +14,7 @@ public class Resonance : CardFX {
     public override int StarCount => 3;
     public override HoldingModes HoldingMode => HoldingModes.Custom;
     
-    private static readonly List<Star> _borrowedStars = new();
+    private readonly List<Star> _borrowedStars = new();
     
     public override void HoldingCustom() {
         _borrowedStars.Clear();
@@ -31,7 +31,7 @@ public class Resonance : CardFX {
         TryPlayHoldingSfx();
     }
     
-    public static void PlayStarVfx() {
+    public void PlayStarVfx() {
         foreach (var star in _borrowedStars) {
             if (star != null && GodotObject.IsInstanceValid(star)) {
                 VFXUtil.PlaySpecialStarAt(star.GlobalPosition);
@@ -85,17 +85,22 @@ public static class ResonancePatch {
     
     private static async Task MyOnPlay(
         MegaCrit.Sts2.Core.Models.Cards.Resonance card) {
-        NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(card.Owner.Creature);
+        var room = NCombatRoom.Instance;
+        var preview = Entry.StarEffectController;
+        var holding = preview?.HeldCard as Resonance;
+        NCreature? ownerNode = room?.GetCreatureNode(card.Owner.Creature);
         if (ownerNode != null) {
             FmodLite.Play("event:/RegentFx/sfx/Resonance");
             await VFXUtil.Wait( .1f);
+            if (room != NCombatRoom.Instance || !GodotObject.IsInstanceValid(ownerNode)) return;
             VFXUtil.PlaySimpleBack(CardFX.FromCard(card).VfxScenePath, ownerNode.VfxSpawnPosition, 2f);
             await VFXUtil.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(1.5f, .1f);
             await VFXUtil.Wait( .1f);
             WorldEnvironmentUtil.TweenExposure(1f, .3f);
         }
-        Resonance.PlayStarVfx();
-        Entry.StarEffectController?.OnPlayCard();
+        if (!GodotObject.IsInstanceValid(room) || room != NCombatRoom.Instance || preview != Entry.StarEffectController) return;
+        holding?.PlayStarVfx();
+        preview?.OnCardPlayed(card);
     }
 }

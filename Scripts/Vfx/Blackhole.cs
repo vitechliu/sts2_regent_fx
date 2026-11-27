@@ -258,7 +258,7 @@ public partial class Blackhole : Node2D {
     /// 在指定位置创建黑洞
     /// </summary>
     public static Blackhole? Create(Creature creature, float size = DEFAULT_SIZE) {
-        if (TestMode.IsOn) return null;
+        if (TestMode.IsOn || creature.IsDead) return null;
         NCreature nCreature = NCombatRoom.Instance?.GetCreatureNode(creature);
         if (nCreature == null) return null;
         try {
@@ -274,6 +274,9 @@ public partial class Blackhole : Node2D {
             blackhole.GlobalPosition = nCreature.VfxSpawnPosition;
             blackhole.SetSize(size);
             Blackholes[creature] = blackhole;
+            blackhole.TreeExiting += () => {
+                if (Blackholes.GetValueOrDefault(creature) == blackhole) Blackholes.Remove(creature);
+            };
             return blackhole;
         }
         catch (Exception ex) {

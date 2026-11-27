@@ -11,17 +11,9 @@ public static class StarryImpactPatch {
     [HarmonyPatch(typeof(NStarryImpactVfx), nameof(NStarryImpactVfx.PlaySequence))]
     [HarmonyPrefix]
     public static bool p(NStarryImpactVfx __instance, ref Task __result) {
-        if (Entry.StarEffectController != null) {
-            // Entry.Logger.Info("Node:" + __instance.GetInstanceId());
-            ulong id = __instance.GetInstanceId();
-            if (VFXUtil.StarryImpactNodes.Contains(id)) {
-                // Entry.Logger.Info("aaaa:" + id);
-                __result = MyTask(__instance);
-                VFXUtil.StarryImpactNodes.Remove(id);
-                return false;
-            }
-        }
-        return true;
+        if (!VFXUtil.StarryImpactNodes.Remove(__instance.GetInstanceId())) return true;
+        __result = MyTask(__instance);
+        return false;
     }
 
 

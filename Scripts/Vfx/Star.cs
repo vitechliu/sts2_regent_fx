@@ -64,6 +64,8 @@ public partial class Star : Node2D {
 	public override void _Ready() {
 		_sprite = GetNode<Sprite2D>("Sprite");
 		_trailParticles = GetNodeOrNull<GpuParticles2D>("TrailParticles");
+		if (_trailParticles?.ProcessMaterial is ParticleProcessMaterial trailMaterial)
+			_trailParticles.ProcessMaterial = (ParticleProcessMaterial)trailMaterial.Duplicate();
 		_tintMaterial = (_sprite?.Material as ShaderMaterial)?.Duplicate() as ShaderMaterial;
 		if (_sprite != null && _tintMaterial != null)
 			_sprite.Material = _tintMaterial;

@@ -1,4 +1,5 @@
 using Godot;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
@@ -25,8 +26,8 @@ public partial class StarRingController : Node2D {
     private float _baseVerticalOffset;
     // ====================================================================
 
-    public const int STAR_FRONT_ZINDEX = 0;
-    public const int STAR_BACK_ZINDEX = -5;
+    // 后景挂点在背景之后、角色之前。同一棵子树提高一级即可画到角色前面。
+    public const int FrontZIndex = 1;
 
     private readonly List<StarData> _orbitStars = new();
     private NCreature? _playerNode;
@@ -36,9 +37,7 @@ public partial class StarRingController : Node2D {
     
     public List<StarData> OrbitStars => _orbitStars;
 
-    StarEffectController? StarEffectController => Entry.StarEffectController;
-
-    private bool childOfTheStarsMode = false;
+    public StarEffectController Preview { get; } = new() { ZIndex = FrontZIndex };
 
     /// <summary>
     /// 星星数据类，存储每个星星的状态
@@ -56,7 +55,11 @@ public partial class StarRingController : Node2D {
     }
 
     public override void _Process(double delta) {
-        if (!_isActive || _playerNode == null) return;
+        if (!IsInstanceValid(_playerNode) || !_playerNode.IsInsideTree() || _player.Creature.IsDead) {
+            QueueFree();
+            return;
+        }
+        if (!_isActive) return;
 
         // 读取玩家当前缩放值（X/Y轴一致，取X即可）
         float currentScale = _playerNode.Visuals.Scale.X;
@@ -65,7 +68,7 @@ public partial class StarRingController : Node2D {
         VerticalOffset = _baseVerticalOffset * currentScale;
 
         // 更新控制器位置到玩家位置
-        GlobalPosition = _playerNode.GlobalPosition;
+        GlobalTransform = _playerNode.GetGlobalTransform();
 
         // 更新轨道角度
         _orbitAngle += OrbitSpeed * (float)delta;
@@ -80,8 +83,9 @@ public partial class StarRingController : Node2D {
     public void Initialize(NCreature playerNode, Player player) {
         _playerNode = playerNode;
         _isActive = true;
-        GlobalPosition = playerNode.GlobalPosition;
-        ZAsRelative = true;
+        GlobalTransform = playerNode.GetGlobalTransform();
+        this.AddChildSafely(Preview);
+        Preview.Initialize(this);
         _player = player;
 
         _baseOrbitRadius = OrbitRadius;
@@ -101,7 +105,7 @@ public partial class StarRingController : Node2D {
     /// 设置星星数量
     /// </summary>
     public void SetStarCount(int count) {
-        int targetCount = Mathf.Min(count, MaxStarCount);
+        int targetCount = Math.Max(0, Mathf.Min(count, MaxStarCount) - Preview.BorrowedOrbitCount);
         // 只计算活跃的星星（不包括正在移除的）
         int activeCount = _orbitStars.Count(s => !s.IsRemoving);
 
@@ -129,16 +133,15 @@ public partial class StarRingController : Node2D {
         for (int i = 0; i < count; i++) {
             var star = Star.Create();
 
-            AddChild(star);
-
             // 配置星星参数
             star.EnablePulse = true;
             star.PulseSpeed = 2f + GD.Randf() * 1f;
             star.RotationSpeed = 45f + GD.Randf() * 45f;
             star.ZAsRelative = true;
             star.Scale = Vector2.Zero;
-            star.ZIndex = STAR_BACK_ZINDEX;
             star.EnableTrail = false;
+
+            this.AddChildSafely(star);
 
             // 初始位置
             star.Position = CalculateOrbitPosition(baseSpawnAngle, 1.0f);
@@ -420,8 +423,7 @@ public partial class StarRingController : Node2D {
         star.Position = CalculateOrbitPosition(renderAngle, starData.RadiusMultiplier);
 
         // 更新ZIndex
-        star.ZIndex = sinAngle > 0 ? STAR_FRONT_ZINDEX : STAR_BACK_ZINDEX;
-        star.ZAsRelative = true;
+        star.ZIndex = sinAngle > 0 ? FrontZIndex : 0;
     }
 
     /// <summary>
@@ -518,7 +520,11 @@ public partial class StarRingController : Node2D {
     }
 
     public override void _ExitTree() {
-        ClearAllStars();
+        _orbitStars.Clear();
+        if (ReferenceEquals(Entry.StarRingController, this)) {
+            Entry.StarRingController = null;
+            Entry.StarEffectController = null;
+        }
         base._ExitTree();
     }
 }
