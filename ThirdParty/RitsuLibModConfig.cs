@@ -20,24 +20,14 @@ public static class RitsuLibModConfig {
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "SlayTheSpire2", ModId);
 
-    private static string SchemaPath => Path.Combine(DataDir, "ritsu_interop_schema.json");
     private static string StatePath => Path.Combine(DataDir, "ritsu_interop_state.json");
 
     // —— 多线程下避免读写交错（Ritsu 可能在不同线程回调）
     private static readonly object FileLock = new();
     private static readonly ConcurrentDictionary<string, JsonNode?> Hot = new(StringComparer.Ordinal);
 
-    /// <summary>Ritsu 调用：返回“schema”。返回文件路径时，Ritsu 会读文件内容解析 JSON。</summary>
-    public static object CreateRitsuLibSettingsSchema() {
-        Directory.CreateDirectory(DataDir);
-        File.WriteAllText(SchemaPath, BuildDefaultSchemaJson());
-        // if (!File.Exists(SchemaPath)) {
-        //     // 首次写默认 schema 文件，便于你手工编辑或版本控制
-        //     SetDefaults();
-        // }
-        // 也支持直接 return BuildDefaultSchemaJson() 或 Dictionary，无需文件
-        return SchemaPath;
-    }
+    /// <summary>返回 RitsuLib 注册设置页所需的 JSON。</summary>
+    public static object CreateRitsuLibSettingsSchema() => BuildDefaultSchemaJson();
 
     private static readonly Dictionary<string, object> Defaults = new(){
         ["ExposureThreshold"] = 1,
@@ -185,6 +175,7 @@ public static class RitsuLibModConfig {
 
     public static void SaveRitsuLibSettings() {
         lock (FileLock) {
+            Directory.CreateDirectory(DataDir);
             var path = StatePath;
             var obj = new JsonObject();
             foreach (var kv in Hot)

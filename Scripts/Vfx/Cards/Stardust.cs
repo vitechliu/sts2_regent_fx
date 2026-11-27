@@ -39,12 +39,16 @@ public class Stardust : CardFX {
         // Entry.Logger.Info("StarDustDamage");
         Creature? owner = card?.Owner.Creature;
         if (targets.Count != 1) return;
-        Creature target = targets.First();
-        if (owner == null || target == null) return;
+        Creature target = targets[0];
+        var room = NCombatRoom.Instance;
+        if (room == null || owner == null || owner.IsDead || target == null || target.IsDead || TestMode.IsOn) return;
+        NCreature? targetNode = room.GetCreatureNode(target);
+        if (targetNode == null) return;
+
         Vector2? starPosD = Entry.StarEffectController?.PopStar(this);
         Vector2 starPos;
         if (!starPosD.HasValue) {
-            NCreature? ownerNode = NCombatRoom.Instance?.GetCreatureNode(owner);
+            NCreature? ownerNode = room.GetCreatureNode(owner);
             Vector2 ownerPos = ownerNode?.VfxSpawnPosition ?? Vector2.Zero;
             starPos = ownerPos + new Vector2(0f, -400f);
         }
@@ -52,21 +56,19 @@ public class Stardust : CardFX {
             starPos = starPosD.Value + new Vector2(0f, -200f);
         }
         starPos += VFXUtil.RandVec2(200f);
-        if (TestMode.IsOn) return;
         FmodLite.Play("event:/RegentFx/sfx/stardust");
-        NCreature? targetNode = NCombatRoom.Instance?.GetCreatureNode(target);
-        if (targetNode == null) return;
         Vector2 targetPos = targetNode.VfxSpawnPosition;
         StardustVfx.PlayStardust(starPos, targetPos);
-        _ = TaskHelper.RunSafely(OnHit(targetPos, target));
+        _ = TaskHelper.RunSafely(OnHit(room, targetPos, target));
         await VFXUtil.Wait(0.1f);
     }
 
-    async Task OnHit(Vector2 targetPos, Creature target) {
+    async Task OnHit(NCombatRoom room, Vector2 targetPos, Creature target) {
         await VFXUtil.Wait(.35f);
+        if (!GodotObject.IsInstanceValid(room) || !ReferenceEquals(NCombatRoom.Instance, room)) return;
         var node = VFXUtil.PlaySimple(VfxScenePath, targetPos);
         VFXUtil.ReplayAllParticles(node);
-        VfxCmd.PlayOnCreatureCenters([target], "vfx/vfx_starry_impact");
+        if (!target.IsDead) VfxCmd.PlayOnCreatureCenters([target], "vfx/vfx_starry_impact");
     }
     
 }

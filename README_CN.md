@@ -21,6 +21,7 @@ Mod 的目标是增强表现，不改变卡牌数值或游戏平衡。[清单文
 ## 设置说明
 
 安装 RitsuLib 后，在其模组设置界面中选择 **RegentFX / 万象辉星**。
+在游戏 `0.114` 中打开该界面需要 [RitsuLib `0.6.16` 或更新版本](https://github.com/BAKAOLC/STS2-RitsuLib/releases/tag/v0.6.16)。RegentFX 可独立加载，并读取已保存的设置。
 
 | 设置项 | 默认值 | 说明 |
 | --- | --- | --- |

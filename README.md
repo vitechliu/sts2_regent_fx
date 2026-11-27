@@ -21,6 +21,7 @@ The mod is intended to change presentation without changing card stats or game b
 ## Settings
 
 With RitsuLib installed, open its mod settings interface and select **RegentFX / 万象辉星**.
+The settings interface on game version `0.114` requires [RitsuLib `0.6.16` or later](https://github.com/BAKAOLC/STS2-RitsuLib/releases/tag/v0.6.16). RegentFX can load independently and reads previously saved settings.
 
 | Setting | Default | Behavior |
 | --- | --- | --- |

@@ -41,7 +41,7 @@ public class Entry {
     /// </summary>
     public static readonly System.Collections.Concurrent.ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
-    public const string VERSION = "0.5.2";
+    public const string VERSION = "0.5.3";
 
     public static bool FmodLoaded = false;
     // 初始化函数

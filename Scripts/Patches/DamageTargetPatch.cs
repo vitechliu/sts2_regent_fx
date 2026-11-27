@@ -16,7 +16,8 @@ namespace RegentFX.Scripts.Patches;
 
 [HarmonyPatch]
 public static class DamageTargetPatch {
-    private static int _depth;
+    [ThreadStatic]
+    private static bool _invokingDamage;
 
     // v0.113 的攻击直接使用 DamageTargetData，旧版只有 Creature 目标。
     private static readonly Type? DamageTargetDataType = typeof(Creature).Assembly.GetType(
@@ -53,21 +54,18 @@ public static class DamageTargetPatch {
         MethodBase __originalMethod,
         ref Task<IEnumerable<DamageResult>> __result) {
 
-        CardModel? cardSource = __5;
-        if (cardSource == null) return true;
-
-        var cardFX = CardFX.FromCard(cardSource);
-        if (cardFX == null) return true;
-        if (!LocalContext.IsMe(cardSource.Owner)) return true;
-        if (!cardFX.HasOnBeforeDamage && !cardFX.HasOnBeforeDamageTargeted) return true;
-
-        var command = AttackVfxContext.CurrentAttackCommand.Value;
-        if (command == null) return true;
-
-        if (Interlocked.Increment(ref _depth) > 1) {
-            Interlocked.Decrement(ref _depth);
+        if (_invokingDamage || __5 == null || __args[1] == null || __args[4] is Creature { IsDead: true }) {
             return true;
         }
+
+        AttackCommand? command = AttackVfxContext.CurrentAttackCommand.Value;
+        if (command == null || !ReferenceEquals(command.ModelSource, __5) || !LocalContext.IsMe(__5.Owner)) {
+            return true;
+        }
+
+        var cardFX = CardFX.FromCard(__5);
+        if (cardFX == null) return true;
+        if (!cardFX.HasOnBeforeDamage && !cardFX.HasOnBeforeDamageTargeted) return true;
 
         __result = RunBeforeAndDamage(cardFX, command, __originalMethod, (object?[])__args.Clone());
         return false;
@@ -79,19 +77,29 @@ public static class DamageTargetPatch {
         MethodBase damageMethod,
         object?[] args) {
 
+        List<Creature> targets = SnapshotTargets(args);
         try {
-            List<Creature> targets = SnapshotTargets(args);
-
             if (cardFX.HasOnBeforeDamageTargeted) {
                 await cardFX.OnBeforeDamage(command, targets);
             } else {
                 await cardFX.OnBeforeDamage(command);
             }
+        }
+        catch (Exception ex) {
+            Entry.Logger.Warn($"[{cardFX.GetType().Name}] 伤害前特效失败: {ex}");
+        }
 
-            return await (Task<IEnumerable<DamageResult>>)damageMethod.Invoke(null, args)!;
+        return await InvokeDamage(damageMethod, args);
+    }
+
+    private static Task<IEnumerable<DamageResult>> InvokeDamage(MethodBase damageMethod, object?[] args) {
+        // 只在重新进入 Harmony 补丁时跳过特效，其他异步攻击仍能播放。
+        _invokingDamage = true;
+        try {
+            return (Task<IEnumerable<DamageResult>>)damageMethod.Invoke(null, args)!;
         }
         finally {
-            Interlocked.Decrement(ref _depth);
+            _invokingDamage = false;
         }
     }
 

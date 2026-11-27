@@ -12,18 +12,21 @@ namespace RegentFX.Scripts.Patches;
 
 [HarmonyPatch]
 public static class CardAnimPatch {
-    private static bool _isProcessing = false;
+    [ThreadStatic]
+    private static AttackCommand? _resumingAttack;
     
     
     [HarmonyPatch(typeof(AttackCommand), nameof(AttackCommand.Execute))]
     [HarmonyPrefix]
-    public static bool ExecutePatch(AttackCommand __instance, PlayerChoiceContext? choiceContext, ref Task<AttackCommand> __result) {
+    public static bool ExecutePatch(AttackCommand __instance, PlayerChoiceContext? choiceContext,
+        ref Task<AttackCommand> __result, out AttackCommand? __state) {
         // 记录当前攻击来源，供动画链路末端（如NRegentVfx.Attack）读取
-        
-        if (_isProcessing) return true; 
+        __state = AttackVfxContext.CurrentAttackCommand.Value;
+        AttackVfxContext.CurrentAttackCommand.Value = __instance;
+        if (ReferenceEquals(_resumingAttack, __instance)) return true;
+
         AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
         AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
-        AttackVfxContext.CurrentAttackCommand.Value = __instance;
         if (__instance.ModelSource == null) return true;
         try {
             var card = __instance.ModelSource as CardModel;
@@ -53,7 +56,7 @@ public static class CardAnimPatch {
                 __instance.WithHitFx();
             }
             if (cardFX.HasOnBeforeExecute) {
-                __result = RunCustomFlow(cardFX, card, __instance, choiceContext);
+                __result = RunCustomFlow(cardFX, __instance, choiceContext);
                 return false;
             }
         }
@@ -62,22 +65,31 @@ public static class CardAnimPatch {
         return true;
     }
 
-    static async Task<AttackCommand> RunCustomFlow(CardFX cardFX, CardModel card, AttackCommand instance, PlayerChoiceContext? choiceContext) {
-        _isProcessing = true;
-        try {
-            await BeforeExecute(cardFX, card, instance);
-            return await instance.Execute(choiceContext);
-        } finally {
-            _isProcessing = false;
-        }
+    [HarmonyPatch(typeof(AttackCommand), nameof(AttackCommand.Execute))]
+    [HarmonyFinalizer]
+    static void RestoreAttackContext(AttackCommand? __state) {
+        AttackVfxContext.CurrentAttackCommand.Value = __state;
     }
-    
-    
-    static async Task BeforeExecute(CardFX cardFX, CardModel card, AttackCommand command) {
-        // if (cardFX.PlayCastAnim) {
-        //     await CreatureCmd.TriggerAnim(card.Owner.Creature, "Cast", card.Owner.Character.CastAnimDelay);
-        // }
-        await cardFX.OnBeforeExecute();
+
+    static async Task<AttackCommand> RunCustomFlow(CardFX cardFX, AttackCommand instance, PlayerChoiceContext? choiceContext) {
+        try {
+            await cardFX.OnBeforeExecute();
+        }
+        catch (Exception ex) {
+            Entry.Logger.Warn($"[{cardFX.GetType().Name}] 攻击前特效失败: {ex}");
+        }
+
+        return await ResumeAttack(instance, choiceContext);
+    }
+
+    static Task<AttackCommand> ResumeAttack(AttackCommand instance, PlayerChoiceContext? choiceContext) {
+        var previous = _resumingAttack;
+        _resumingAttack = instance;
+        try {
+            return instance.Execute(choiceContext);
+        } finally {
+            _resumingAttack = previous;
+        }
     }
 
     [HarmonyPatch(typeof(CardModel), nameof(CardModel.OnPlayWrapper))]
@@ -91,10 +103,15 @@ public static class CardAnimPatch {
             await originalTask;
         }
         finally {
-            Entry.StarEffectController?.OnCardPlayed(card);
             AttackVfxContext.ShouldDisableRegentWeaponAttack = false;
             AttackVfxContext.ShouldDisableRegentWeaponSFX = false;
             AttackVfxContext.CurrentModelSource = null;
+            try {
+                Entry.StarEffectController?.OnCardPlayed(card);
+            }
+            catch (Exception ex) {
+                Entry.Logger.Warn($"[{card.Id}] 出牌后特效清理失败: {ex}");
+            }
         }
     }
     
